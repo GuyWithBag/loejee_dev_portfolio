@@ -15,16 +15,22 @@ import { ProjectContent } from "./components/ProjectContent";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(
-    window.matchMedia("(prefers-color-scheme: dark)").matches
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
   );
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState(true);
-  
+
   // Navigation IDs
   const gridIds = [
-    "hero", "skills", "status", "cta",
-    "about", ...SOCIALS.map(s => s.id), "theme-toggle", "location",
-    ...PROJECTS.map(p => `project-${p.id}`)
+    "hero",
+    "skills",
+    "status",
+    "cta",
+    "about",
+    ...SOCIALS.map((s) => s.id),
+    "theme-toggle",
+    "location",
+    ...PROJECTS.map((p) => `project-${p.id}`),
   ];
   const [focusedIndex, setFocusedIndex] = useState(0);
 
@@ -71,15 +77,20 @@ const App = () => {
         break;
       case "enter":
         const currentId = gridIds[focusedIndex];
-        const social = SOCIALS.find(s => s.id === currentId);
-        
-        if (currentId.startsWith("project-") || currentId === "hero" || currentId === "about" || currentId === "skills") {
-           setExpandedId(currentId);
-           setOnboarding(false);
+        const social = SOCIALS.find((s) => s.id === currentId);
+
+        if (
+          currentId.startsWith("project-") ||
+          currentId === "hero" ||
+          currentId === "about" ||
+          currentId === "skills"
+        ) {
+          setExpandedId(currentId);
+          setOnboarding(false);
         } else if (currentId === "theme-toggle") {
-           setIsDarkMode(!isDarkMode);
+          setIsDarkMode(!isDarkMode);
         } else if (social) {
-           window.open(social.href, "_blank");
+          window.open(social.href, "_blank");
         }
         break;
     }
@@ -99,11 +110,10 @@ const App = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 bg-pastel-green-50/30 dark:bg-zinc-950 relative overflow-x-hidden p-4 md:p-8 lg:p-12">
-      
       {/* Modals & Overlays */}
       <AnimatePresence>
         {onboarding && !expandedId && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -115,20 +125,20 @@ const App = () => {
       <AnimatePresence>
         {expandedId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setExpandedId(null)}
               className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-zoom-out"
             />
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-2xl no-scrollbar flex flex-col"
             >
-              <button 
+              <button
                 onClick={() => setExpandedId(null)}
                 className="absolute top-8 right-8 p-4 bg-zinc-900/10 dark:bg-white/10 hover:bg-zinc-900/20 dark:hover:bg-white/20 rounded-full transition-colors z-50 text-zinc-900 dark:text-white backdrop-blur-md"
               >
@@ -136,21 +146,35 @@ const App = () => {
               </button>
 
               {expandedId === "hero" && (
-                <HeroCard isExpanded={true} onClick={() => {}} containerClasses="!w-full h-full !scale-100 !border-none" />
+                <HeroCard
+                  isExpanded={true}
+                  onClick={() => {}}
+                  containerClasses="!w-full h-full !scale-100 !border-none"
+                />
               )}
 
               {expandedId === "about" && (
-                <AboutCard isExpanded={true} onClick={() => {}} containerClasses="!w-full h-full !scale-100 !border-none" />
+                <AboutCard
+                  isExpanded={true}
+                  onClick={() => {}}
+                  containerClasses="!w-full h-full !scale-100 !border-none"
+                />
               )}
 
               {expandedId === "skills" && (
-                <SkillsCard isExpanded={true} onClick={() => {}} containerClasses="!w-full h-full !scale-100 !border-none" />
+                <SkillsCard
+                  isExpanded={true}
+                  onClick={() => {}}
+                  containerClasses="!w-full h-full !scale-100 !border-none"
+                />
               )}
 
               {expandedId.startsWith("project-") && (
-                <ProjectContent 
-                  project={PROJECTS.find(p => `project-${p.id}` === expandedId)!} 
-                  isExpanded={true} 
+                <ProjectContent
+                  project={
+                    PROJECTS.find((p) => `project-${p.id}` === expandedId)!
+                  }
+                  isExpanded={true}
                   onClose={() => setExpandedId(null)}
                 />
               )}
@@ -164,45 +188,40 @@ const App = () => {
         <div className="absolute bottom-0 -right-20 w-[600px] h-[600px] bg-emerald-400 rounded-full blur-[150px]" />
       </div>
 
-      <div className="max-w-6xl w-full flex flex-col gap-10 md:gap-16">
+      <div className="max-w-6xl w-full flex flex-col gap-4 md:gap-5">
         {/* Bento Grid Info Section - INSPIRED BY REFERENCE */}
-        <div className="bg-[#0f0f0f] p-4 md:p-6 rounded-[2.5rem] shadow-2xl w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:grid-rows-3 md:h-[850px]">
-          
+        <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:grid-rows-3 md:h-[850px]">
           {/* Row 1 & 2, Col 1 */}
-          <HeroCard 
-            isExpanded={false} 
-            onClick={() => setExpandedId("hero")} 
+          <HeroCard
+            isExpanded={false}
+            onClick={() => setExpandedId("hero")}
             onboarding={onboarding}
             containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-500 !text-white"
           />
 
           {/* Row 1, Col 2 */}
-          <SkillsCard 
-            isExpanded={false} 
-            onClick={() => setExpandedId("skills")} 
+          <SkillsCard
+            isExpanded={false}
+            onClick={() => setExpandedId("skills")}
             containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40"
           />
 
           {/* Row 1, Col 3 */}
-          <StatusCard 
-            containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40"
-          />
+          <StatusCard containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40" />
 
           {/* Row 1 & 2, Col 4 */}
-          <CTACard 
-            containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-600 !text-white"
-          />
+          <CTACard containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-600 !text-white" />
 
           {/* Row 2, Col 2-3 */}
-          <AboutCard 
-            isExpanded={false} 
-            onClick={() => setExpandedId("about")} 
+          <AboutCard
+            isExpanded={false}
+            onClick={() => setExpandedId("about")}
             containerClasses="col-span-1 md:col-span-2 !bg-pastel-green-500 !text-white"
           />
 
           {/* Row 3, Col 1 & 2 - Socials */}
-          {SOCIALS.map(social => (
-            <SocialCard 
+          {SOCIALS.map((social) => (
+            <SocialCard
               key={social.id}
               id={social.id}
               href={social.href}
@@ -214,24 +233,28 @@ const App = () => {
           ))}
 
           {/* Row 3, Col 3 */}
-          <ThemeToggle 
-            isDarkMode={isDarkMode} 
-            onToggle={() => { setIsDarkMode(!isDarkMode); setOnboarding(false); }} 
+          <ThemeToggle
+            isDarkMode={isDarkMode}
+            onToggle={() => {
+              setIsDarkMode(!isDarkMode);
+              setOnboarding(false);
+            }}
             containerClasses="col-span-1 md:row-span-1"
           />
 
           {/* Row 3, Col 4 */}
-          <BentoCard 
+          <BentoCard
             id="location"
             isExpanded={false}
             containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-100 dark:!bg-zinc-800"
           >
             <div className="p-6 flex flex-col items-center justify-center h-full text-zinc-900 dark:text-white">
               <UI_STRINGS.locationIcon className="text-4xl mb-2 text-pastel-green-600" />
-              <span className="font-black text-[10px] uppercase tracking-widest">{BIO.location}</span>
+              <span className="font-black text-[10px] uppercase tracking-widest">
+                {BIO.location}
+              </span>
             </div>
           </BentoCard>
-
         </div>
 
         {/* Flex Wrap Projects Section */}
@@ -239,13 +262,13 @@ const App = () => {
           {PROJECTS.map((project, idx) => {
             const isFeatured = idx === 0;
             const id = `project-${project.id}`;
-            
-            const containerClasses = isFeatured 
-              ? "basis-full md:basis-[calc(50%-0.75rem)] min-h-[300px]" 
+
+            const containerClasses = isFeatured
+              ? "basis-full md:basis-[calc(50%-0.75rem)] min-h-[300px]"
               : "basis-[calc(50%-0.5rem)] md:basis-[calc(25%-1rem)] aspect-square";
 
             return (
-              <BentoCard 
+              <BentoCard
                 id={id}
                 key={project.id}
                 isExpanded={false}
@@ -253,9 +276,9 @@ const App = () => {
                 containerClasses={containerClasses}
                 className="p-0 border-none h-full flex-grow !rounded-[2.5rem]"
               >
-                <ProjectContent 
-                  project={project} 
-                  isExpanded={false} 
+                <ProjectContent
+                  project={project}
+                  isExpanded={false}
                   onClose={() => {}}
                 />
               </BentoCard>
