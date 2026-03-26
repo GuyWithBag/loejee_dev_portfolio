@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaMapMarkerAlt } from "react-icons/fa";
 import { PROJECTS } from "./data/projects";
 import { HeroCard } from "./components/HeroCard";
 import { SkillsCard } from "./components/SkillsCard";
@@ -11,22 +11,26 @@ import { AboutCard } from "./components/AboutCard";
 import { CTACard } from "./components/CTACard";
 import { BentoCard } from "./components/BentoCard";
 import { ProjectContent } from "./components/ProjectContent";
-import { animateScroll as scroll } from "react-scroll";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(
-    window.matchMedia("(prefers-color-scheme: dark)").matches
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
   );
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState(true);
-  const [containerWidth, setContainerWidth] = useState<number | string>("100%");
-  
-  // Grid Navigation IDs
+
+  // Navigation IDs
   const gridIds = [
-    "hero", "skills", "status", "theme-toggle", 
-    "github", "linkedin", "about", 
-    ...PROJECTS.map(p => `project-${p.id}`), 
-    "cta"
+    "hero",
+    "skills",
+    "status",
+    "cta",
+    "about",
+    "github",
+    "linkedin",
+    "theme-toggle",
+    "location",
+    ...PROJECTS.map((p) => `project-${p.id}`),
   ];
   const [focusedIndex, setFocusedIndex] = useState(0);
 
@@ -41,7 +45,6 @@ const App = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    // Focus hero on mount
     const hero = document.getElementById("hero");
     if (hero) hero.focus();
   }, []);
@@ -74,14 +77,19 @@ const App = () => {
         break;
       case "enter":
         const currentId = gridIds[focusedIndex];
-        if (currentId.startsWith("project-") || currentId === "hero" || currentId === "about" || currentId === "skills") {
-           toggleExpand(currentId);
+        if (
+          currentId.startsWith("project-") ||
+          currentId === "hero" ||
+          currentId === "about" ||
+          currentId === "skills"
+        ) {
+          toggleExpand(currentId);
         } else if (currentId === "theme-toggle") {
-           setIsDarkMode(!isDarkMode);
+          setIsDarkMode(!isDarkMode);
         } else if (currentId === "github") {
-           window.open("https://github.com", "_blank");
+          window.open("https://github.com", "_blank");
         } else if (currentId === "linkedin") {
-           window.open("https://linkedin.com", "_blank");
+          window.open("https://linkedin.com", "_blank");
         }
         break;
     }
@@ -102,24 +110,13 @@ const App = () => {
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
     setOnboarding(false);
-    if (expandedId !== id) {
-      scroll.scrollToTop({ duration: 500, smooth: true });
-    }
-  };
-
-  const cycleWidth = () => {
-    if (containerWidth === "100%") setContainerWidth("75%");
-    else if (containerWidth === "75%") setContainerWidth("50%");
-    else setContainerWidth("100%");
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 lg:p-20 flex flex-col items-center justify-center transition-colors duration-500 bg-pastel-green-50/30 dark:bg-zinc-950 relative overflow-x-hidden">
-      
-      {/* Onboarding Overlay */}
+    <div className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 bg-pastel-green-50/30 dark:bg-zinc-950 relative overflow-x-hidden p-4 md:p-8 lg:p-12">
       <AnimatePresence>
         {onboarding && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -128,90 +125,117 @@ const App = () => {
         )}
       </AnimatePresence>
 
-      {/* Background decoration */}
       <div className="fixed inset-0 pointer-events-none -z-10 opacity-30 dark:opacity-10 overflow-hidden">
         <div className="absolute top-0 -left-20 w-[600px] h-[600px] bg-pastel-green-300 rounded-full blur-[150px]" />
         <div className="absolute bottom-0 -right-20 w-[600px] h-[600px] bg-emerald-400 rounded-full blur-[150px]" />
       </div>
 
-      {/* Resize Control */}
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
-        <button 
-          onClick={cycleWidth}
-          className="px-4 py-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg"
-        >
-          Resize Container: {containerWidth}
-        </button>
+      <div className="max-w-6xl w-full flex flex-col gap-4 md:gap-5">
+        {/* Bento Grid Info Section - INSPIRED BY REFERENCE */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:grid-rows-3 md:h-[850px]">
+          {/* Row 1 & 2, Col 1 */}
+          <HeroCard
+            isExpanded={expandedId === "hero"}
+            onClick={() => toggleExpand("hero")}
+            onboarding={onboarding}
+            containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-500 !text-white"
+          />
+
+          {/* Row 1, Col 2 */}
+          <SkillsCard
+            isExpanded={expandedId === "skills"}
+            onClick={() => toggleExpand("skills")}
+            containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40"
+          />
+
+          {/* Row 1, Col 3 */}
+          <StatusCard containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40" />
+
+          {/* Row 1 & 2, Col 4 */}
+          <CTACard containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-600 !text-white" />
+
+          {/* Row 2, Col 2-3 */}
+          <AboutCard
+            isExpanded={expandedId === "about"}
+            onClick={() => toggleExpand("about")}
+            containerClasses="col-span-1 md:col-span-2 !bg-pastel-green-500 !text-white"
+          />
+
+          {/* Row 3, Col 1 */}
+          <SocialCard
+            id="github"
+            href="https://github.com"
+            icon={FaGithub}
+            label="GITHUB"
+            className="!bg-zinc-800"
+            containerClasses="col-span-1 md:row-span-1"
+          />
+
+          {/* Row 3, Col 2 */}
+          <SocialCard
+            id="linkedin"
+            href="https://linkedin.com"
+            icon={FaLinkedin}
+            label="LINKEDIN"
+            className="!bg-[#0077b5]"
+            containerClasses="col-span-1 md:row-span-1"
+          />
+
+          {/* Row 3, Col 3 */}
+          <ThemeToggle
+            isDarkMode={isDarkMode}
+            onToggle={() => {
+              setIsDarkMode(!isDarkMode);
+              setOnboarding(false);
+            }}
+            containerClasses="col-span-1 md:row-span-1"
+          />
+
+          {/* Row 3, Col 4 */}
+          <BentoCard
+            id="location"
+            isExpanded={false}
+            containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-100 dark:!bg-zinc-800"
+          >
+            <div className="p-6 flex flex-col items-center justify-center h-full text-zinc-900 dark:text-white">
+              <FaMapMarkerAlt className="text-4xl mb-2 text-pastel-green-600" />
+              <span className="font-black text-[10px] uppercase tracking-widest">
+                Davao, PH
+              </span>
+            </div>
+          </BentoCard>
+        </div>
+
+        {/* Flex Wrap Projects Section */}
+        <div className="flex flex-wrap gap-4 md:gap-5 px-2">
+          {PROJECTS.map((project, idx) => {
+            const isFeatured = idx === 0;
+            const id = `project-${project.id}`;
+            const isExpanded = expandedId === id;
+
+            const containerClasses = isFeatured
+              ? "basis-full md:basis-[calc(50%-0.75rem)] min-h-[300px]"
+              : "basis-[calc(50%-0.5rem)] md:basis-[calc(25%-1rem)] aspect-square";
+
+            return (
+              <BentoCard
+                id={id}
+                key={project.id}
+                isExpanded={isExpanded}
+                onClick={() => toggleExpand(id)}
+                containerClasses={containerClasses}
+                className="p-0 border-none h-full flex-grow !rounded-[2.5rem]"
+              >
+                <ProjectContent
+                  project={project}
+                  isExpanded={isExpanded}
+                  onClose={() => setExpandedId(null)}
+                />
+              </BentoCard>
+            );
+          })}
+        </div>
       </div>
-
-      <motion.div 
-        layout
-        animate={{ width: containerWidth }}
-        className="max-w-7xl w-full grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 auto-rows-min"
-      >
-        <HeroCard 
-          isExpanded={expandedId === "hero"} 
-          onClick={() => toggleExpand("hero")} 
-          onboarding={onboarding}
-        />
-
-        <SkillsCard 
-          isExpanded={expandedId === "skills"} 
-          onClick={() => toggleExpand("skills")} 
-        />
-
-        <StatusCard />
-
-        <ThemeToggle 
-          isDarkMode={isDarkMode} 
-          onToggle={() => { setIsDarkMode(!isDarkMode); setOnboarding(false); }} 
-        />
-
-        <SocialCard 
-          id="github" 
-          href="https://github.com" 
-          icon={FaGithub} 
-          label="GITHUB" 
-          className="!bg-zinc-900" 
-        />
-
-        <SocialCard 
-          id="linkedin" 
-          href="https://linkedin.com" 
-          icon={FaLinkedin} 
-          label="LINKEDIN" 
-          className="!bg-[#0077b5]" 
-        />
-
-        <AboutCard 
-          isExpanded={expandedId === "about"} 
-          onClick={() => toggleExpand("about")} 
-        />
-
-        {PROJECTS.map((project, idx) => {
-          const isFeatured = idx === 0;
-          const id = `project-${project.id}`;
-          return (
-            <BentoCard 
-              id={id}
-              key={project.id}
-              isExpanded={expandedId === id}
-              onClick={() => toggleExpand(id)}
-              span={isFeatured ? "col-span-2 row-span-1" : "col-span-1 row-span-1"}
-              className="p-0 border-none h-full"
-            >
-              <ProjectContent 
-                project={project} 
-                isExpanded={expandedId === id} 
-                onClose={() => setExpandedId(null)}
-              />
-            </BentoCard>
-          );
-        })}
-
-        <CTACard />
-
-      </motion.div>
     </div>
   );
 };

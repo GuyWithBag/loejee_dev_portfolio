@@ -5,18 +5,20 @@ import heroImg from "../assets/hero.png";
 export const HeroCard = ({ 
   isExpanded, 
   onClick, 
-  onboarding 
+  onboarding,
+  containerClasses = ""
 }: { 
   isExpanded: boolean, 
   onClick: () => void,
-  onboarding?: boolean
+  onboarding?: boolean,
+  containerClasses?: string
 }) => {
   return (
     <BentoCard 
       id="hero"
       isExpanded={isExpanded}
       onClick={onClick}
-      span="col-span-1 row-span-2"
+      containerClasses={containerClasses}
       className={`flex-col items-center text-center !bg-pastel-green-100 dark:!bg-pastel-green-950/40 border-none relative h-full ${onboarding ? 'z-50 ring-4 ring-pastel-green-400 scale-[1.05]' : ''}`}
     >
       <div className="p-8 flex flex-col items-center h-full justify-center min-h-[400px]">

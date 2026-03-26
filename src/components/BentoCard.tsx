@@ -6,17 +6,17 @@ export const BentoCard = ({
   className = "", 
   onClick, 
   isExpanded,
-  span = "col-span-1 row-span-1",
   id,
-  tabIndex = 0
+  tabIndex = 0,
+  containerClasses = ""
 }: { 
   children: React.ReactNode; 
   className?: string; 
   onClick?: () => void;
   id: string;
   isExpanded: boolean;
-  span?: string;
   tabIndex?: number;
+  containerClasses?: string;
 }) => (
   <motion.div 
     layout
@@ -26,8 +26,8 @@ export const BentoCard = ({
     onClick={onClick}
     whileHover={{ scale: isExpanded ? 1 : 1.02 }}
     whileTap={{ scale: 0.98 }}
-    className={`bento-card relative flex flex-col overflow-hidden shadow-sm hover:shadow-md transition-shadow ${onClick ? 'cursor-pointer' : ''} ${className} 
-      ${isExpanded ? 'col-span-2 md:col-span-4 row-span-auto z-20 h-auto order-first' : `${span} z-10 ${span.includes('row-span-1') && span.includes('col-span-1') ? 'aspect-square' : ''}`}
+    className={`bento-card relative flex flex-col overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ${onClick ? 'cursor-pointer' : ''} ${className} 
+      ${isExpanded ? 'z-20 h-auto w-full' : `z-10 ${containerClasses}`}
     `}
   >
     {children}

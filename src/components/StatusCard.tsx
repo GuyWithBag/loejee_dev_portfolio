@@ -1,11 +1,11 @@
 import { BentoCard } from "./BentoCard";
 
-export const StatusCard = () => {
+export const StatusCard = ({ containerClasses = "" }: { containerClasses?: string }) => {
   return (
     <BentoCard 
       id="status"
       isExpanded={false}
-      span="col-span-1 md:col-span-1 row-span-1"
+      containerClasses={containerClasses}
       className="text-center bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-none"
     >
       <div className="p-6 flex flex-col items-center justify-center h-full">

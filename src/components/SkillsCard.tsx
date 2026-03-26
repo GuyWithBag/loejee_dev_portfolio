@@ -28,13 +28,13 @@ const SKILLS = [
   { name: "OpenGL", Icon: SiOpengl }
 ];
 
-export const SkillsCard = ({ isExpanded, onClick }: { isExpanded: boolean, onClick: () => void }) => {
+export const SkillsCard = ({ isExpanded, onClick, containerClasses = "" }: { isExpanded: boolean, onClick: () => void, containerClasses?: string }) => {
   return (
     <BentoCard 
       id="skills"
       isExpanded={isExpanded}
       onClick={onClick}
-      span="col-span-1 md:col-span-1 row-span-1"
+      containerClasses={containerClasses}
       className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800"
     >
       <div className="p-6 h-full flex flex-col">

@@ -1,13 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { BentoCard } from "./BentoCard";
 
-export const AboutCard = ({ isExpanded, onClick }: { isExpanded: boolean, onClick: () => void }) => {
+export const AboutCard = ({ isExpanded, onClick, containerClasses = "" }: { isExpanded: boolean, onClick: () => void, containerClasses?: string }) => {
   return (
     <BentoCard 
       id="about"
       isExpanded={isExpanded}
       onClick={onClick}
-      span="col-span-2 md:col-span-2 row-span-1"
+      containerClasses={containerClasses}
       className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 h-full"
     >
       <div className="p-8 md:p-12 h-full flex flex-col justify-center">
