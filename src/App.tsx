@@ -13,6 +13,10 @@ import { CTACard } from "./components/CTACard";
 import { BentoCard } from "./components/BentoCard";
 import { ProjectContent } from "./components/ProjectContent";
 
+// ToDo: Change colors
+// ToDo: Overflow for Modals (scrollbar appears)
+// ToDo: Add Profile Picture
+
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches,
@@ -188,7 +192,7 @@ const App = () => {
         <div className="absolute bottom-0 -right-20 w-[600px] h-[600px] bg-emerald-400 rounded-full blur-[150px]" />
       </div>
 
-      <div className="max-w-6xl w-full flex flex-col gap-4 md:gap-5">
+      <div className="w-full flex flex-col gap-4 md:gap-5">
         {/* Bento Grid Info Section - INSPIRED BY REFERENCE */}
         <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:grid-rows-3 md:h-[850px]">
           {/* Row 1 & 2, Col 1 */}
