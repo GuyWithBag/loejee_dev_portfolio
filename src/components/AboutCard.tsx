@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { BentoCard } from "./BentoCard";
+import { BIO } from "../data/content";
 
 export const AboutCard = ({ isExpanded, onClick, containerClasses = "" }: { isExpanded: boolean, onClick: () => void, containerClasses?: string }) => {
   return (
@@ -13,7 +14,7 @@ export const AboutCard = ({ isExpanded, onClick, containerClasses = "" }: { isEx
       <div className="p-8 md:p-12 h-full flex flex-col justify-center">
         <motion.h2 layout className="text-2xl md:text-3xl font-black mb-4 italic tracking-tighter uppercase leading-none">"Hi there! 👋"</motion.h2>
         <motion.p layout className="text-zinc-500 dark:text-zinc-400 leading-relaxed text-base md:text-lg font-medium">
-          I'm a passionate developer focused on building intuitive and performant applications across web, mobile, and game engines.
+          {BIO.about[0]}
         </motion.p>
         <AnimatePresence>
           {isExpanded && (
@@ -25,15 +26,15 @@ export const AboutCard = ({ isExpanded, onClick, containerClasses = "" }: { isEx
               <div>
                 <h3 className="text-[9px] font-black mb-6 uppercase tracking-[0.3em] text-pastel-green-600">Expertise</h3>
                 <ul className="space-y-4 text-zinc-500 text-[10px] font-black tracking-widest">
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-pastel-green-400 rounded-full" /> WEB (REACT / SVELTE)</li>
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-pastel-green-400 rounded-full" /> MOBILE (FLUTTER)</li>
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-pastel-green-400 rounded-full" /> GAMES (GODOT)</li>
+                  {BIO.expertise.map(item => (
+                    <li key={item.label} className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-pastel-green-400 rounded-full" /> {item.label} ({item.details})</li>
+                  ))}
                 </ul>
               </div>
               <div>
                 <h3 className="text-[9px] font-black mb-6 uppercase tracking-[0.3em] text-pastel-green-600">Approach</h3>
                 <p className="text-zinc-500 text-xs leading-relaxed font-medium">
-                  Iterative growth, clean architecture, and empathy for the user. I believe in software that solves real problems.
+                  {BIO.approach}
                 </p>
               </div>
             </motion.div>

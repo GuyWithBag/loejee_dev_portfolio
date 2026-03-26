@@ -5,7 +5,6 @@ export const BentoCard = ({
   children, 
   className = "", 
   onClick, 
-  isExpanded,
   id,
   tabIndex = 0,
   containerClasses = ""
@@ -14,7 +13,7 @@ export const BentoCard = ({
   className?: string; 
   onClick?: () => void;
   id: string;
-  isExpanded: boolean;
+  isExpanded?: boolean;
   tabIndex?: number;
   containerClasses?: string;
 }) => (
@@ -24,11 +23,9 @@ export const BentoCard = ({
     tabIndex={tabIndex}
     transition={{ type: "spring", stiffness: 250, damping: 25 }}
     onClick={onClick}
-    whileHover={{ scale: isExpanded ? 1 : 1.02 }}
+    whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
-    className={`bento-card relative flex flex-col overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ${onClick ? 'cursor-pointer' : ''} ${className} 
-      ${isExpanded ? 'z-20 h-auto w-full' : `z-10 ${containerClasses}`}
-    `}
+    className={`bento-card relative flex flex-col overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ${onClick ? 'cursor-pointer' : ''} ${className} z-10 ${containerClasses}`}
   >
     {children}
   </motion.div>

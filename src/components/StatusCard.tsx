@@ -1,4 +1,5 @@
 import { BentoCard } from "./BentoCard";
+import { BIO } from "../data/content";
 
 export const StatusCard = ({ containerClasses = "" }: { containerClasses?: string }) => {
   return (
@@ -13,7 +14,7 @@ export const StatusCard = ({ containerClasses = "" }: { containerClasses?: strin
           <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
           ACTIVE
         </div>
-        <h3 className="text-sm font-black uppercase tracking-tighter">Davao, PH</h3>
+        <h3 className="text-sm font-black uppercase tracking-tighter">{BIO.location}</h3>
         <p className="text-[8px] text-zinc-400 mt-1 uppercase tracking-[0.3em] font-black opacity-50">GMT +8</p>
       </div>
     </BentoCard>

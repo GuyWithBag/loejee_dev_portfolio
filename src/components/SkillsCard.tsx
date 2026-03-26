@@ -1,32 +1,6 @@
 import { motion } from "framer-motion";
 import { BentoCard } from "./BentoCard";
-import { 
-  SiNextdotjs, 
-  SiSvelte, 
-  SiFlutter, 
-  SiGodotengine, 
-  SiTypescript, 
-  SiReact, 
-  SiFirebase, 
-  SiTailwindcss, 
-  SiDart, 
-  SiCplusplus, 
-  SiOpengl 
-} from "react-icons/si";
-
-const SKILLS = [
-  { name: "NextJS", Icon: SiNextdotjs },
-  { name: "React", Icon: SiReact },
-  { name: "Typescript", Icon: SiTypescript },
-  { name: "Tailwind", Icon: SiTailwindcss },
-  { name: "Svelte", Icon: SiSvelte },
-  { name: "Flutter", Icon: SiFlutter },
-  { name: "Dart", Icon: SiDart },
-  { name: "Godot", Icon: SiGodotengine },
-  { name: "C++", Icon: SiCplusplus },
-  { name: "Firebase", Icon: SiFirebase },
-  { name: "OpenGL", Icon: SiOpengl }
-];
+import { SKILLS } from "../data/content";
 
 export const SkillsCard = ({ isExpanded, onClick, containerClasses = "" }: { isExpanded: boolean, onClick: () => void, containerClasses?: string }) => {
   return (
