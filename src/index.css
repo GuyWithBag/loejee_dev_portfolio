@@ -24,5 +24,9 @@
 
 /* Custom bento card styling */
 .bento-card {
-  @apply bg-white dark:bg-zinc-900 border border-pastel-green-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all duration-300;
+  @apply bg-white dark:bg-zinc-900 border border-pastel-green-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm transition-all duration-500 outline-none;
+}
+
+.bento-card:focus-visible {
+  @apply ring-4 ring-pastel-green-400 ring-offset-4 dark:ring-offset-zinc-950 scale-[1.02] shadow-xl;
 }

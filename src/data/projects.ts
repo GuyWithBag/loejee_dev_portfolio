@@ -6,6 +6,7 @@ export interface Project {
   images: string[];
   link?: string;
   category?: string;
+  aspectRatio?: "desktop" | "mobile";
 }
 
 export const PROJECTS: Project[] = [
