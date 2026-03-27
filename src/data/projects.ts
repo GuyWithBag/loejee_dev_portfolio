@@ -6,7 +6,7 @@ export interface Project {
   images: string[];
   link?: string;
   category?: string;
-  aspectRatio?: "desktop" | "mobile";
+  aspectRatio?: "16:9" | "9:16" | "1:1";
 }
 
 export const PROJECTS: Project[] = [
@@ -20,7 +20,8 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
     ],
     link: "https://github.com",
-    category: "Featured Project"
+    category: "Featured Project",
+    aspectRatio: "16:9"
   },
   {
     id: 2,
@@ -32,7 +33,8 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80"
     ],
     link: "https://github.com",
-    category: "Game Dev"
+    category: "Game Dev",
+    aspectRatio: "1:1"
   },
   {
     id: 3,
@@ -44,7 +46,8 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80"
     ],
     link: "https://github.com",
-    category: "Mobile App"
+    category: "Mobile App",
+    aspectRatio: "9:16"
   },
   {
     id: 4,
@@ -56,7 +59,8 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80"
     ],
     link: "https://github.com",
-    category: "E-commerce"
+    category: "E-commerce",
+    aspectRatio: "16:9"
   },
   {
     id: 5,
@@ -68,6 +72,7 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&w=800&q=80"
     ],
     link: "https://github.com",
-    category: "Open Source"
+    category: "Open Source",
+    aspectRatio: "1:1"
   }
 ];

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>3D Bento Portfolio | Final</title>
+        <title>3D Bento Portfolio | The Final Build</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/@phosphor-icons/web"></script>
         <script>
@@ -134,35 +134,33 @@
                     id="hero-card"
                     tabindex="0"
                     data-modal="hero"
-                    class="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-500 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.03] hover:-translate-y-2 hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-400 dark:border-purple-500"
+                    class="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-500 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-400 dark:border-purple-500"
                 >
                     <div
-                        class="w-24 h-24 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/50 dark:border-white/20 shadow-inner z-10"
+                        class="w-24 h-24 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/50 dark:border-white/20 shadow-inner z-10 pointer-events-none"
                     ></div>
                     <h1
-                        class="text-4xl font-bold text-white z-10 leading-tight tracking-tight"
+                        class="text-4xl font-bold text-white z-10 leading-tight tracking-tight pointer-events-none"
                     >
                         Hi, I'm a Developer & UI Designer.
                     </h1>
-
                     <div
-                        class="absolute -bottom-10 -right-10 w-64 h-64 bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl"
+                        class="absolute -bottom-10 -right-10 w-64 h-64 bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl pointer-events-none"
                     ></div>
                     <div
-                        class="absolute -top-10 -left-10 w-32 h-32 bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0"
+                        class="absolute -top-10 -left-10 w-32 h-32 bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"
                     ></div>
                 </div>
 
                 <div
                     tabindex="0"
                     data-modal="about"
-                    class="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.03] hover:-translate-y-2 hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+                    class="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
                 >
                     <div
-                        class="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 group-hover:rotate-[60deg] transition-transform duration-700 z-0 shadow-inner"
+                        class="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 group-hover:rotate-[60deg] transition-transform duration-700 z-0 shadow-inner pointer-events-none"
                     ></div>
-
-                    <div class="z-10 relative">
+                    <div class="z-10 relative pointer-events-none">
                         <div class="flex items-center gap-2 mb-2">
                             <i
                                 class="ph-fill ph-user-circle text-2xl text-slate-400"
@@ -189,13 +187,14 @@
                 <div
                     tabindex="0"
                     data-modal="location"
-                    class="navigable blur-target md:col-span-1 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.05] hover:-translate-y-2 hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+                    class="navigable blur-target md:col-span-1 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
                 >
                     <div
-                        class="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0"
+                        class="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0 pointer-events-none"
                     ></div>
-
-                    <div class="relative flex h-6 w-6 mb-3 z-10">
+                    <div
+                        class="relative flex h-6 w-6 mb-3 z-10 pointer-events-none"
+                    >
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
                         ></span>
@@ -204,12 +203,12 @@
                         ></span>
                     </div>
                     <p
-                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 z-10"
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 z-10 pointer-events-none"
                     >
                         Building from
                     </p>
                     <p
-                        class="font-semibold text-slate-800 dark:text-slate-200 z-10"
+                        class="font-semibold text-slate-800 dark:text-slate-200 z-10 pointer-events-none"
                     >
                         Carmen, Davao Region
                     </p>
@@ -218,28 +217,28 @@
                 <a
                     href="#"
                     tabindex="0"
-                    class="navigable blur-target md:col-span-1 bg-slate-900 dark:bg-slate-800 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-110 hover:-translate-y-4 hover:-rotate-3 hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-slate-700"
+                    class="navigable blur-target md:col-span-1 bg-slate-900 dark:bg-slate-800 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-slate-700"
                 >
                     <div
-                        class="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"
+                        class="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0 pointer-events-none"
                     ></div>
-
                     <i
-                        class="ph-fill ph-github-logo text-5xl mb-2 z-10 group-hover:scale-110 transition-transform"
+                        class="ph-fill ph-github-logo text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none"
                     ></i>
-                    <span class="font-bold z-10">GitHub</span>
+                    <span class="font-bold z-10 pointer-events-none"
+                        >GitHub</span
+                    >
                 </a>
 
                 <div
                     tabindex="0"
                     data-modal="skills"
-                    class="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.03] hover:-translate-y-2 hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+                    class="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
                 >
                     <div
-                        class="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0"
+                        class="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0 pointer-events-none"
                     ></div>
-
-                    <div class="z-10 relative">
+                    <div class="z-10 relative pointer-events-none">
                         <h2
                             class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider flex items-center gap-2"
                         >
@@ -247,26 +246,26 @@
                         </h2>
                         <div class="flex flex-wrap gap-3">
                             <span
-                                class="px-4 py-2 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-200 dark:border-blue-800 transition-transform group-hover:rotate-2"
+                                class="px-4 py-2 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-200 dark:border-blue-800"
                                 ><i class="ph-fill ph-atom text-lg"></i>
                                 ReactJS</span
                             >
                             <span
-                                class="px-4 py-2 bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-sky-200 dark:border-sky-800 transition-transform group-hover:-rotate-2"
+                                class="px-4 py-2 bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-sky-200 dark:border-sky-800"
                                 ><i
                                     class="ph-fill ph-device-mobile text-lg"
                                 ></i>
                                 Flutter</span
                             >
                             <span
-                                class="px-4 py-2 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-purple-200 dark:border-purple-800 transition-transform group-hover:rotate-2"
+                                class="px-4 py-2 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-purple-200 dark:border-purple-800"
                                 ><i
                                     class="ph-fill ph-paint-brush-broad text-lg"
                                 ></i>
                                 UI/UX Design</span
                             >
                             <span
-                                class="px-4 py-2 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-teal-200 dark:border-teal-800 transition-transform group-hover:-rotate-1"
+                                class="px-4 py-2 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-teal-200 dark:border-teal-800"
                                 ><i class="ph-fill ph-wind text-lg"></i>
                                 Tailwind</span
                             >
@@ -277,28 +276,28 @@
                 <a
                     href="#"
                     tabindex="0"
-                    class="navigable blur-target md:col-span-1 bg-blue-600 dark:bg-blue-700 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-110 hover:-translate-y-4 hover:rotate-3 hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-blue-600"
+                    class="navigable blur-target md:col-span-1 bg-blue-600 dark:bg-blue-700 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-blue-600"
                 >
                     <div
-                        class="absolute -left-6 -top-6 w-24 h-24 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0"
+                        class="absolute -left-6 -top-6 w-24 h-24 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"
                     ></div>
-
                     <i
-                        class="ph-fill ph-linkedin-logo text-5xl mb-2 z-10 group-hover:scale-110 transition-transform"
+                        class="ph-fill ph-linkedin-logo text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none"
                     ></i>
-                    <span class="font-bold z-10">LinkedIn</span>
+                    <span class="font-bold z-10 pointer-events-none"
+                        >LinkedIn</span
+                    >
                 </a>
 
                 <button
                     tabindex="0"
-                    class="navigable blur-target md:col-span-1 bg-yellow-400 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-110 hover:-translate-y-4 hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-300 dark:border-yellow-600"
+                    class="navigable blur-target md:col-span-1 bg-yellow-400 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-300 dark:border-yellow-600"
                 >
                     <div
-                        class="absolute right-0 bottom-0 w-16 h-16 bg-white/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg"
+                        class="absolute right-0 bottom-0 w-16 h-16 bg-white/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg pointer-events-none"
                     ></div>
-
                     <div
-                        class="z-10 relative flex flex-col items-center w-full"
+                        class="z-10 relative flex flex-col items-center w-full pointer-events-none"
                     >
                         <h2
                             class="text-xl font-black text-slate-900 mb-3 tracking-tighter"
@@ -306,7 +305,7 @@
                             Let's Talk!
                         </h2>
                         <div
-                            class="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 shadow-xl"
+                            class="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm shadow-xl"
                         >
                             Email Me
                         </div>
@@ -381,13 +380,13 @@
                     </div>
 
                     <div
-                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden"
+                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden pointer-events-none group-hover:pointer-events-auto"
                     >
                         <div
-                            class="absolute inset-0 bg-slate-900/50 z-10 default-overlay transition-opacity duration-300"
+                            class="absolute inset-0 bg-slate-900/50 z-10 default-overlay transition-opacity duration-300 pointer-events-none"
                         ></div>
                         <div
-                            class="carousel-track w-full h-full flex transition-transform duration-500"
+                            class="carousel-track w-full h-full flex transition-transform duration-500 pointer-events-none"
                             data-index="0"
                         >
                             <img
@@ -498,13 +497,13 @@
                     </div>
 
                     <div
-                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden"
+                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden pointer-events-none group-hover:pointer-events-auto"
                     >
                         <div
-                            class="absolute inset-0 bg-slate-900/60 z-10 default-overlay transition-opacity duration-300"
+                            class="absolute inset-0 bg-slate-900/60 z-10 default-overlay transition-opacity duration-300 pointer-events-none"
                         ></div>
                         <div
-                            class="carousel-track w-full h-full flex transition-transform duration-500"
+                            class="carousel-track w-full h-full flex transition-transform duration-500 pointer-events-none"
                             data-index="0"
                         >
                             <img
@@ -605,13 +604,13 @@
                     </div>
 
                     <div
-                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden"
+                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden pointer-events-none group-hover:pointer-events-auto"
                     >
                         <div
-                            class="absolute inset-0 bg-slate-900/60 z-10 default-overlay transition-opacity duration-300"
+                            class="absolute inset-0 bg-slate-900/60 z-10 default-overlay transition-opacity duration-300 pointer-events-none"
                         ></div>
                         <div
-                            class="carousel-track w-full h-full flex transition-transform duration-500"
+                            class="carousel-track w-full h-full flex transition-transform duration-500 pointer-events-none"
                             data-index="0"
                         >
                             <img
@@ -642,13 +641,14 @@
 
                 <div
                     tabindex="0"
-                    class="navigable grow basis-[200px] max-w-[400px] aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:scale-105 hover:-translate-y-4 hover:rotate-1 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                    class="navigable project-card grow basis-[200px] max-w-[400px] aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
                 >
                     <div
-                        class="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0"
+                        class="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"
                     ></div>
-
-                    <div class="z-10 relative flex flex-col items-center">
+                    <div
+                        class="z-10 relative flex flex-col items-center pointer-events-none"
+                    >
                         <div
                             class="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl"
                         >
@@ -676,7 +676,7 @@
             >
                 <button
                     onclick="closeModal()"
-                    class="absolute top-6 right-6 w-12 h-12 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20"
+                    class="absolute top-6 right-6 w-12 h-12 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20 text-current"
                 >
                     <i class="ph-bold ph-x text-2xl"></i>
                 </button>
@@ -754,7 +754,7 @@
 
             document.addEventListener("click", endOnboarding, { once: true });
 
-            // --- 2. THEMED MODAL LOGIC (Shapes Injected Here!) ---
+            // --- 2. THEMED MODAL LOGIC (With Geometric Shapes) ---
             const modal = document.getElementById("info-modal");
             const modalPanel = document.getElementById("modal-panel");
             const modalBody = document.getElementById("modal-body");
@@ -811,15 +811,15 @@
                         <i class="ph-fill ph-lightning text-6xl text-yellow-500 mb-6 inline-block"></i>
                         <h2 class="text-4xl font-black mb-6">Deep Dive: Tech Stack</h2>
                         <ul class="space-y-4">
-                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm">
                                 <i class="ph-fill ph-atom text-4xl text-blue-500"></i>
                                 <div><strong class="block text-xl text-slate-800 dark:text-slate-100">ReactJS</strong><span class="text-sm text-slate-500">Component architecture, Hooks, Context API</span></div>
                             </li>
-                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm">
                                 <i class="ph-fill ph-device-mobile text-4xl text-sky-500"></i>
                                 <div><strong class="block text-xl text-slate-800 dark:text-slate-100">Flutter</strong><span class="text-sm text-slate-500">Cross-platform mobile apps, State Management</span></div>
                             </li>
-                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm">
                                 <i class="ph-fill ph-wind text-4xl text-teal-500"></i>
                                 <div><strong class="block text-xl text-slate-800 dark:text-slate-100">Tailwind CSS</strong><span class="text-sm text-slate-500">Utility-first styling, Design Systems</span></div>
                             </li>
@@ -869,13 +869,6 @@
 
                 if (!isExpanded) {
                     card.classList.add("project-expanded");
-                    card.classList.remove(
-                        "hover:scale-[1.03]",
-                        "hover:scale-[1.05]",
-                        "hover:-translate-y-4",
-                        "hover:rotate-3",
-                        "hover:-rotate-3",
-                    );
 
                     card.querySelector(".expanded-content").classList.remove(
                         "hidden",
@@ -908,7 +901,6 @@
 
             function collapseProject(card) {
                 card.classList.remove("project-expanded");
-                card.classList.add("hover:-translate-y-4");
 
                 card.querySelector(".expanded-content").classList.add("hidden");
                 card.querySelector(".expanded-content").classList.remove(
@@ -941,6 +933,47 @@
                 track.setAttribute("data-index", currentIndex);
                 track.style.transform = `translateX(-${currentIndex * 100}%)`;
             }
+
+            // --- 5. 3D CARD TILT PHYSICS ---
+            const tiltCards = document.querySelectorAll(
+                ".project-card, [data-modal], a.navigable, button.navigable",
+            );
+
+            tiltCards.forEach((card) => {
+                // Apply a default pointer-events none to children so the mouse calculations don't jitter
+                // Done via Tailwind pointer-events-none where needed
+
+                card.addEventListener("mousemove", (e) => {
+                    if (card.classList.contains("project-expanded")) {
+                        card.style.transform = "none";
+                        return;
+                    }
+
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    // Dialed in math for a smooth, high-end tracking tilt
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
+
+                    // translateY(-8px) mimics Tailwind's standard hover:-translate-y-2
+                    card.style.transition = "transform 0.1s ease-out";
+                    card.style.transform = `perspective(1000px) scale(1.02) translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener("mouseleave", () => {
+                    if (card.classList.contains("project-expanded")) return;
+
+                    // Clear inline styles so the bouncy CSS transitions back nicely
+                    card.style.transition =
+                        "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                    card.style.transform = "";
+                });
+            });
         </script>
     </body>
 </html>
