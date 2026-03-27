@@ -13,10 +13,6 @@ import { CTACard } from "./components/CTACard";
 import { BentoCard } from "./components/BentoCard";
 import { ProjectContent } from "./components/ProjectContent";
 
-// ToDo: Change colors
-// ToDo: Overflow for Modals (scrollbar appears)
-// ToDo: Add Profile Picture
-
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches,
@@ -113,7 +109,7 @@ const App = () => {
   }, [focusedIndex, expandedId, isDarkMode]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 bg-pastel-green-100/20 dark:bg-zinc-950 relative overflow-x-hidden p-4 md:p-8 lg:p-12">
+    <div className="p-4 md:p-10 min-h-screen flex flex-col items-center transition-colors duration-500">
       {/* Modals & Overlays */}
       <AnimatePresence>
         {onboarding && !expandedId && (
@@ -121,7 +117,7 @@ const App = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 pointer-events-none"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 pointer-events-none"
           />
         )}
       </AnimatePresence>
@@ -134,17 +130,17 @@ const App = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setExpandedId(null)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-zoom-out"
+              className="absolute inset-0 bg-slate-900/80 backdrop-blur-md cursor-zoom-out"
             />
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-2xl no-scrollbar flex flex-col"
+              className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-3xl no-scrollbar flex flex-col border border-white/20"
             >
               <button
                 onClick={() => setExpandedId(null)}
-                className="absolute top-8 right-8 p-4 bg-zinc-900/10 dark:bg-white/10 hover:bg-zinc-900/20 dark:hover:bg-white/20 rounded-full transition-colors z-50 text-zinc-900 dark:text-white backdrop-blur-md"
+                className="absolute top-8 right-8 p-4 bg-white/10 hover:bg-white/20 rounded-full transition-all z-50 text-white backdrop-blur-md hover:scale-110"
               >
                 <FaTimes size={20} />
               </button>
@@ -153,7 +149,7 @@ const App = () => {
                 <HeroCard
                   isExpanded={true}
                   onClick={() => {}}
-                  className="!w-full !h-auto !scale-100 !border-none !glass"
+                  className="!w-full !h-auto !scale-100 !border-none"
                 />
               )}
 
@@ -169,8 +165,7 @@ const App = () => {
                 <SkillsCard
                   isExpanded={true}
                   onClick={() => {}}
-                  className="!w-full !h-auto !scale-100 !border-none glass"
-                  skillsClasses="aspect-square"
+                  className="!w-full !h-auto !scale-100 !border-none"
                 />
               )}
 
@@ -188,93 +183,98 @@ const App = () => {
         )}
       </AnimatePresence>
 
-      <div className="fixed inset-0 pointer-events-none -z-10 opacity-30 dark:opacity-10 overflow-hidden">
-        <div className="absolute top-0 -left-20 w-[600px] h-[600px] bg-pastel-green-300 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 -right-20 w-[600px] h-[600px] bg-emerald-400 rounded-full blur-[150px]" />
-      </div>
-
-      <div className="w-full flex flex-col gap-4 md:gap-5">
-        {/* Bento Grid Info Section - INSPIRED BY REFERENCE */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:grid-rows-3 md:h-[850px]">
-          {/* Row 1 & 2, Col 1 */}
+      <div className="max-w-5xl w-full flex flex-col gap-6 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[180px]">
+          {/* Row 1 & 2, Col 1-2 */}
           <HeroCard
             isExpanded={false}
             onClick={() => setExpandedId("hero")}
             onboarding={onboarding}
-            className="col-span-1 md:row-span-2 !bg-pastel-green-500 !text-white"
+            className="md:col-span-2 md:row-span-2"
           />
 
-          {/* Row 1, Col 2 */}
-          <SkillsCard
-            isExpanded={false}
-            onClick={() => setExpandedId("skills")}
-            className="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40"
-          />
-
-          {/* Row 1, Col 3 */}
-
-          <ThemeToggle
-            isDarkMode={isDarkMode}
-            onToggle={() => {
-              setIsDarkMode(!isDarkMode);
-              setOnboarding(false);
-            }}
-            className="col-span-1 md:row-span-1"
-          />
-          {/* Row 1 & 2, Col 4 */}
-          <CTACard className="col-span-1 md:row-span-2 !bg-pastel-green-600 !text-white" />
-
-          {/* Row 2, Col 2-3 */}
+          {/* Row 1, Col 3-4 */}
           <AboutCard
             isExpanded={false}
             onClick={() => setExpandedId("about")}
-            className="col-span-1 md:col-span-2 !bg-pastel-green-500 !text-white"
+            className="md:col-span-2"
           />
 
-          {/* Row 3, Col 1 & 2 - Socials */}
-          {SOCIALS.map((social) => (
+          {/* Row 2, Col 3 */}
+          <StatusCard className="md:col-span-1" />
+
+          {/* Row 2, Col 4 */}
+          {SOCIALS.filter(s => s.id.toLowerCase().includes("github")).map((social) => (
             <SocialCard
               key={social.id}
               id={social.id}
               href={social.href}
               icon={social.icon}
               label={social.label}
-              className={`border-none ${social.color} col-span-1 md:row-span-1`}
+              className={`bg-slate-900 dark:bg-slate-800 md:col-span-1`}
             />
           ))}
-          <StatusCard className="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40" />
+
+          {/* Row 3, Col 1-2 */}
+          <SkillsCard
+            isExpanded={false}
+            onClick={() => setExpandedId("skills")}
+            className="md:col-span-2"
+          />
+
           {/* Row 3, Col 3 */}
+          {SOCIALS.filter(s => s.id.toLowerCase().includes("linkedin")).map((social) => (
+            <SocialCard
+              key={social.id}
+              id={social.id}
+              href={social.href}
+              icon={social.icon}
+              label={social.label}
+              className={`bg-blue-600 dark:bg-blue-700 md:col-span-1`}
+            />
+          ))}
 
           {/* Row 3, Col 4 */}
+          <CTACard className="md:col-span-1" />
+
+          {/* Theme Toggle Bento */}
+          <ThemeToggle
+            isDarkMode={isDarkMode}
+            onToggle={() => {
+              setIsDarkMode(!isDarkMode);
+              setOnboarding(false);
+            }}
+            className="md:col-span-1"
+          />
+          
           <BentoCard
             id="location"
             isExpanded={false}
-            className="col-span-1 md:row-span-1 !bg-pastel-green-100 dark:!bg-zinc-800 !p-0"
+            className="md:col-span-1 !p-0 overflow-hidden"
           >
             <img
-              className="object-cover h-full w-full"
-              src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d22a9649-2901-4991-b63a-a9289dcd7da6/dcknahs-9513eb2f-d7ac-45ea-ae4e-58c0fd3c2ff8.png/v1/fill/w_1192,h_670,q_70,strp/blue_feel_by_paperbaguy_dcknahs-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTAwIiwicGF0aCI6Ii9mL2QyMmE5NjQ5LTI5MDEtNDk5MS1iNjNhLWE5Mjg5ZGNkN2RhNi9kY2tuYWhzLTk1MTNlYjJmLWQ3YWMtNDVlYS1hZTRlLTU4YzBmZDNjMmZmOC5wbmciLCJ3aWR0aCI6Ijw9MTYwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.TVZsWBxIqfWyiWHlPHMY5DuuuN_u9iMW0wdTqzMXZuM"
+              className="object-cover h-full w-full group-hover:scale-125 transition-transform duration-1000"
+              src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d22a9649-2901-4991-b63a-a9289dcd7da6/dcknahs-9513eb2f-d7ac-45ea-ae4e-58c0fd3c2ff8.png/v1/fill/w_1192,h_670,q_70,strp/blue_feel_by_paperbaguy_dcknahs-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTAwIiwicGF0aCI6Ii9mL2QyMmE5NjQ5LTI5MDEtNDk5MS1iNjNhLWE5Mjg5ZGNkN2RhNi9kY2tuYWhzLTk1MTNeb2j2Zixk72fC1hZTRlLTU4YzBmZDNjMmZmOC5wbmciLCJ3aWR0aCI6Ijw9MTYwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.TVZsWBxIqfWyiWHlPHMY5DuuuN_u9iMW0wdTqzMXZuM"
+              alt="location"
             />
           </BentoCard>
         </div>
 
-        {/* Flex Wrap Projects Section */}
-        <div className="flex flex-wrap gap-4 md:gap-5 px-2">
+        {/* Projects Section */}
+        <div className="flex flex-wrap gap-6 mt-2">
           {PROJECTS.map((project, idx) => {
-            const isFeatured = idx === 0;
             const id = `project-${project.id}`;
-
-            const className = isFeatured
-              ? "basis-full md:basis-[calc(50%-0.75rem)] min-h-[300px]"
-              : "basis-[calc(50%-0.5rem)] md:basis-[calc(25%-1rem)] aspect-square";
-
+            const aspectClass = idx === 0 ? "w-full md:w-[600px] aspect-video" : 
+                               idx === 1 ? "w-full md:w-[280px] aspect-[9/16]" :
+                               "w-full md:w-[350px] aspect-square flex-grow";
+            
             return (
               <BentoCard
                 id={id}
                 key={project.id}
                 isExpanded={false}
                 onClick={() => setExpandedId(id)}
-                className={`${className} p-0 border-none h-full flex-grow !rounded-[2.5rem]`}
+                className={`${aspectClass} !p-0 border-slate-200 dark:border-slate-800 ${idx % 2 === 0 ? 'hover:rotate-1' : 'hover:-rotate-1'}`}
               >
                 <ProjectContent
                   project={project}
@@ -284,6 +284,22 @@ const App = () => {
               </BentoCard>
             );
           })}
+          
+          <BentoCard
+            id="add-project"
+            isExpanded={false}
+            className="w-full sm:w-[250px] md:w-[300px] aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 !p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner group relative overflow-hidden"
+          >
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0" />
+            <div className="z-10 relative flex flex-col items-center">
+              <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+              </div>
+              <span className="font-bold tracking-wide">Add Project</span>
+            </div>
+          </BentoCard>
         </div>
       </div>
     </div>

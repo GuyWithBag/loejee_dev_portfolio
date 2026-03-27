@@ -6,20 +6,21 @@ export const StatusCard = ({ className = "" }: { className?: string }) => {
     <BentoCard
       id="status"
       isExpanded={false}
-      className={`text-center bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-none ${className}`}
+      className={`bg-white dark:bg-slate-900 !p-6 flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer ${className}`}
     >
-      <div className="p-4 md:p-6 flex flex-col items-center justify-center h-full">
-        <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-[8px] font-black uppercase tracking-[0.3em] mb-3">
-          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-          ACTIVE
-        </div>
-        <h3 className="text-sm font-black uppercase tracking-tighter">
-          {BIO.location}
-        </h3>
-        <p className="text-[8px] text-zinc-400 mt-1 uppercase tracking-[0.3em] font-black opacity-50">
-          GMT +8
-        </p>
+      <div className="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0" />
+      
+      <div className="relative flex h-5 w-5 mb-3 z-10">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 dark:bg-green-500"></span>
+        <span className="relative inline-flex rounded-full h-5 w-5 bg-green-500 border-2 border-white dark:border-slate-900"></span>
       </div>
+      
+      <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 z-10">
+        Building from
+      </p>
+      <p className="font-semibold text-slate-800 dark:text-slate-200 z-10 text-sm">
+        {BIO.location}
+      </p>
     </BentoCard>
   );
 };

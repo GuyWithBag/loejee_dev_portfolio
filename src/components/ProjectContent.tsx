@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FaTimes, FaChevronLeft, FaChevronRight, FaExternalLinkAlt } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaExternalLinkAlt } from "react-icons/fa";
 import type { Project } from "../data/projects";
 
-export const ProjectContent = ({ project, isExpanded, onClose }: { project: Project; isExpanded: boolean; onClose: () => void }) => {
+export const ProjectContent = ({ project, isExpanded }: { project: Project; isExpanded: boolean; onClose: () => void }) => {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
-  const isMobileRatio = project.aspectRatio === "mobile";
 
   const nextImg = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -19,31 +18,40 @@ export const ProjectContent = ({ project, isExpanded, onClose }: { project: Proj
 
   if (!isExpanded) {
     return (
-      <div className="absolute inset-0 group">
-        <motion.img 
-          layout="position"
-          src={project.images[0]} 
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 dark:opacity-40" 
-          alt={project.title}
+      <div className="absolute inset-0 group overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-[1.25] z-0 shadow-inner"
+          style={{ backgroundImage: `url(${project.images[0]})` }}
         />
-        <div className="absolute inset-0 p-4 md:p-6 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/40 to-transparent">
-          <motion.span layout="position" className="text-[10px] font-black uppercase tracking-[0.2em] text-pastel-green-400 mb-1 opacity-80">
-            {project.category}
-          </motion.span>
-          <motion.h2 layout="position" className="text-lg md:text-xl font-black text-white leading-tight uppercase tracking-tighter">
-            {project.title}
-          </motion.h2>
+        <div className="absolute inset-0 bg-slate-900/70 transition-colors duration-300 group-hover:bg-slate-900/60 z-10 border border-slate-700 dark:border-slate-900" />
+        
+        <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
+          <div>
+            <h3 className="text-2xl font-black mb-2 tracking-tighter text-white leading-tight uppercase">
+              {project.title}
+            </h3>
+            <p className="text-slate-200 text-sm font-medium leading-relaxed max-w-sm line-clamp-2">
+              {project.description}
+            </p>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {project.skills.slice(0, 2).map(skill => (
+              <span key={skill} className="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30 shadow-sm text-white">
+                {skill}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col lg:flex-row w-full bg-white dark:bg-zinc-900 overflow-hidden min-h-[500px]">
-      <div className={`lg:w-1/2 relative group bg-black overflow-hidden flex items-center justify-center p-6 md:p-12 ${isMobileRatio ? 'bg-zinc-100 dark:bg-zinc-800' : ''}`}>
+    <div className="flex flex-col lg:flex-row w-full bg-white dark:bg-slate-900 overflow-hidden min-h-[500px]">
+      <div className="lg:w-1/2 relative group bg-slate-100 dark:bg-slate-950 overflow-hidden flex items-center justify-center p-6 md:p-12">
         <motion.div 
           layout
-          className={`relative shadow-2xl overflow-hidden rounded-3xl h-full w-full ${isMobileRatio ? 'aspect-[9/16] max-h-[600px] w-auto mx-auto' : 'aspect-video w-full'}`}
+          className="relative shadow-2xl overflow-hidden rounded-[2.5rem] w-full aspect-video"
         >
           <motion.img 
             initial={{ opacity: 0 }}
@@ -56,11 +64,11 @@ export const ProjectContent = ({ project, isExpanded, onClose }: { project: Proj
         
         {project.images.length > 1 && (
           <>
-            <button onClick={prevImg} className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/40 hover:bg-white/60 dark:bg-black/40 dark:hover:bg-black/60 rounded-full backdrop-blur-md transition-all z-10">
-              <FaChevronLeft className="text-zinc-900 dark:text-white text-xl" />
+            <button onClick={prevImg} className="absolute left-10 top-1/2 -translate-y-1/2 p-4 bg-white/40 hover:bg-white/60 dark:bg-black/40 dark:hover:bg-black/60 rounded-full backdrop-blur-md transition-all z-10 text-slate-900 dark:text-white">
+              <FaChevronLeft size={20} />
             </button>
-            <button onClick={nextImg} className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/40 hover:bg-white/60 dark:bg-black/40 dark:hover:bg-black/60 rounded-full backdrop-blur-md transition-all z-10">
-              <FaChevronRight className="text-zinc-900 dark:text-white text-xl" />
+            <button onClick={nextImg} className="absolute right-10 top-1/2 -translate-y-1/2 p-4 bg-white/40 hover:bg-white/60 dark:bg-black/40 dark:hover:bg-black/60 rounded-full backdrop-blur-md transition-all z-10 text-slate-900 dark:text-white">
+              <FaChevronRight size={20} />
             </button>
           </>
         )}
@@ -68,25 +76,20 @@ export const ProjectContent = ({ project, isExpanded, onClose }: { project: Proj
       <motion.div 
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="lg:w-1/2 p-10 lg:p-20 flex flex-col justify-center"
+        className="lg:w-1/2 p-10 lg:p-16 flex flex-col justify-center"
       >
-        <div className="flex justify-between items-start mb-10">
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-pastel-green-500 mb-2 block">{project.category}</span>
-            <h2 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase">{project.title}</h2>
-          </div>
-          <button onClick={onClose} className="p-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-zinc-400">
-            <FaTimes size={28} />
-          </button>
+        <div className="mb-8">
+          <span className="text-xs font-bold uppercase tracking-widest text-purple-600 dark:text-purple-400 mb-2 block">{project.category}</span>
+          <h2 className="text-4xl font-black leading-tight tracking-tighter text-slate-900 dark:text-slate-50 uppercase">{project.title}</h2>
         </div>
-        <div className="flex flex-wrap gap-2 mb-12">
+        <div className="flex flex-wrap gap-2 mb-8">
           {project.skills.map(skill => (
-            <span key={skill} className="px-4 py-2 bg-pastel-green-100 dark:bg-pastel-green-900/30 text-pastel-green-700 dark:text-pastel-green-300 text-[10px] font-black uppercase tracking-widest rounded-full border border-pastel-green-200 dark:border-pastel-green-800">
+            <span key={skill} className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold rounded-full text-sm border border-slate-200 dark:border-slate-700">
               {skill}
             </span>
           ))}
         </div>
-        <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed mb-14 text-lg md:text-xl font-medium">
+        <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-10 text-lg font-medium">
           {project.description}
         </p>
         {project.link && (
@@ -95,9 +98,9 @@ export const ProjectContent = ({ project, isExpanded, onClose }: { project: Proj
             target="_blank" 
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center justify-center gap-4 w-fit px-12 py-6 bg-zinc-900 dark:bg-pastel-green-500 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded-2xl transition-all shadow-xl hover:scale-[1.05] hover:shadow-pastel-green-500/30"
+            className="flex items-center justify-center gap-3 w-fit px-8 py-4 bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 font-bold uppercase tracking-wider text-sm rounded-full transition-all hover:scale-110 hover:-rotate-3 shadow-3xl"
           >
-            Launch Project <FaExternalLinkAlt size={12} />
+            Visit Website <FaExternalLinkAlt size={14} />
           </a>
         )}
       </motion.div>

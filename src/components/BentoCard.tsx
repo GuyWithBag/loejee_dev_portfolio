@@ -21,9 +21,7 @@ export const BentoCard = ({
     tabIndex={tabIndex}
     transition={{ type: "spring", stiffness: 250, damping: 25 }}
     onClick={onClick}
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-    className={`bento-card relative flex flex-col overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ${onClick ? "cursor-pointer" : ""} ${className} z-10`}
+    className={`bento-card group relative flex flex-col ${onClick ? "cursor-pointer" : ""} ${className} z-10`}
   >
     {children}
   </motion.div>

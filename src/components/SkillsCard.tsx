@@ -6,41 +6,43 @@ export const SkillsCard = ({
   isExpanded,
   onClick,
   className = "",
-  skillsClasses,
 }: {
   isExpanded: boolean;
   onClick: () => void;
   className?: string;
   skillsClasses?: string;
 }) => {
+  const colorClasses = [
+    "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800",
+    "bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-800",
+    "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800",
+    "bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 border-teal-200 dark:border-teal-800",
+    "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800",
+    "bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800",
+  ];
+
   return (
     <BentoCard
       id="skills"
       isExpanded={isExpanded}
       onClick={onClick}
-      className={`border border-zinc-100 dark:border-zinc-800 ${className}`}
+      className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-full !p-8 flex flex-col justify-center relative overflow-hidden group cursor-pointer ${className}`}
     >
-      <div className="p-6 h-full flex flex-col">
-        <h2 className="text-[9px] font-black mb-4 flex items-center gap-3 uppercase tracking-[0.3em] text-pastel-green-600">
-          <span className="w-4 h-0.5 bg-pastel-green-500 rounded-full"></span>
-          Stack
+      <div className="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0" />
+      
+      <div className="z-10 relative">
+        <h2 className="text-sm font-bold mb-4 text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+          Tech Stack
         </h2>
-        <div
-          className={`grid ${isExpanded ? "grid-cols-3 md:grid-cols-6" : "grid-cols-2"} gap-3 flex-1`}
-        >
-          {SKILLS.slice(0, isExpanded ? 12 : 4).map(({ name, Icon }) => (
-            <motion.div
+        <div className="flex flex-wrap gap-2">
+          {SKILLS.slice(0, isExpanded ? 20 : 6).map(({ name }, index) => (
+            <motion.span
               layout
               key={name}
-              className={`relative flex flex-col items-center justify-center bg-zinc-50/20 dark:bg-zinc-800/20  rounded-2xl border border-zinc-100 dark:border-zinc-800 group hover:border-pastel-green-300 transition-all overflow-hidden ${skillsClasses}`}
+              className={`px-4 py-2 font-semibold rounded-full text-sm transition-all hover:scale-110 ${index % 2 === 0 ? "hover:rotate-3" : "hover:-rotate-3"} cursor-default shadow border ${colorClasses[index % colorClasses.length]}`}
             >
-              <motion.div className="flex flex-col items-center justify-center h-full w-full transition-transform duration-300 group-hover:-translate-y-2">
-                <Icon className="text-xl md:text-3xl text-zinc-400 group-hover:text-pastel-green-500 transition-colors" />
-                <span className="text-[7px] font-black uppercase tracking-widest text-center mt-2 opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-2">
-                  {name}
-                </span>
-              </motion.div>
-            </motion.div>
+              {name}
+            </motion.span>
           ))}
         </div>
       </div>

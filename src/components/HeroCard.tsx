@@ -18,60 +18,62 @@ export const HeroCard = ({
       id="hero"
       isExpanded={isExpanded}
       onClick={onClick}
-      className={`${className} flex-col items-center text-center !bg-pastel-green-500/50 border-none relative h-full ${onboarding ? "z-50 ring-4 ring-pastel-green-400 scale-[1.05]" : ""}`}
+      className={`${className} bg-purple-500 dark:bg-purple-600 !p-8 flex-col justify-end border-none ${onboarding ? "z-50 ring-4 ring-purple-400" : ""}`}
     >
-      <div className="p-8 flex flex-col items-center h-full justify-center min-h-[400px]">
-        <motion.div layout className="relative mb-6">
+      <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl" />
+      <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0" />
+
+      <div className="z-10 relative flex flex-col justify-end h-full">
+        {!isExpanded && (
           <motion.div
             layout
-            className="absolute -inset-4 bg-pastel-green-400/20 rounded-full blur-2xl"
-          />
-          <motion.img
-            src={BIO.pfp}
-            alt={BIO.name}
-            className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-2xl z-10 relative border-4 border-white/50 dark:border-zinc-800/50"
-          />
-        </motion.div>
+            className="w-24 h-24 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/50 dark:border-white/20 shadow-inner flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src={BIO.pfp}
+              alt={BIO.name}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        )}
+
         <motion.h1
           layout
-          className="text-xl md:text-3xl  leading-tight mb-2 z-10 uppercase tracking-tighter"
+          className="text-4xl font-bold text-white leading-tight tracking-tight mb-2"
         >
-          {BIO.name}
+          Hi, I'm {BIO.name.split(" ")[0]}. <br />
+          <span className="opacity-80 text-2xl font-medium tracking-normal">
+            {BIO.role}
+          </span>
         </motion.h1>
-        <motion.p
-          layout
-          className="text-pastel-green-600 dark:text-pastel-green-400  z-10 text-[10px] md:text-xs uppercase tracking-[0.4em]"
-        >
-          {BIO.role}
-        </motion.p>
 
-        {onboarding && (
+        {onboarding && !isExpanded && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 p-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md rounded-2xl shadow-xl z-20"
+            className="mt-4 p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl z-20 text-white"
           >
-            <p className="text-[10px]  uppercase tracking-[0.2em] mb-4">
+            <p className="text-[10px] uppercase tracking-[0.2em] mb-4 opacity-80">
               {UI_STRINGS.onboardingTitle}
             </p>
-            <div className="flex flex-col items-center gap-2 text-zinc-900 dark:text-white">
+            <div className="flex flex-col items-center gap-2">
               <div className="flex gap-2">
-                <span className="w-8 h-8 flex items-center justify-center border-2 border-zinc-900 dark:border-white rounded-lg font-bold">
+                <span className="w-8 h-8 flex items-center justify-center border-2 border-white/50 rounded-lg font-bold">
                   W
                 </span>
               </div>
               <div className="flex gap-2">
-                <span className="w-8 h-8 flex items-center justify-center border-2 border-zinc-900 dark:border-white rounded-lg font-bold">
+                <span className="w-8 h-8 flex items-center justify-center border-2 border-white/50 rounded-lg font-bold">
                   A
                 </span>
-                <span className="w-8 h-8 flex items-center justify-center border-2 border-zinc-900 dark:border-white rounded-lg font-bold">
+                <span className="w-8 h-8 flex items-center justify-center border-2 border-white/50 rounded-lg font-bold">
                   S
                 </span>
-                <span className="w-8 h-8 flex items-center justify-center border-2 border-zinc-900 dark:border-white rounded-lg font-bold">
+                <span className="w-8 h-8 flex items-center justify-center border-2 border-white/50 rounded-lg font-bold">
                   D
                 </span>
               </div>
-              <div className="mt-2 text-[8px] opacity-60 text-zinc-900 dark:text-white">
+              <div className="mt-2 text-[8px] opacity-60">
                 {UI_STRINGS.onboardingHint}
               </div>
             </div>
@@ -80,7 +82,7 @@ export const HeroCard = ({
                 e.stopPropagation();
                 onClick();
               }}
-              className="mt-6 px-6 py-2 bg-pastel-green-500 text-white rounded-full text-[10px]  uppercase tracking-widest hover:scale-105 transition-transform"
+              className="mt-6 w-full py-2 bg-white text-purple-600 rounded-full text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-transform"
             >
               {UI_STRINGS.getStarted}
             </button>
@@ -94,20 +96,20 @@ export const HeroCard = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="px-10 pb-16 text-sm  text-left w-full max-w-4xl mx-auto border-t border-pastel-green-200/50 dark:border-zinc-800/50 pt-12 "
+            className="px-2 pb-16 text-sm text-left w-full max-w-4xl mx-auto border-t border-white/20 pt-12 text-white z-10"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div className="flex-1">
-                <h3 className=" text-white mb-4 uppercase tracking-[0.3em] text-[10px]">
+                <h3 className="text-white/60 mb-4 uppercase tracking-[0.3em] text-[10px] font-bold">
                   Education
                 </h3>
                 <p className="font-bold text-lg">{BIO.education.degree}</p>
-                <p className="opacity-60 uppercase text-[9px]  tracking-widest mt-1">
+                <p className="opacity-60 uppercase text-[9px] tracking-widest mt-1">
                   {BIO.education.school}
                 </p>
               </div>
               <div className="flex-1">
-                <h3 className=" text-white mb-4 uppercase tracking-[0.3em] text-[10px]">
+                <h3 className="text-white/60 mb-4 uppercase tracking-[0.3em] text-[10px] font-bold">
                   Philosophy
                 </h3>
                 <p className="leading-relaxed italic text-base font-medium">
@@ -116,11 +118,11 @@ export const HeroCard = ({
               </div>
             </div>
 
-            <div className="mt-12 pt-12 border-t border-pastel-green-200/50 dark:border-zinc-800/50">
-              <h3 className=" text-white mb-8 uppercase tracking-[0.3em] text-[10px]">
+            <div className="mt-12 pt-12 border-t border-white/20">
+              <h3 className="text-white/60 mb-8 uppercase tracking-[0.3em] text-[10px] font-bold">
                 About Me
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12  text-lg font-medium">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg font-medium leading-relaxed">
                 {BIO.about.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}

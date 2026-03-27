@@ -3,6 +3,8 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
+    --shadow-3xl: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+    
     --color-pastel-green-50: #f0fdf4;
     --color-pastel-green-100: #dcfce7;
     --color-pastel-green-200: #bbf7d0;
@@ -18,19 +20,32 @@
 
 @layer base {
     body {
-        @apply bg-pastel-green-50 text-pastel-green-950 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300;
+        @apply transition-colors duration-500 font-sans text-slate-800 dark:text-slate-100;
+        background-color: #f8fafc;
+        background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+
+    .dark body {
+        background-color: #020617;
+        background-image: radial-gradient(#334155 1px, transparent 1px);
+        background-size: 20px 20px;
     }
 }
 
 /* Custom bento card styling */
 .bento-card {
-    @apply rounded-3xl p-6 shadow-sm transition-all duration-500 outline-none;
+    @apply rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-out outline-none border border-slate-200 dark:border-slate-800 overflow-hidden;
+}
+
+.bento-card:hover {
+    @apply scale-110 -translate-y-4 shadow-3xl;
 }
 
 .bento-card:focus-visible {
-    @apply ring-4 ring-pastel-green-400 ring-offset-4 dark:ring-offset-zinc-950 scale-[1.02] shadow-xl;
+    @apply ring-4 ring-purple-400 ring-offset-4 dark:ring-offset-slate-950 scale-110 -translate-y-4 shadow-3xl;
 }
 
 .glass {
-    @apply bg-white/20 dark:bg-zinc-900/20 backdrop-blur-2xl border border-white/20 dark:border-zinc-800/20 shadow-xl;
+    @apply bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/50 dark:border-white/20 shadow-inner;
 }
