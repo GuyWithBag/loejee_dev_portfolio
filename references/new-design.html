@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>3D Bento Portfolio | Final</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/@phosphor-icons/web"></script>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        boxShadow: {
+                            "3xl": "0 35px 60px -15px rgba(0, 0, 0, 0.5)",
+                            glow: "0 0 40px -10px rgba(168, 85, 247, 0.5)",
+                        },
+                        transitionTimingFunction: {
+                            bouncy: "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                transition: background-color 0.5s ease;
+                overflow-x: hidden;
+            }
+            .light body {
+                background-color: #f8fafc;
+                background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+            .dark body {
+                background-color: #020617;
+                background-image: radial-gradient(#334155 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .navigable:focus-visible {
+                outline: none;
+                box-shadow:
+                    0 0 0 4px #a855f7,
+                    0 35px 60px -15px rgba(0, 0, 0, 0.5) !important;
+                transform: scale(1.05) translateY(-8px);
+                z-index: 40;
+            }
+
+            .onboarding-active .blur-target {
+                filter: blur(8px) grayscale(50%);
+                opacity: 0.6;
+                pointer-events: none;
+                transition: all 0.8s ease;
+            }
+            .onboarding-active #hero-card {
+                z-index: 50;
+                box-shadow:
+                    0 0 0 4px #a855f7,
+                    0 0 60px 0 rgba(168, 85, 247, 0.4);
+                transform: scale(1.05);
+                filter: none !important;
+                opacity: 1 !important;
+            }
+
+            .project-card {
+                transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.05);
+            }
+            .project-expanded {
+                width: 100% !important;
+                flex-basis: 100% !important;
+                height: 450px !important;
+                flex-direction: row !important;
+                cursor: default;
+            }
+            @media (max-width: 768px) {
+                .project-expanded {
+                    flex-direction: column !important;
+                    height: auto !important;
+                    min-height: 600px;
+                }
+            }
+        </style>
+    </head>
+    <body
+        class="p-4 md:p-10 min-h-screen flex flex-col items-center font-sans text-slate-800 dark:text-slate-100 onboarding-active"
+    >
+        <button
+            onclick="document.documentElement.classList.toggle('dark')"
+            class="fixed top-6 right-6 w-12 h-12 flex items-center justify-center bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-full transition-all duration-300 hover:scale-110 hover:rotate-12 shadow-2xl z-[60]"
+        >
+            <i class="ph ph-moon text-xl dark:hidden"></i>
+            <i class="ph ph-sun text-xl hidden dark:block"></i>
+        </button>
+
+        <div
+            id="onboarding-tooltip"
+            class="fixed top-24 left-1/2 -translate-x-1/2 bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-6 py-3 rounded-full backdrop-blur-md font-bold text-sm z-[60] flex items-center gap-3 animate-bounce shadow-2xl border border-white/10"
+        >
+            <div class="flex gap-1">
+                <kbd
+                    class="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
+                    >W</kbd
+                >
+                <kbd
+                    class="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
+                    >A</kbd
+                >
+                <kbd
+                    class="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
+                    >S</kbd
+                >
+                <kbd
+                    class="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
+                    >D</kbd
+                >
+            </div>
+            <span>or Arrows to navigate. Enter to open.</span>
+        </div>
+
+        <div class="max-w-5xl w-full flex flex-col gap-6 mt-10 relative z-10">
+            <div
+                class="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[180px] w-full"
+            >
+                <div
+                    id="hero-card"
+                    tabindex="0"
+                    data-modal="hero"
+                    class="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-500 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.03] hover:-translate-y-2 hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-400 dark:border-purple-500"
+                >
+                    <div
+                        class="w-24 h-24 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/50 dark:border-white/20 shadow-inner z-10"
+                    ></div>
+                    <h1
+                        class="text-4xl font-bold text-white z-10 leading-tight tracking-tight"
+                    >
+                        Hi, I'm a Developer & UI Designer.
+                    </h1>
+
+                    <div
+                        class="absolute -bottom-10 -right-10 w-64 h-64 bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl"
+                    ></div>
+                    <div
+                        class="absolute -top-10 -left-10 w-32 h-32 bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0"
+                    ></div>
+                </div>
+
+                <div
+                    tabindex="0"
+                    data-modal="about"
+                    class="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.03] hover:-translate-y-2 hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+                >
+                    <div
+                        class="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 group-hover:rotate-[60deg] transition-transform duration-700 z-0 shadow-inner"
+                    ></div>
+
+                    <div class="z-10 relative">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i
+                                class="ph-fill ph-user-circle text-2xl text-slate-400"
+                            ></i>
+                            <h2
+                                class="text-xl font-bold text-slate-900 dark:text-slate-50"
+                            >
+                                About Me
+                            </h2>
+                        </div>
+                        <p
+                            class="text-slate-500 dark:text-slate-400 leading-relaxed text-sm"
+                        >
+                            I build clean, user-centric interfaces. Focused on
+                            bridging beautiful design and robust engineering...
+                        </p>
+                        <span
+                            class="text-purple-500 text-xs font-bold mt-2 inline-block group-hover:translate-x-1 transition-transform"
+                            >Click to read more -></span
+                        >
+                    </div>
+                </div>
+
+                <div
+                    tabindex="0"
+                    data-modal="location"
+                    class="navigable blur-target md:col-span-1 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.05] hover:-translate-y-2 hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+                >
+                    <div
+                        class="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0"
+                    ></div>
+
+                    <div class="relative flex h-6 w-6 mb-3 z-10">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
+                        ></span>
+                        <span
+                            class="relative inline-flex rounded-full h-6 w-6 bg-green-500 border-2 border-white dark:border-slate-900"
+                        ></span>
+                    </div>
+                    <p
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 z-10"
+                    >
+                        Building from
+                    </p>
+                    <p
+                        class="font-semibold text-slate-800 dark:text-slate-200 z-10"
+                    >
+                        Carmen, Davao Region
+                    </p>
+                </div>
+
+                <a
+                    href="#"
+                    tabindex="0"
+                    class="navigable blur-target md:col-span-1 bg-slate-900 dark:bg-slate-800 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-110 hover:-translate-y-4 hover:-rotate-3 hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-slate-700"
+                >
+                    <div
+                        class="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"
+                    ></div>
+
+                    <i
+                        class="ph-fill ph-github-logo text-5xl mb-2 z-10 group-hover:scale-110 transition-transform"
+                    ></i>
+                    <span class="font-bold z-10">GitHub</span>
+                </a>
+
+                <div
+                    tabindex="0"
+                    data-modal="skills"
+                    class="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-[1.03] hover:-translate-y-2 hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+                >
+                    <div
+                        class="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0"
+                    ></div>
+
+                    <div class="z-10 relative">
+                        <h2
+                            class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider flex items-center gap-2"
+                        >
+                            <i class="ph-fill ph-lightning"></i> Core Skills
+                        </h2>
+                        <div class="flex flex-wrap gap-3">
+                            <span
+                                class="px-4 py-2 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-200 dark:border-blue-800 transition-transform group-hover:rotate-2"
+                                ><i class="ph-fill ph-atom text-lg"></i>
+                                ReactJS</span
+                            >
+                            <span
+                                class="px-4 py-2 bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-sky-200 dark:border-sky-800 transition-transform group-hover:-rotate-2"
+                                ><i
+                                    class="ph-fill ph-device-mobile text-lg"
+                                ></i>
+                                Flutter</span
+                            >
+                            <span
+                                class="px-4 py-2 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-purple-200 dark:border-purple-800 transition-transform group-hover:rotate-2"
+                                ><i
+                                    class="ph-fill ph-paint-brush-broad text-lg"
+                                ></i>
+                                UI/UX Design</span
+                            >
+                            <span
+                                class="px-4 py-2 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-teal-200 dark:border-teal-800 transition-transform group-hover:-rotate-1"
+                                ><i class="ph-fill ph-wind text-lg"></i>
+                                Tailwind</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <a
+                    href="#"
+                    tabindex="0"
+                    class="navigable blur-target md:col-span-1 bg-blue-600 dark:bg-blue-700 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-110 hover:-translate-y-4 hover:rotate-3 hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-blue-600"
+                >
+                    <div
+                        class="absolute -left-6 -top-6 w-24 h-24 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0"
+                    ></div>
+
+                    <i
+                        class="ph-fill ph-linkedin-logo text-5xl mb-2 z-10 group-hover:scale-110 transition-transform"
+                    ></i>
+                    <span class="font-bold z-10">LinkedIn</span>
+                </a>
+
+                <button
+                    tabindex="0"
+                    class="navigable blur-target md:col-span-1 bg-yellow-400 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:scale-110 hover:-translate-y-4 hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-300 dark:border-yellow-600"
+                >
+                    <div
+                        class="absolute right-0 bottom-0 w-16 h-16 bg-white/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg"
+                    ></div>
+
+                    <div
+                        class="z-10 relative flex flex-col items-center w-full"
+                    >
+                        <h2
+                            class="text-xl font-black text-slate-900 mb-3 tracking-tighter"
+                        >
+                            Let's Talk!
+                        </h2>
+                        <div
+                            class="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 shadow-xl"
+                        >
+                            Email Me
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <div
+                class="flex flex-wrap items-start justify-between gap-6 mt-6 blur-target pb-20 w-full"
+                id="projects-container"
+            >
+                <div
+                    tabindex="0"
+                    class="navigable project-card grow basis-[400px] aspect-video rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border border-slate-200 dark:border-slate-800 flex flex-col"
+                    onclick="toggleProject(this)"
+                >
+                    <div
+                        class="expanded-content hidden w-full md:w-1/2 p-8 md:p-12 flex-col justify-between h-full bg-slate-900 dark:bg-slate-950 z-30 overflow-y-auto"
+                    >
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <h3
+                                    class="text-4xl font-black tracking-tight text-white"
+                                >
+                                    Note4yourself
+                                </h3>
+                                <button
+                                    class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                                    onclick="
+                                        event.stopPropagation();
+                                        toggleProject(
+                                            this.closest('.project-card'),
+                                        );
+                                    "
+                                >
+                                    <i class="ph ph-x text-xl"></i>
+                                </button>
+                            </div>
+                            <p
+                                class="text-slate-300 font-medium leading-relaxed text-lg mb-6"
+                            >
+                                A specialized messaging-style interface designed
+                                for quick, self-directed note-taking. Built
+                                because sometimes the fastest way to save a
+                                thought is to text it to yourself.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span
+                                    class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-bold border border-blue-500/30 flex items-center gap-1"
+                                    ><i class="ph-fill ph-atom"></i> React</span
+                                >
+                                <span
+                                    class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-bold border border-purple-500/30 flex items-center gap-1"
+                                    ><i class="ph-fill ph-paint-brush"></i>
+                                    UI/UX</span
+                                >
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <button
+                                class="flex-1 bg-white text-slate-900 py-3 rounded-full font-bold transition-transform hover:scale-105 flex items-center justify-center gap-2"
+                            >
+                                <i class="ph-fill ph-rocket-launch text-xl"></i>
+                                Live App
+                            </button>
+                            <button
+                                class="w-12 h-12 bg-slate-800 text-white rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors"
+                            >
+                                <i class="ph-fill ph-github-logo text-2xl"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden"
+                    >
+                        <div
+                            class="absolute inset-0 bg-slate-900/50 z-10 default-overlay transition-opacity duration-300"
+                        ></div>
+                        <div
+                            class="carousel-track w-full h-full flex transition-transform duration-500"
+                            data-index="0"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=2070&auto=format&fit=crop"
+                                class="w-full h-full object-cover shrink-0"
+                                alt="App UI 1"
+                            />
+                            <img
+                                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+                                class="w-full h-full object-cover shrink-0"
+                                alt="App UI 2"
+                            />
+                        </div>
+                        <div
+                            class="carousel-controls hidden absolute inset-0 z-20 pointer-events-none p-4 flex justify-between items-center"
+                        >
+                            <button
+                                class="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                                onclick="
+                                    event.stopPropagation();
+                                    moveCarousel(this, -1);
+                                "
+                            >
+                                <i class="ph-bold ph-caret-left"></i>
+                            </button>
+                            <button
+                                class="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                                onclick="
+                                    event.stopPropagation();
+                                    moveCarousel(this, 1);
+                                "
+                            >
+                                <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+                        <div
+                            class="default-content absolute inset-0 p-8 flex flex-col justify-between z-20 pointer-events-none"
+                        >
+                            <div>
+                                <h3
+                                    class="text-3xl font-black mb-2 tracking-tighter shadow-sm"
+                                >
+                                    Note4yourself
+                                </h3>
+                                <p class="text-slate-200 font-medium">
+                                    Click to expand details.
+                                </p>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-4 py-2 bg-white/20 rounded-full text-sm font-bold backdrop-blur-md border border-white/30"
+                                    >React</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    tabindex="0"
+                    class="navigable project-card grow basis-[250px] aspect-square md:aspect-[9/16] rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border border-slate-200 dark:border-slate-800 flex flex-col"
+                    onclick="toggleProject(this)"
+                >
+                    <div
+                        class="expanded-content hidden w-full md:w-1/2 p-8 md:p-12 flex-col justify-between h-full bg-slate-900 dark:bg-slate-950 z-30 overflow-y-auto"
+                    >
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <h3
+                                    class="text-4xl font-black tracking-tight text-white"
+                                >
+                                    Soundboard
+                                </h3>
+                                <button
+                                    class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                                    onclick="
+                                        event.stopPropagation();
+                                        toggleProject(
+                                            this.closest('.project-card'),
+                                        );
+                                    "
+                                >
+                                    <i class="ph ph-x text-xl"></i>
+                                </button>
+                            </div>
+                            <p
+                                class="text-slate-300 font-medium leading-relaxed text-lg mb-6"
+                            >
+                                A highly customizable alternative to premium
+                                options. Built for mobile-first interactions
+                                with custom sound uploading.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span
+                                    class="px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full text-sm font-bold border border-sky-500/30 flex items-center gap-1"
+                                    ><i class="ph-fill ph-device-mobile"></i>
+                                    Flutter</span
+                                >
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <button
+                                class="w-12 h-12 bg-slate-800 text-white rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors"
+                            >
+                                <i class="ph-fill ph-github-logo text-2xl"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden"
+                    >
+                        <div
+                            class="absolute inset-0 bg-slate-900/60 z-10 default-overlay transition-opacity duration-300"
+                        ></div>
+                        <div
+                            class="carousel-track w-full h-full flex transition-transform duration-500"
+                            data-index="0"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+                                class="w-full h-full object-cover shrink-0"
+                                alt="Soundboard UI 1"
+                            />
+                            <img
+                                src="https://images.unsplash.com/photo-1516280440502-6c245050f4a4?q=80&w=2070&auto=format&fit=crop"
+                                class="w-full h-full object-cover shrink-0"
+                                alt="Soundboard UI 2"
+                            />
+                        </div>
+                        <div
+                            class="carousel-controls hidden absolute inset-0 z-20 pointer-events-none p-4 flex justify-between items-center"
+                        >
+                            <button
+                                class="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                                onclick="
+                                    event.stopPropagation();
+                                    moveCarousel(this, -1);
+                                "
+                            >
+                                <i class="ph-bold ph-caret-left"></i>
+                            </button>
+                            <button
+                                class="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                                onclick="
+                                    event.stopPropagation();
+                                    moveCarousel(this, 1);
+                                "
+                            >
+                                <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+                        <div
+                            class="default-content absolute inset-0 p-8 flex flex-col justify-between z-20 pointer-events-none"
+                        >
+                            <div>
+                                <h3
+                                    class="text-2xl font-black mb-2 leading-tight tracking-tighter"
+                                >
+                                    Soundboard
+                                </h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30"
+                                    >Flutter</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    tabindex="0"
+                    class="navigable project-card grow basis-[300px] aspect-square rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border border-slate-200 dark:border-slate-800 flex flex-col"
+                    onclick="toggleProject(this)"
+                >
+                    <div
+                        class="expanded-content hidden w-full md:w-1/2 p-8 md:p-12 flex-col justify-between h-full bg-slate-900 dark:bg-slate-950 z-30 overflow-y-auto"
+                    >
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <h3
+                                    class="text-4xl font-black tracking-tight text-white"
+                                >
+                                    Capstone
+                                </h3>
+                                <button
+                                    class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                                    onclick="
+                                        event.stopPropagation();
+                                        toggleProject(
+                                            this.closest('.project-card'),
+                                        );
+                                    "
+                                >
+                                    <i class="ph ph-x text-xl"></i>
+                                </button>
+                            </div>
+                            <p
+                                class="text-slate-300 font-medium leading-relaxed text-lg mb-6"
+                            >
+                                Comprehensive system architecture and UX
+                                research documentation for my final year
+                                project.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span
+                                    class="px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-sm font-bold border border-rose-500/30 flex items-center gap-1"
+                                    ><i class="ph-fill ph-book-open"></i>
+                                    UX</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden"
+                    >
+                        <div
+                            class="absolute inset-0 bg-slate-900/60 z-10 default-overlay transition-opacity duration-300"
+                        ></div>
+                        <div
+                            class="carousel-track w-full h-full flex transition-transform duration-500"
+                            data-index="0"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
+                                class="w-full h-full object-cover shrink-0"
+                                alt="Docs 1"
+                            />
+                        </div>
+                        <div
+                            class="default-content absolute inset-0 p-8 flex flex-col justify-between z-20 pointer-events-none"
+                        >
+                            <div>
+                                <h3
+                                    class="text-2xl font-black mb-2 tracking-tighter leading-tight"
+                                >
+                                    Capstone
+                                </h3>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30"
+                                    >Research</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    tabindex="0"
+                    class="navigable grow basis-[200px] max-w-[400px] aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:scale-105 hover:-translate-y-4 hover:rotate-1 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                >
+                    <div
+                        class="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0"
+                    ></div>
+
+                    <div class="z-10 relative flex flex-col items-center">
+                        <div
+                            class="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl"
+                        >
+                            <i
+                                class="ph-bold ph-plus text-xl text-slate-500 dark:text-slate-400"
+                            ></i>
+                        </div>
+                        <span class="font-bold tracking-wide">Add Project</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            id="info-modal"
+            class="fixed inset-0 z-[100] hidden items-center justify-center p-4"
+        >
+            <div
+                class="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm transition-opacity"
+                onclick="closeModal()"
+            ></div>
+            <div
+                id="modal-panel"
+                class="relative w-full max-w-2xl rounded-[2.5rem] p-10 shadow-3xl transform scale-95 opacity-0 transition-all duration-300 border overflow-hidden"
+            >
+                <button
+                    onclick="closeModal()"
+                    class="absolute top-6 right-6 w-12 h-12 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20"
+                >
+                    <i class="ph-bold ph-x text-2xl"></i>
+                </button>
+                <div id="modal-body" class="relative z-10 h-full w-full"></div>
+            </div>
+        </div>
+
+        <script>
+            // --- 1. KEYBOARD NAV & ONBOARDING ---
+            const navigables = Array.from(
+                document.querySelectorAll(".navigable"),
+            );
+            let currentIndex = 0;
+            let isOnboarding = true;
+
+            function endOnboarding() {
+                if (!isOnboarding) return;
+                isOnboarding = false;
+                document.body.classList.remove("onboarding-active");
+                const tooltip = document.getElementById("onboarding-tooltip");
+                if (tooltip) {
+                    tooltip.classList.add("opacity-0", "-translate-y-4");
+                    setTimeout(() => tooltip.remove(), 300);
+                }
+                if (navigables[currentIndex]) navigables[currentIndex].focus();
+            }
+
+            document.addEventListener("keydown", (e) => {
+                if (
+                    !document
+                        .getElementById("info-modal")
+                        .classList.contains("hidden")
+                ) {
+                    if (e.key === "Escape") closeModal();
+                    return;
+                }
+                const key = e.key.toLowerCase();
+                const validKeys = [
+                    "w",
+                    "a",
+                    "s",
+                    "d",
+                    "arrowup",
+                    "arrowdown",
+                    "arrowleft",
+                    "arrowright",
+                    "enter",
+                    " ",
+                ];
+
+                if (validKeys.includes(key)) {
+                    e.preventDefault();
+                    endOnboarding();
+                }
+                if (key === "enter" || key === " ") {
+                    navigables[currentIndex].click();
+                    return;
+                }
+                if (key === "d" || key === "arrowright") {
+                    currentIndex = (currentIndex + 1) % navigables.length;
+                } else if (key === "a" || key === "arrowleft") {
+                    currentIndex =
+                        (currentIndex - 1 + navigables.length) %
+                        navigables.length;
+                } else if (key === "s" || key === "arrowdown") {
+                    currentIndex = Math.min(
+                        currentIndex + 2,
+                        navigables.length - 1,
+                    );
+                } else if (key === "w" || key === "arrowup") {
+                    currentIndex = Math.max(currentIndex - 2, 0);
+                }
+                if (navigables[currentIndex]) navigables[currentIndex].focus();
+            });
+
+            document.addEventListener("click", endOnboarding, { once: true });
+
+            // --- 2. THEMED MODAL LOGIC (Shapes Injected Here!) ---
+            const modal = document.getElementById("info-modal");
+            const modalPanel = document.getElementById("modal-panel");
+            const modalBody = document.getElementById("modal-body");
+
+            const modalData = {
+                hero: {
+                    theme: "bg-purple-500 dark:bg-purple-600 text-white border-purple-400 dark:border-purple-500",
+                    content: `
+                    <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-white/20 rounded-full z-0"></div>
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-purple-400/50 rounded-full z-0"></div>
+
+                    <div class="relative z-10">
+                        <i class="ph-fill ph-hand-waving text-6xl mb-6 inline-block animate-bounce"></i>
+                        <h2 class="text-4xl font-black mb-4">Hello World!</h2>
+                        <p class="text-white/90 text-lg mb-4">I'm a passionate developer focused on the intersection of brilliant engineering and gorgeous UI design.</p>
+                        <p class="text-white/90 text-lg">Use the grid behind this window to explore my stack, my current location, and my selected projects.</p>
+                    </div>
+                `,
+                },
+                about: {
+                    theme: "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800",
+                    content: `
+                    <div class="absolute -right-10 -top-10 w-64 h-64 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-[30deg] z-0"></div>
+
+                    <div class="relative z-10">
+                        <i class="ph-fill ph-user-circle text-6xl text-blue-500 mb-6 inline-block"></i>
+                        <h2 class="text-4xl font-black mb-4">About Me</h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-lg mb-4">I build clean, user-centric interfaces. Currently focused on bridging the gap between beautiful design and robust engineering to create experiences that actually feel good to use.</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-lg">When I'm not coding, I'm usually obsessing over UI micro-interactions or planning my next project architecture.</p>
+                    </div>
+                `,
+                },
+                location: {
+                    theme: "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800",
+                    content: `
+                    <div class="absolute -bottom-10 left-0 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-6 z-0"></div>
+
+                    <div class="relative z-10">
+                        <i class="ph-fill ph-map-pin text-6xl text-green-500 mb-6 inline-block"></i>
+                        <h2 class="text-4xl font-black mb-4">Current Location</h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-lg">Currently building from <strong class="text-slate-900 dark:text-white">Carmen, Davao Region</strong>.</p>
+                        <div class="mt-8 w-full h-48 bg-white dark:bg-slate-900 rounded-3xl flex items-center justify-center border-2 border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-slate-500 dark:text-slate-400 font-bold flex flex-col items-center gap-2"><i class="ph ph-globe-hemisphere-east text-4xl"></i> Remote Work Ready</span>
+                        </div>
+                    </div>
+                `,
+                },
+                skills: {
+                    theme: "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800",
+                    content: `
+                    <div class="absolute right-[-10%] bottom-[-20%] w-64 h-96 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 z-0"></div>
+
+                    <div class="relative z-10">
+                        <i class="ph-fill ph-lightning text-6xl text-yellow-500 mb-6 inline-block"></i>
+                        <h2 class="text-4xl font-black mb-6">Deep Dive: Tech Stack</h2>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                                <i class="ph-fill ph-atom text-4xl text-blue-500"></i>
+                                <div><strong class="block text-xl text-slate-800 dark:text-slate-100">ReactJS</strong><span class="text-sm text-slate-500">Component architecture, Hooks, Context API</span></div>
+                            </li>
+                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                                <i class="ph-fill ph-device-mobile text-4xl text-sky-500"></i>
+                                <div><strong class="block text-xl text-slate-800 dark:text-slate-100">Flutter</strong><span class="text-sm text-slate-500">Cross-platform mobile apps, State Management</span></div>
+                            </li>
+                            <li class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                                <i class="ph-fill ph-wind text-4xl text-teal-500"></i>
+                                <div><strong class="block text-xl text-slate-800 dark:text-slate-100">Tailwind CSS</strong><span class="text-sm text-slate-500">Utility-first styling, Design Systems</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                `,
+                },
+            };
+
+            document.querySelectorAll("[data-modal]").forEach((card) => {
+                card.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const type = card.getAttribute("data-modal");
+                    const data = modalData[type];
+
+                    modalPanel.className = `relative w-full max-w-2xl rounded-[2.5rem] p-10 shadow-3xl transform scale-95 opacity-0 transition-all duration-300 border overflow-hidden ${data.theme}`;
+                    modalBody.innerHTML = data.content;
+
+                    modal.classList.remove("hidden");
+                    modal.classList.add("flex");
+                    setTimeout(() => {
+                        modalPanel.classList.remove("scale-95", "opacity-0");
+                        modalPanel.classList.add("scale-100", "opacity-100");
+                    }, 10);
+                });
+            });
+
+            function closeModal() {
+                modalPanel.classList.remove("scale-100", "opacity-100");
+                modalPanel.classList.add("scale-95", "opacity-0");
+                setTimeout(() => {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                    if (navigables[currentIndex])
+                        navigables[currentIndex].focus();
+                }, 300);
+            }
+
+            // --- 3. PROJECT EXPANSION LOGIC ---
+            let activeProject = null;
+
+            function toggleProject(card) {
+                if (activeProject && activeProject !== card) {
+                    collapseProject(activeProject);
+                }
+                const isExpanded = card.classList.contains("project-expanded");
+
+                if (!isExpanded) {
+                    card.classList.add("project-expanded");
+                    card.classList.remove(
+                        "hover:scale-[1.03]",
+                        "hover:scale-[1.05]",
+                        "hover:-translate-y-4",
+                        "hover:rotate-3",
+                        "hover:-rotate-3",
+                    );
+
+                    card.querySelector(".expanded-content").classList.remove(
+                        "hidden",
+                    );
+                    card.querySelector(".expanded-content").classList.add(
+                        "flex",
+                    );
+                    card.querySelector(".default-content").classList.add(
+                        "hidden",
+                    );
+                    card.querySelector(".default-overlay").classList.add(
+                        "opacity-0",
+                    );
+                    card.querySelector(".carousel-controls").classList.remove(
+                        "hidden",
+                    );
+
+                    activeProject = card;
+                    setTimeout(() => {
+                        card.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                        });
+                    }, 300);
+                } else {
+                    collapseProject(card);
+                    activeProject = null;
+                }
+            }
+
+            function collapseProject(card) {
+                card.classList.remove("project-expanded");
+                card.classList.add("hover:-translate-y-4");
+
+                card.querySelector(".expanded-content").classList.add("hidden");
+                card.querySelector(".expanded-content").classList.remove(
+                    "flex",
+                );
+                card.querySelector(".default-content").classList.remove(
+                    "hidden",
+                );
+                card.querySelector(".default-overlay").classList.remove(
+                    "opacity-0",
+                );
+                card.querySelector(".carousel-controls").classList.add(
+                    "hidden",
+                );
+            }
+
+            // --- 4. CAROUSEL LOGIC ---
+            function moveCarousel(btn, direction) {
+                const track = btn
+                    .closest(".media-container")
+                    .querySelector(".carousel-track");
+                const images = track.querySelectorAll("img");
+                let currentIndex = parseInt(track.getAttribute("data-index"));
+
+                currentIndex += direction;
+
+                if (currentIndex < 0) currentIndex = images.length - 1;
+                if (currentIndex >= images.length) currentIndex = 0;
+
+                track.setAttribute("data-index", currentIndex);
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+        </script>
+    </body>
+</html>
