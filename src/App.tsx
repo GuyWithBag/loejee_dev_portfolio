@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import { PROJECTS } from "./data/projects";
-import { BIO, SOCIALS, UI_STRINGS } from "./data/content";
+import { SOCIALS } from "./data/content";
 import { HeroCard } from "./components/HeroCard";
 import { SkillsCard } from "./components/SkillsCard";
 import { StatusCard } from "./components/StatusCard";
@@ -113,7 +113,7 @@ const App = () => {
   }, [focusedIndex, expandedId, isDarkMode]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 bg-pastel-green-50/30 dark:bg-zinc-950 relative overflow-x-hidden p-4 md:p-8 lg:p-12">
+    <div className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 bg-pastel-green-100/20 dark:bg-zinc-950 relative overflow-x-hidden p-4 md:p-8 lg:p-12">
       {/* Modals & Overlays */}
       <AnimatePresence>
         {onboarding && !expandedId && (
@@ -153,7 +153,7 @@ const App = () => {
                 <HeroCard
                   isExpanded={true}
                   onClick={() => {}}
-                  containerClasses="!w-full h-full !scale-100 !border-none"
+                  className="!w-full !h-auto !scale-100 !border-none !glass"
                 />
               )}
 
@@ -161,7 +161,7 @@ const App = () => {
                 <AboutCard
                   isExpanded={true}
                   onClick={() => {}}
-                  containerClasses="!w-full h-full !scale-100 !border-none"
+                  className="!w-full !h-auto !scale-100 !border-none"
                 />
               )}
 
@@ -169,7 +169,8 @@ const App = () => {
                 <SkillsCard
                   isExpanded={true}
                   onClick={() => {}}
-                  containerClasses="!w-full h-full !scale-100 !border-none"
+                  className="!w-full !h-auto !scale-100 !border-none glass"
+                  skillsClasses="aspect-square"
                 />
               )}
 
@@ -200,27 +201,34 @@ const App = () => {
             isExpanded={false}
             onClick={() => setExpandedId("hero")}
             onboarding={onboarding}
-            containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-500 !text-white"
+            className="col-span-1 md:row-span-2 !bg-pastel-green-500 !text-white"
           />
 
           {/* Row 1, Col 2 */}
           <SkillsCard
             isExpanded={false}
             onClick={() => setExpandedId("skills")}
-            containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40"
+            className="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40"
           />
 
           {/* Row 1, Col 3 */}
-          <StatusCard containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40" />
 
+          <ThemeToggle
+            isDarkMode={isDarkMode}
+            onToggle={() => {
+              setIsDarkMode(!isDarkMode);
+              setOnboarding(false);
+            }}
+            className="col-span-1 md:row-span-1"
+          />
           {/* Row 1 & 2, Col 4 */}
-          <CTACard containerClasses="col-span-1 md:row-span-2 !bg-pastel-green-600 !text-white" />
+          <CTACard className="col-span-1 md:row-span-2 !bg-pastel-green-600 !text-white" />
 
           {/* Row 2, Col 2-3 */}
           <AboutCard
             isExpanded={false}
             onClick={() => setExpandedId("about")}
-            containerClasses="col-span-1 md:col-span-2 !bg-pastel-green-500 !text-white"
+            className="col-span-1 md:col-span-2 !bg-pastel-green-500 !text-white"
           />
 
           {/* Row 3, Col 1 & 2 - Socials */}
@@ -231,33 +239,22 @@ const App = () => {
               href={social.href}
               icon={social.icon}
               label={social.label}
-              className={`border-none ${social.color}`}
-              containerClasses="col-span-1 md:row-span-1"
+              className={`border-none ${social.color} col-span-1 md:row-span-1`}
             />
           ))}
-
+          <StatusCard className="col-span-1 md:row-span-1 !bg-pastel-green-200 dark:!bg-pastel-green-900/40" />
           {/* Row 3, Col 3 */}
-          <ThemeToggle
-            isDarkMode={isDarkMode}
-            onToggle={() => {
-              setIsDarkMode(!isDarkMode);
-              setOnboarding(false);
-            }}
-            containerClasses="col-span-1 md:row-span-1"
-          />
 
           {/* Row 3, Col 4 */}
           <BentoCard
             id="location"
             isExpanded={false}
-            containerClasses="col-span-1 md:row-span-1 !bg-pastel-green-100 dark:!bg-zinc-800"
+            className="col-span-1 md:row-span-1 !bg-pastel-green-100 dark:!bg-zinc-800 !p-0"
           >
-            <div className="p-6 flex flex-col items-center justify-center h-full text-zinc-900 dark:text-white">
-              <UI_STRINGS.locationIcon className="text-4xl mb-2 text-pastel-green-600" />
-              <span className="font-black text-[10px] uppercase tracking-widest">
-                {BIO.location}
-              </span>
-            </div>
+            <img
+              className="object-cover h-full w-full"
+              src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d22a9649-2901-4991-b63a-a9289dcd7da6/dcknahs-9513eb2f-d7ac-45ea-ae4e-58c0fd3c2ff8.png/v1/fill/w_1192,h_670,q_70,strp/blue_feel_by_paperbaguy_dcknahs-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTAwIiwicGF0aCI6Ii9mL2QyMmE5NjQ5LTI5MDEtNDk5MS1iNjNhLWE5Mjg5ZGNkN2RhNi9kY2tuYWhzLTk1MTNlYjJmLWQ3YWMtNDVlYS1hZTRlLTU4YzBmZDNjMmZmOC5wbmciLCJ3aWR0aCI6Ijw9MTYwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.TVZsWBxIqfWyiWHlPHMY5DuuuN_u9iMW0wdTqzMXZuM"
+            />
           </BentoCard>
         </div>
 
@@ -267,7 +264,7 @@ const App = () => {
             const isFeatured = idx === 0;
             const id = `project-${project.id}`;
 
-            const containerClasses = isFeatured
+            const className = isFeatured
               ? "basis-full md:basis-[calc(50%-0.75rem)] min-h-[300px]"
               : "basis-[calc(50%-0.5rem)] md:basis-[calc(25%-1rem)] aspect-square";
 
@@ -277,8 +274,7 @@ const App = () => {
                 key={project.id}
                 isExpanded={false}
                 onClick={() => setExpandedId(id)}
-                containerClasses={containerClasses}
-                className="p-0 border-none h-full flex-grow !rounded-[2.5rem]"
+                className={`${className} p-0 border-none h-full flex-grow !rounded-[2.5rem]`}
               >
                 <ProjectContent
                   project={project}
