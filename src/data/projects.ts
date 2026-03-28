@@ -5,6 +5,7 @@ export interface Project {
   skills: string[];
   images: string[];
   link?: string;
+  github?: string;
   category?: string;
   aspectRatio?: "16:9" | "9:16" | "1:1";
 }
@@ -23,10 +24,7 @@ export const PROJECTS: Project[] = [
       "CVA",
       "Supabase",
     ],
-    images: [
-      "https://images.unsplash.com/photo-1505373633560-24831d407304?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1540575861501-7ad058211a37?auto=format&fit=crop&w=800&q=80",
-    ],
+    images: ["/images/portfolio-images/adto/adto.png"],
     category: "Enterprise Web",
     aspectRatio: "16:9",
   },
@@ -36,12 +34,9 @@ export const PROJECTS: Project[] = [
     description:
       "A high-performance landing page for a film production house, integrated with Sanity CMS for dynamic content and Calendly for automated client booking. Built for a seamless user experience.",
     skills: ["NextJS", "Tailwind CSS", "Sanity CMS", "Calendly"],
-    images: [
-      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80",
-    ],
+    images: ["/images/portfolio-images/eizou-films/eizou-films.png"],
     category: "Professional Services",
-    aspectRatio: "16:9",
+    aspectRatio: "9:16",
   },
   {
     id: 3,
@@ -49,25 +44,21 @@ export const PROJECTS: Project[] = [
     description:
       "The Automated Crowd Management System developed for IT Week. Leverages Next.js and Supabase to streamline event crowd tracking and staff coordination with a modular UI.",
     skills: ["NextJS", "Radix UI", "Storybook", "Supabase"],
-    images: [
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80",
-    ],
+    images: ["/images/portfolio-images/acms/acms.png"],
     category: "System Dev",
-    aspectRatio: "16:9",
+    aspectRatio: "1:1",
   },
   {
     id: 4,
-    title: "Palaro Sports Event Site",
+    title: "SAMAHAN Palaro 2024",
     description:
       "A responsive public-facing portal for university sports events. Delivering an accessible interface with real-time updates for tournament brackets and schedules.",
     skills: ["NextJS", "Tailwind CSS", "Radix UI", "Supabase", "Storybook"],
-    images: [
-      "https://images.unsplash.com/photo-1461891211039-4967d1c237e6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1541252260730-0412e3e2108e?auto=format&fit=crop&w=800&q=80",
-    ],
+    images: ["/images/portfolio-images/palaro-2024/palaro-2024.png"],
     category: "Event Platform",
     aspectRatio: "16:9",
+    github:
+      "https://github.com/orgs/SAMAHAN-Systems-Development/projects/14?pane=issue&itemId=84902352&issue=SAMAHAN-Systems-Development|samahan-palaro-2024|8",
   },
   {
     id: 5,
@@ -78,7 +69,9 @@ export const PROJECTS: Project[] = [
     images: ["/images/portfolio-images/samahan-all-for-more/home-page.jpg"],
     link: "https://samahan.addu.edu.ph",
     category: "Full Stack Web",
-    aspectRatio: "16:9",
+    aspectRatio: "1:1",
+    github:
+      "https://github.com/SAMAHAN-Systems-Development/samahan-all-for-more-frontend",
   },
   {
     id: 6,
@@ -93,11 +86,11 @@ export const PROJECTS: Project[] = [
       "Storybook",
       "Supabase",
     ],
-    images: [
-      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80",
-    ],
+    images: ["/images/portfolio-images/samahan-comms/samahan-comms-cover.png"],
     category: "News Platform",
-    aspectRatio: "16:9",
+    aspectRatio: "1:1",
+    github:
+      "https://github.com/SAMAHAN-Systems-Development/SAMAHAN-Newsfeed-Frontend",
   },
   {
     id: 7,
@@ -105,11 +98,9 @@ export const PROJECTS: Project[] = [
     description:
       "A business-focused landing page for a local farm, managing the end-to-end development from initial planning through to final deployment and delivery.",
     skills: ["React", "Tailwind CSS", "Project Management"],
-    images: [
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
-    ],
+    images: ["/images/portfolio-images/cruzalloma/cruzalloma.png"],
     category: "Client Project",
-    aspectRatio: "16:9",
+    aspectRatio: "1:1",
   },
   {
     id: 8,
@@ -137,10 +128,11 @@ export const PROJECTS: Project[] = [
       "A landing page for a traditional blacksmithing business, focusing on showcasing craftsmanship and managing customer inquiries through a clean interface.",
     skills: ["NextJS", "Tailwind CSS"],
     images: [
-      "https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&w=800&q=80",
+      "/images/portfolio-images/dulaugon-blacksmith/dulaugon-blacksmith.jpg",
+      "/images/portfolio-images/dulaugon-blacksmith/dulaugon-blacksmith-cover.png",
     ],
     category: "Professional Services",
-    aspectRatio: "16:9",
+    aspectRatio: "9:16",
   },
   {
     id: 10,
@@ -149,10 +141,11 @@ export const PROJECTS: Project[] = [
       "A comprehensive business website built on WordPress, tailored to allow non-technical clients to easily manage and update their online presence.",
     skills: ["WordPress", "Business Solutions"],
     images: [
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+      "/images/portfolio-images/kabayan-group/kabayan-group.jpg",
+      "/images/portfolio-images/kabayan-group/kabayan-group-cover.png",
     ],
     category: "Business Site",
-    aspectRatio: "16:9",
+    aspectRatio: "9:16",
   },
   {
     id: 11,
@@ -161,7 +154,9 @@ export const PROJECTS: Project[] = [
       "The official agency website for MadePoies, featuring contact form integration with EmailJS to facilitate direct client inquiries and lead generation.",
     skills: ["NextJS", "Tailwind CSS", "EmailJS"],
     images: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+      "/images/portfolio-images/madepoies/madepoies-hero.png",
+      "/images/portfolio-images/madepoies/madepoies-works.png",
+      "/images/portfolio-images/madepoies/madepoies-cta.png",
     ],
     category: "Agency Portfolio",
     aspectRatio: "16:9",
