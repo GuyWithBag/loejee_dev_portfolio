@@ -56,6 +56,30 @@ const App: FC = () => {
     return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
   }, [expandedProject]);
 
+  // Focus-driven Parallax
+  useEffect(() => {
+    if (isOnboarding || expandedProject !== null) return;
+
+    const updateOffsetFromFocus = () => {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement && activeElement.classList.contains("navigable")) {
+        const rect = activeElement.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const { innerWidth, innerHeight } = window;
+
+        // Calculate offset from center (-0.5 to 0.5)
+        const x = (centerX / innerWidth - 0.5) * 20;
+        const y = (centerY / innerHeight - 0.5) * 20;
+
+        setMouseOffset({ x, y });
+      }
+    };
+
+    window.addEventListener("focusin", updateOffsetFromFocus);
+    return () => window.removeEventListener("focusin", updateOffsetFromFocus);
+  }, [currentIndex, isOnboarding, expandedProject]);
+
   // Focus sidebar when it opens
   useEffect(() => {
     if (expandedProject !== null) {
@@ -624,10 +648,13 @@ const App: FC = () => {
             >
               <div className="absolute right-0 bottom-0 w-16 h-16 bg-yellow-300/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg pointer-events-none"></div>
               <div className="z-10 relative flex flex-col items-center w-full pointer-events-none">
-                <h2 className="text-xl font-black text-yellow-900 dark:text-slate-900 mb-3 tracking-tighter">
+                <h2 className="text-xl font-black text-yellow-900 dark:text-slate-900 mb-1 tracking-tighter">
                   {CONTACT.ctaTitle}
                 </h2>
-                <div className="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm shadow-xl flex items-center justify-center gap-2">
+                <p className="text-xs font-bold text-yellow-800 dark:text-slate-800 mb-3 opacity-70">
+                  {CONTACT.email}
+                </p>
+                <div className="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm shadow-xl flex items-center justify-center gap-2 group-hover:bg-slate-800 transition-colors">
                   <FaEnvelope /> {CONTACT.ctaButton}
                 </div>
               </div>

@@ -70,7 +70,7 @@ export const SOCIALS = [
 ];
 
 export const CONTACT = {
-  email: "hello@loejee.dev",
+  email: "loejee.dev@gmail.com",
   ctaTitle: "Let's build!",
   ctaButton: "Contact Me",
 };
