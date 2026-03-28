@@ -310,22 +310,22 @@ const App: FC = () => {
       <div
         ref={sidebarRef}
         tabIndex={-1}
-        className="fixed top-0 right-0 h-full w-full md:w-[450px] lg:w-[550px] bg-white dark:bg-slate-950 shadow-[-20px_0_50px_rgba(0,0,0,0.1)] dark:shadow-[-20px_0_50px_rgba(0,0,0,0.3)] z-[70] flex flex-col animate-slide-in-right border-l border-slate-200 dark:border-slate-800 outline-none"
+        className="fixed top-6 bottom-6 right-6 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] bg-white dark:bg-slate-900 shadow-3xl z-[70] flex flex-col animate-slide-in-right rounded-[2.5rem] border-4 border-white dark:border-slate-800 outline-none overflow-hidden"
       >
-        <div className="p-6 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
+        <div className="p-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
           <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
             Project Details
           </h3>
           <button
             onClick={() => setExpandedProject(null)}
-            className="w-10 h-10 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300"
+            className="w-12 h-12 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300 shadow-inner"
           >
             <FaTimes className="text-xl" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto no-scrollbar">
-          <div className="relative aspect-video w-full bg-slate-100 dark:bg-slate-900 overflow-hidden">
+          <div className="relative aspect-video w-full bg-slate-100 dark:bg-slate-950 overflow-hidden">
             <div
               className="carousel-track w-full h-full flex transition-transform duration-500"
               style={{
@@ -349,33 +349,33 @@ const App: FC = () => {
                     e.stopPropagation();
                     moveCarousel(project.id, -1, project.images.length);
                   }}
-                  className="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                  className="pointer-events-auto w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-white flex items-center justify-center hover:scale-110 transition-all shadow-2xl border border-white/20"
                 >
-                  <FaChevronLeft />
+                  <FaChevronLeft className="text-xl" />
                 </button>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     moveCarousel(project.id, 1, project.images.length);
                   }}
-                  className="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                  className="pointer-events-auto w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-white flex items-center justify-center hover:scale-110 transition-all shadow-2xl border border-white/20"
                 >
-                  <FaChevronRight />
+                  <FaChevronRight className="text-xl" />
                 </button>
               </div>
             )}
           </div>
 
-          <div className="p-8">
-            <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white leading-tight">
+          <div className="p-10">
+            <h2 className="text-4xl font-black mb-6 text-slate-900 dark:text-white leading-tight">
               {project.title}
             </h2>
 
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap gap-3 mb-10">
               {project.skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm font-bold border border-blue-200 dark:border-blue-500/30 flex items-center gap-1"
+                  className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-bold border border-blue-200 dark:border-blue-800 flex items-center gap-2 shadow-sm"
                 >
                   {skill}
                 </span>
@@ -383,27 +383,27 @@ const App: FC = () => {
             </div>
 
             <div className="prose dark:prose-invert max-w-none">
-              <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed text-lg mb-8">
+              <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-lg mb-10">
                 {project.description}
               </p>
             </div>
 
-            <div className="flex gap-4 mt-10">
+            <div className="flex gap-4 mt-auto">
               {project.link && (
                 <a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-[1.5rem] font-bold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 shadow-xl shadow-blue-500/25"
                 >
-                  <FaRocket className="text-xl" /> Live App
+                  <FaRocket className="text-2xl" /> View Project
                 </a>
               )}
               <a
                 href="#"
-                className="w-16 h-16 bg-slate-900 dark:bg-slate-800 text-white rounded-2xl flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-700 transition-all hover:scale-[1.02] shadow-lg"
+                className="w-20 h-20 bg-slate-900 dark:bg-slate-800 text-white rounded-[1.5rem] flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-700 transition-all hover:scale-[1.02] shadow-xl"
               >
-                <FaGithub className="text-3xl" />
+                <FaGithub className="text-4xl" />
               </a>
             </div>
           </div>
@@ -418,7 +418,7 @@ const App: FC = () => {
       onClick={() => endOnboarding()}
     >
       <div
-        className={`flex-1 transition-all duration-500 ease-in-out p-4 md:p-10 flex flex-col items-center ${expandedProject !== null ? "md:mr-[450px] lg:mr-[550px]" : ""}`}
+        className={`flex-1 transition-all duration-700 ease-in-out p-4 md:p-10 flex flex-col items-center ${expandedProject !== null ? "lg:mr-[580px] lg:translate-x-[-40px]" : ""}`}
       >
         <button
           onClick={(e) => {
