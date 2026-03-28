@@ -389,19 +389,30 @@ const App: FC = () => {
             "bg-purple-100 dark:bg-purple-600 border-purple-200 dark:border-purple-500",
           content: (
             <div className="p-10 relative z-10">
-              <div className="text-6xl mb-6 inline-block animate-bounce">
-                👋
+              <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-200 dark:bg-white/20 rounded-full z-0 shadow-xl pointer-events-none"></div>
+              <div className="absolute top-10 left-1/2 w-32 h-32 bg-purple-300/50 dark:bg-purple-400/50 rounded-full z-0 pointer-events-none"></div>
+              <div className="relative z-10">
+                <div className="w-32 h-32 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-6 border-4 border-white/80 dark:border-white/20 shadow-inner overflow-hidden flex items-center justify-center">
+                  <img
+                    src={BIO.pfp}
+                    alt={BIO.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="text-6xl mb-6 inline-block animate-bounce">
+                  👋
+                </div>
+                <h2 className="text-4xl font-black mb-4 text-purple-900 dark:text-white">
+                  Hello World!
+                </h2>
+                <p className="text-purple-800 dark:text-white/90 text-lg mb-4">
+                  {BIO.philosophy}
+                </p>
+                <p className="text-purple-800 dark:text-white/90 text-lg">
+                  Use the grid behind this window to explore my stack, my
+                  current location, and my selected projects.
+                </p>
               </div>
-              <h2 className="text-4xl font-black mb-4 text-purple-900 dark:text-white">
-                Hello World!
-              </h2>
-              <p className="text-purple-800 dark:text-white/90 text-lg mb-4">
-                {BIO.philosophy}
-              </p>
-              <p className="text-purple-800 dark:text-white/90 text-lg">
-                Use the grid behind this window to explore my stack, my current
-                location, and my selected projects.
-              </p>
             </div>
           ),
         },
@@ -411,21 +422,24 @@ const App: FC = () => {
             "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
           content: (
             <div className="p-10 relative z-10">
-              <HiOutlineUserCircle className="text-6xl text-blue-500 mb-6" />
-              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white">
-                About Me
-              </h2>
-              {BIO.about.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-slate-600 dark:text-slate-400 text-lg mb-4 leading-relaxed"
-                >
-                  {p}
+              <div className="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 z-0 shadow-inner pointer-events-none"></div>
+              <div className="relative z-10">
+                <HiOutlineUserCircle className="text-6xl text-blue-500 mb-6" />
+                <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white">
+                  About Me
+                </h2>
+                {BIO.about.map((p, i) => (
+                  <p
+                    key={i}
+                    className="text-slate-600 dark:text-slate-400 text-lg mb-4 leading-relaxed"
+                  >
+                    {p}
+                  </p>
+                ))}
+                <p className="text-slate-600 dark:text-slate-400 text-lg italic mt-6">
+                  Approach: {BIO.approach}
                 </p>
-              ))}
-              <p className="text-slate-600 dark:text-slate-400 text-lg italic mt-6">
-                Approach: {BIO.approach}
-              </p>
+              </div>
             </div>
           ),
         },

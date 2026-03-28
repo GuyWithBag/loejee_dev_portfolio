@@ -10,7 +10,10 @@ import {
   SiGodotengine,
   SiCplusplus,
   SiFirebase,
-  SiOpengl,
+  SiFigma,
+  SiWordpress,
+  SiSupabase,
+  SiNestjs,
 } from "react-icons/si";
 import pfp from "../assets/me.png";
 
@@ -49,7 +52,10 @@ export const SKILLS = [
   { name: "Godot", Icon: SiGodotengine },
   { name: "C++", Icon: SiCplusplus },
   { name: "Firebase", Icon: SiFirebase },
-  { name: "OpenGL", Icon: SiOpengl },
+  { name: "Figma", Icon: SiFigma },
+  { name: "WordPress", Icon: SiWordpress },
+  { name: "Supabase", Icon: SiSupabase },
+  { name: "NestJS", Icon: SiNestjs },
 ];
 
 export const SOCIALS = [
