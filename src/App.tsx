@@ -25,11 +25,21 @@ const App: FC = () => {
   const [isDark, setIsDark] = useState(true);
   const [isOnboarding, setIsOnboarding] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [activeModal, setActiveModal] = useState<string | null>(null);
-  const [expandedProject, setExpandedProject] = useState<number | null>(null);
+  const [activeItem, setActiveItem] = useState<string | number | null>(null);
   const [carouselIndices, setCarouselIndices] = useState<
     Record<number, number>
   >({});
+  const [zoomData, setZoomData] = useState<{
+    active: boolean;
+    x: number;
+    y: number;
+    img: string | null;
+  }>({
+    active: false,
+    x: 0,
+    y: 0,
+    img: null,
+  });
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
 
   const navigablesRef = useRef<(HTMLElement | null)[]>([]);
@@ -38,7 +48,7 @@ const App: FC = () => {
   // Global Mouse Move for Container Parallax
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (expandedProject !== null) {
+      if (activeItem !== null) {
         setMouseOffset({ x: 0, y: 0 });
         return;
       }
@@ -54,11 +64,11 @@ const App: FC = () => {
 
     window.addEventListener("mousemove", handleGlobalMouseMove);
     return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, [expandedProject]);
+  }, [activeItem]);
 
   // Focus-driven Parallax
   useEffect(() => {
-    if (isOnboarding || expandedProject !== null) return;
+    if (isOnboarding || activeItem !== null) return;
 
     const updateOffsetFromFocus = () => {
       const activeElement = document.activeElement as HTMLElement;
@@ -78,16 +88,16 @@ const App: FC = () => {
 
     window.addEventListener("focusin", updateOffsetFromFocus);
     return () => window.removeEventListener("focusin", updateOffsetFromFocus);
-  }, [currentIndex, isOnboarding, expandedProject]);
+  }, [currentIndex, isOnboarding, activeItem]);
 
   // Focus sidebar when it opens
   useEffect(() => {
-    if (expandedProject !== null) {
+    if (activeItem !== null) {
       setTimeout(() => {
         sidebarRef.current?.focus();
       }, 100);
     }
-  }, [expandedProject]);
+  }, [activeItem]);
 
   // Dark Mode Toggle
   useEffect(() => {
@@ -108,10 +118,9 @@ const App: FC = () => {
   // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeModal || expandedProject !== null) {
+      if (activeItem !== null) {
         if (e.key === "Escape") {
-          setActiveModal(null);
-          setExpandedProject(null);
+          setActiveItem(null);
         }
         return;
       }
@@ -169,11 +178,11 @@ const App: FC = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, activeModal, isOnboarding, endOnboarding, expandedProject]);
+  }, [currentIndex, activeItem, isOnboarding, endOnboarding]);
 
   // Tilt Effect
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (expandedProject !== null) return;
+    if (activeItem !== null) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -195,11 +204,10 @@ const App: FC = () => {
   };
 
   const toggleProject = (id: number) => {
-    setActiveModal(null); // Close any active info modal
-    if (expandedProject === id) {
-      setExpandedProject(null);
+    if (activeItem === id) {
+      setActiveItem(null);
     } else {
-      setExpandedProject(id);
+      setActiveItem(id);
       if (!(id in carouselIndices)) {
         setCarouselIndices((prev) => ({ ...prev, [id]: 0 }));
       }
@@ -207,8 +215,7 @@ const App: FC = () => {
   };
 
   const openInfoModal = (modalId: string) => {
-    setExpandedProject(null); // Close any expanded project
-    setActiveModal(modalId);
+    setActiveItem(modalId);
   };
 
   const moveCarousel = (projectId: number, direction: number, max: number) => {
@@ -222,27 +229,47 @@ const App: FC = () => {
   };
 
   const renderSidebar = () => {
-    if (expandedProject === null && activeModal === null) return null;
+    if (activeItem === null) return null;
 
     const closeSidebar = () => {
-      setExpandedProject(null);
-      setActiveModal(null);
+      setActiveItem(null);
     };
 
     let content = null;
     let title = "Details";
-    let theme = "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800";
+    let theme =
+      "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800";
 
-    if (expandedProject !== null) {
-      const project = PROJECTS.find((p) => p.id === expandedProject);
+    if (typeof activeItem === "number") {
+      const project = PROJECTS.find((p) => p.id === activeItem);
       if (!project) return null;
 
       const carouselIndex = carouselIndices[project.id] || 0;
+      const currentImage = project.images[carouselIndex];
       title = "Project Details";
 
       content = (
         <div className="flex-1 overflow-y-auto no-scrollbar relative z-10">
-          <div className="relative aspect-video w-full bg-slate-100 dark:bg-slate-950 overflow-hidden">
+          <div
+            className="relative aspect-video w-full bg-slate-100 dark:bg-slate-950 overflow-hidden cursor-zoom-in"
+            onMouseEnter={() =>
+              setZoomData((prev) => ({
+                ...prev,
+                active: true,
+                img: currentImage,
+              }))
+            }
+            onMouseLeave={() =>
+              setZoomData((prev) => ({ ...prev, active: false, img: null }))
+            }
+            onMouseMove={(e) => {
+              const { left, top, width, height } =
+                e.currentTarget.getBoundingClientRect();
+              const x = ((e.clientX - left) / width) * 100;
+              const y = ((e.clientY - top) / height) * 100;
+              setZoomData({ active: true, x, y, img: currentImage });
+            }}
+          >
             <div
               className="carousel-track w-full h-full flex transition-transform duration-500"
               style={{
@@ -342,18 +369,23 @@ const App: FC = () => {
           </div>
         </div>
       );
-    } else if (activeModal !== null) {
+    } else if (typeof activeItem === "string") {
       const modalData: Record<string, any> = {
         hero: {
           title: "Hello World!",
-          theme: "bg-purple-100 dark:bg-purple-600 border-purple-200 dark:border-purple-500",
+          theme:
+            "bg-purple-100 dark:bg-purple-600 border-purple-200 dark:border-purple-500",
           content: (
             <div className="p-10 relative z-10">
               <div className="text-6xl mb-6 inline-block animate-bounce">
                 👋
               </div>
-              <h2 className="text-4xl font-black mb-4 text-purple-900 dark:text-white">Hello World!</h2>
-              <p className="text-purple-800 dark:text-white/90 text-lg mb-4">{BIO.philosophy}</p>
+              <h2 className="text-4xl font-black mb-4 text-purple-900 dark:text-white">
+                Hello World!
+              </h2>
+              <p className="text-purple-800 dark:text-white/90 text-lg mb-4">
+                {BIO.philosophy}
+              </p>
               <p className="text-purple-800 dark:text-white/90 text-lg">
                 Use the grid behind this window to explore my stack, my current
                 location, and my selected projects.
@@ -363,11 +395,14 @@ const App: FC = () => {
         },
         about: {
           title: "About Me",
-          theme: "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          theme:
+            "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
           content: (
             <div className="p-10 relative z-10">
               <HiOutlineUserCircle className="text-6xl text-blue-500 mb-6" />
-              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white">About Me</h2>
+              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white">
+                About Me
+              </h2>
               {BIO.about.map((p, i) => (
                 <p
                   key={i}
@@ -384,12 +419,15 @@ const App: FC = () => {
         },
         location: {
           title: "Current Location",
-          theme: "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          theme:
+            "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
           content: (
             <div className="p-10 relative z-10">
               <div className="absolute -bottom-10 left-0 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-6 z-0 pointer-events-none"></div>
               <FaMapMarkerAlt className="text-6xl text-green-500 mb-6 relative z-10" />
-              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white relative z-10">Current Location</h2>
+              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white relative z-10">
+                Current Location
+              </h2>
               <p className="text-slate-600 dark:text-slate-400 text-lg relative z-10">
                 Currently building from{" "}
                 <strong className="text-slate-900 dark:text-white">
@@ -399,7 +437,8 @@ const App: FC = () => {
               </p>
               <div className="mt-8 w-full h-48 bg-white dark:bg-slate-900 rounded-[2rem] flex items-center justify-center border-2 border-slate-100 dark:border-slate-800 shadow-sm relative z-10">
                 <span className="text-slate-500 dark:text-slate-400 font-bold flex flex-col items-center gap-2 text-center px-4">
-                  <HiOutlineGlobeAlt className="text-4xl mb-2" /> Remote Work Ready
+                  <HiOutlineGlobeAlt className="text-4xl mb-2" /> Remote Work
+                  Ready
                 </span>
               </div>
             </div>
@@ -407,7 +446,8 @@ const App: FC = () => {
         },
         skills: {
           title: "Tech Stack",
-          theme: "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          theme:
+            "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
           content: (
             <div className="p-10 relative z-10">
               <div className="absolute right-[-10%] bottom-[-20%] w-64 h-96 bg-slate-50 dark:bg-slate-800/50 rounded-full rotate-45 z-0 pointer-events-none"></div>
@@ -433,7 +473,7 @@ const App: FC = () => {
         },
       };
 
-      const data = modalData[activeModal];
+      const data = modalData[activeItem];
       if (data) {
         title = data.title;
         theme = data.theme;
@@ -450,7 +490,7 @@ const App: FC = () => {
       <div
         ref={sidebarRef}
         tabIndex={-1}
-        className={`fixed top-6 bottom-6 right-6 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] shadow-2xl z-[70] flex flex-col animate-slide-in-right rounded-[2.5rem] border outline-none overflow-hidden transition-colors duration-300 ${theme}`}
+        className={`fixed top-0 bottom-0 right-0 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] shadow-2xl z-[70] flex flex-col animate-slide-in-right rounded-l-[2.5rem] border-l outline-none overflow-hidden transition-colors duration-300 ${theme}`}
       >
         <div className="relative z-10 p-8 flex justify-between items-center border-b border-black/5 dark:border-white/10 bg-white/10 dark:bg-black/10 backdrop-blur-md">
           <h3 className="text-2xl font-black tracking-tight text-current">
@@ -468,13 +508,35 @@ const App: FC = () => {
     );
   };
 
+  const renderZoomPreview = () => {
+    if (!zoomData.active || !zoomData.img) return null;
+
+    return (
+      <div className="fixed top-0 bottom-0 right-0 md:right-[500px] lg:right-[600px] w-full md:w-[600px] lg:w-[800px] bg-slate-100 dark:bg-slate-950 z-[80] border-r border-black/10 dark:border-white/10 overflow-hidden shadow-2xl animate-fade-in pointer-events-none hidden md:block">
+        <div
+          className="w-full h-full"
+          style={{
+            backgroundImage: `url(${zoomData.img})`,
+            backgroundPosition: `${zoomData.x}% ${zoomData.y}%`,
+            backgroundSize: "105%", // Increased zoom for better effect
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+        <div className="absolute top-8 left-8 bg-black/50 backdrop-blur-md text-white px-6 py-3 rounded-full text-sm font-bold border border-white/20 shadow-2xl flex items-center gap-2">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+          MAGNIFIED PREVIEW
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       className={`min-h-screen flex font-sans text-slate-800 dark:text-slate-100 selection:bg-blue-100 dark:selection:bg-blue-900/30 ${isOnboarding ? "onboarding-active" : ""}`}
       onClick={() => endOnboarding()}
     >
       <div
-        className={`flex-1 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) p-4 md:p-10 flex flex-col items-center ${(expandedProject !== null || activeModal !== null) ? "lg:mr-[624px] lg:translate-x-[-12px]" : ""}`}
+        className={`flex-1 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) p-4 md:p-10 flex flex-col items-center ${activeItem !== null ? "md:mr-[500px] lg:mr-[600px]" : ""}`} /* major divs gap */
       >
         <button
           onClick={(e) => {
@@ -483,14 +545,21 @@ const App: FC = () => {
           }}
           className="fixed top-6 left-6 w-12 h-12 flex items-center justify-center bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-full transition-all duration-300 hover:scale-110 hover:rotate-12 shadow-2xl z-[60]"
         >
-          {isDark ? <FaSun className="text-xl" /> : <FaMoon className="text-xl" />}
+          {isDark ? (
+            <FaSun className="text-xl" />
+          ) : (
+            <FaMoon className="text-xl" />
+          )}
         </button>
 
         {isOnboarding && (
           <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-6 py-3 rounded-full backdrop-blur-md font-bold text-sm z-[60] flex items-center gap-3 animate-bounce shadow-2xl border border-white/10">
             <div className="flex gap-1">
               {["W", "A", "S", "D"].map((key) => (
-                <kbd key={key} className="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs">
+                <kbd
+                  key={key}
+                  className="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
+                >
                   {key}
                 </kbd>
               ))}
@@ -519,7 +588,11 @@ const App: FC = () => {
               className="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
             >
               <div className="w-24 h-24 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/80 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
-                <img src={BIO.pfp} alt={BIO.name} className="w-full h-full object-cover" />
+                <img
+                  src={BIO.pfp}
+                  alt={BIO.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h1 className="text-4xl font-bold text-purple-900 dark:text-white z-10 leading-tight tracking-tight pointer-events-none">
                 Hi, I'm {BIO.name.split(" ")[0]}. {BIO.role}
@@ -542,7 +615,9 @@ const App: FC = () => {
               <div className="z-10 relative pointer-events-none">
                 <div className="flex items-center gap-2 mb-2">
                   <HiOutlineUserCircle className="text-2xl text-slate-400" />
-                  <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">About Me</h2>
+                  <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+                    About Me
+                  </h2>
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm line-clamp-2">
                   {BIO.about[0]}
@@ -635,7 +710,9 @@ const App: FC = () => {
             >
               <div className="absolute -left-6 -top-6 w-24 h-24 bg-blue-400/20 dark:bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
               <FaLinkedin className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
-              <span className="font-bold z-10 pointer-events-none">LinkedIn</span>
+              <span className="font-bold z-10 pointer-events-none">
+                LinkedIn
+              </span>
             </a>
 
             <button
@@ -669,76 +746,86 @@ const App: FC = () => {
           >
             {[0, 1, 2].map((colIndex) => (
               <div key={colIndex} className="flex flex-col gap-6 flex-1 w-full">
-                {[...PROJECTS, "placeholder" as const].map((item, originalIndex) => {
-                  if (originalIndex % 3 !== colIndex) return null;
+                {[...PROJECTS, "placeholder" as const].map(
+                  (item, originalIndex) => {
+                    if (originalIndex % 3 !== colIndex) return null;
 
-                  if (item === "placeholder") {
+                    if (item === "placeholder") {
+                      return (
+                        <div
+                          key="placeholder"
+                          className="navigable project-card w-full aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                          ref={(el) => {
+                            navigablesRef.current[7 + PROJECTS.length] = el;
+                          }}
+                          onMouseMove={handleMouseMove}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+                          <div className="z-10 relative flex flex-col items-center pointer-events-none">
+                            <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
+                              <FaMousePointer className="text-xl text-slate-500 dark:text-slate-400" />
+                            </div>
+                            <span className="font-bold tracking-wide">
+                              Add Project
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    const project = item;
+                    const isSelected = activeItem === project.id;
+                    const navigableIndex = 7 + originalIndex;
+
                     return (
                       <div
-                        key="placeholder"
-                        className="navigable project-card w-full aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                        key={project.id}
+                        tabIndex={0}
                         ref={(el) => {
-                          navigablesRef.current[7 + PROJECTS.length] = el;
+                          navigablesRef.current[navigableIndex] = el;
                         }}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
-                      >
-                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
-                        <div className="z-10 relative flex flex-col items-center pointer-events-none">
-                          <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
-                            <FaMousePointer className="text-xl text-slate-500 dark:text-slate-400" />
-                          </div>
-                          <span className="font-bold tracking-wide">Add Project</span>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  const project = item;
-                  const isSelected = expandedProject === project.id;
-                  const navigableIndex = 7 + originalIndex;
-
-                  return (
-                    <div
-                      key={project.id}
-                      tabIndex={0}
-                      ref={(el) => {
-                        navigablesRef.current[navigableIndex] = el;
-                      }}
-                      onMouseMove={handleMouseMove}
-                      onMouseLeave={handleMouseLeave}
-                      onClick={() => toggleProject(project.id)}
-                      className={`navigable project-card rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border transition-all duration-500
+                        onClick={() => toggleProject(project.id)}
+                        className={`navigable project-card rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border transition-all duration-500
                         ${isSelected ? "border-blue-500 ring-4 ring-blue-500/20" : "border-slate-200 dark:border-slate-800"}
                         ${project.aspectRatio === "16:9" ? "aspect-video" : project.aspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-square"}
                       `}
-                    >
-                      <div className="media-container relative w-full h-full overflow-hidden">
-                        <img
-                          src={project.images[0]}
-                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
-                          alt={project.title}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                        <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 pointer-events-none">
-                          <h3 className="text-2xl font-black mb-2 tracking-tighter">{project.title}</h3>
-                          <div className="flex flex-wrap gap-2">
-                            {project.skills.slice(0, 2).map((skill, i) => (
-                              <span key={i} className="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30">
-                                {skill}
-                              </span>
-                            ))}
+                      >
+                        <div className="media-container relative w-full h-full overflow-hidden">
+                          <img
+                            src={project.images[0]}
+                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                            alt={project.title}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                          <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 pointer-events-none">
+                            <h3 className="text-2xl font-black mb-2 tracking-tighter">
+                              {project.title}
+                            </h3>
+                            <div className="flex flex-wrap gap-2">
+                              {project.skills.slice(0, 2).map((skill, i) => (
+                                <span
+                                  key={i}
+                                  className="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  },
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
+      {renderZoomPreview()}
       {renderSidebar()}
     </div>
   );
