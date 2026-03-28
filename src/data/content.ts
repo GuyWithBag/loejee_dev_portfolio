@@ -56,14 +56,14 @@ export const SOCIALS = [
   {
     id: "github",
     label: "GITHUB",
-    href: "https://github.com",
+    href: "https://github.com/GuyWithBag",
     icon: FaGithub,
     color: "!bg-zinc-900",
   },
   {
     id: "linkedin",
     label: "LINKEDIN",
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/in/loejee-miguel-dulaugon-805480284/",
     icon: FaLinkedin,
     color: "!bg-[#0A66C2]",
   },
