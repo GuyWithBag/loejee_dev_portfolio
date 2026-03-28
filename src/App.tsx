@@ -30,9 +30,31 @@ const App: FC = () => {
   const [carouselIndices, setCarouselIndices] = useState<
     Record<number, number>
   >({});
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
 
   const navigablesRef = useRef<(HTMLElement | null)[]>([]);
   const sidebarRef = useRef<HTMLDivElement>(null);
+
+  // Global Mouse Move for Container Parallax
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (expandedProject !== null) {
+        setMouseOffset({ x: 0, y: 0 });
+        return;
+      }
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+
+      // Calculate offset from center (-0.5 to 0.5)
+      const x = (clientX / innerWidth - 0.5) * 20; // Max 10px offset
+      const y = (clientY / innerHeight - 0.5) * 20;
+
+      setMouseOffset({ x, y });
+    };
+
+    window.addEventListener("mousemove", handleGlobalMouseMove);
+    return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
+  }, [expandedProject]);
 
   // Focus sidebar when it opens
   useEffect(() => {
@@ -451,7 +473,13 @@ const App: FC = () => {
           </div>
         )}
 
-        <div className="max-w-5xl w-full flex flex-col gap-6 mt-10 relative z-10">
+        <div
+          className="max-w-5xl w-full flex flex-col gap-6 mt-10 relative z-10"
+          style={{
+            transform: `translate(${mouseOffset.x}px, ${mouseOffset.y}px)`,
+            transition: "transform 0.1s ease-out",
+          }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[180px] w-full">
             <div
               id="hero-card"
