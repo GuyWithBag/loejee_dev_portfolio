@@ -41,6 +41,17 @@ const App: FC = () => {
     img: null,
   });
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+  const [toast, setToast] = useState<{ message: string; visible: boolean }>({
+    message: "",
+    visible: false,
+  });
+
+  const showToast = (message: string) => {
+    setToast({ message, visible: true });
+    setTimeout(() => {
+      setToast((prev) => ({ ...prev, visible: false }));
+    }, 3000);
+  };
 
   const navigablesRef = useRef<(HTMLElement | null)[]>([]);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -530,6 +541,18 @@ const App: FC = () => {
     );
   };
 
+  const renderToast = () => {
+    if (!toast.visible) return null;
+    return (
+      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-8 py-4 rounded-3xl backdrop-blur-xl font-bold text-lg shadow-3xl border border-white/10 animate-slide-in-bottom">
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+          {toast.message}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       className={`min-h-screen flex font-sans text-slate-800 dark:text-slate-100 selection:bg-blue-100 dark:selection:bg-blue-900/30 ${isOnboarding ? "onboarding-active" : ""}`}
@@ -760,6 +783,17 @@ const App: FC = () => {
                           }}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
+                          onClick={() => {
+                            setCurrentIndex(6);
+                            navigablesRef.current[6]?.focus();
+                            navigablesRef.current[6]?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "center",
+                            });
+                            showToast(
+                              "Contact me so we can add a project together!",
+                            );
+                          }}
                         >
                           <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
                           <div className="z-10 relative flex flex-col items-center pointer-events-none">
@@ -827,6 +861,7 @@ const App: FC = () => {
       </div>
       {renderZoomPreview()}
       {renderSidebar()}
+      {renderToast()}
     </div>
   );
 };

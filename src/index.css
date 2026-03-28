@@ -77,8 +77,17 @@
         to { opacity: 1; transform: translateX(0); }
     }
 
+    @keyframes slide-in-bottom {
+        from { transform: translate(-50%, 100%); opacity: 0; }
+        to { transform: translate(-50%, 0); opacity: 1; }
+    }
+
     .animate-slide-in-right {
         animation: slide-in-right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
+    }
+
+    .animate-slide-in-bottom {
+        animation: slide-in-bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     .animate-fade-in {
