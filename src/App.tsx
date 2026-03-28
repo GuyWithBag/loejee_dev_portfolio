@@ -195,6 +195,7 @@ const App: FC = () => {
   };
 
   const toggleProject = (id: number) => {
+    setActiveModal(null); // Close any active info modal
     if (expandedProject === id) {
       setExpandedProject(null);
     } else {
@@ -203,6 +204,11 @@ const App: FC = () => {
         setCarouselIndices((prev) => ({ ...prev, [id]: 0 }));
       }
     }
+  };
+
+  const openInfoModal = (modalId: string) => {
+    setExpandedProject(null); // Close any expanded project
+    setActiveModal(modalId);
   };
 
   const moveCarousel = (projectId: number, direction: number, max: number) => {
@@ -215,165 +221,26 @@ const App: FC = () => {
     });
   };
 
-  const renderModalContent = () => {
-    if (!activeModal) return null;
+  const renderSidebar = () => {
+    if (expandedProject === null && activeModal === null) return null;
 
-    const modalData: Record<string, any> = {
-      hero: {
-        theme:
-          "bg-purple-100 dark:bg-purple-600 text-purple-900 dark:text-white border-purple-200 dark:border-purple-500",
-        content: (
-          <>
-            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-purple-200/50 dark:bg-white/20 rounded-full z-0"></div>
-            <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-300/50 dark:bg-purple-400/50 rounded-full z-0"></div>
-            <div className="relative z-10">
-              <div className="text-6xl mb-6 inline-block animate-bounce">
-                👋
-              </div>
-              <h2 className="text-4xl font-black mb-4">Hello World!</h2>
-              <p className="text-purple-800 dark:text-white/90 text-lg mb-4">{BIO.philosophy}</p>
-              <p className="text-purple-800 dark:text-white/90 text-lg">
-                Use the grid behind this window to explore my stack, my current
-                location, and my selected projects.
-              </p>
-            </div>
-          </>
-        ),
-      },
-      about: {
-        theme:
-          "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800",
-        content: (
-          <>
-            <div className="absolute -right-10 -top-10 w-64 h-64 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-[30deg] z-0"></div>
-            <div className="relative z-10">
-              <HiOutlineUserCircle className="text-6xl text-blue-500 mb-6" />
-              <h2 className="text-4xl font-black mb-4">About Me</h2>
-              {BIO.about.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-slate-500 dark:text-slate-400 text-lg mb-4"
-                >
-                  {p}
-                </p>
-              ))}
-              <p className="text-slate-500 dark:text-slate-400 text-lg italic">
-                Approach: {BIO.approach}
-              </p>
-            </div>
-          </>
-        ),
-      },
-      location: {
-        theme:
-          "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800",
-        content: (
-          <>
-            <div className="absolute -bottom-10 left-0 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-6 z-0"></div>
-            <div className="relative z-10">
-              <FaMapMarkerAlt className="text-6xl text-green-500 mb-6" />
-              <h2 className="text-4xl font-black mb-4">Current Location</h2>
-              <p className="text-slate-500 dark:text-slate-400 text-lg">
-                Currently building from{" "}
-                <strong className="text-slate-900 dark:text-white">
-                  {BIO.location}
-                </strong>
-                .
-              </p>
-              <div className="mt-8 w-full h-48 bg-white dark:bg-slate-900 rounded-3xl flex items-center justify-center border-2 border-slate-200 dark:border-slate-700 shadow-sm">
-                <span className="text-slate-500 dark:text-slate-400 font-bold flex flex-col items-center gap-2">
-                  <HiOutlineGlobeAlt className="text-4xl" /> Remote Work Ready
-                </span>
-              </div>
-            </div>
-          </>
-        ),
-      },
-      skills: {
-        theme:
-          "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800",
-        content: (
-          <>
-            <div className="absolute right-[-10%] bottom-[-20%] w-64 h-96 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 z-0"></div>
-            <div className="relative z-10">
-              <HiOutlineLightningBolt className="text-6xl text-yellow-500 mb-6" />
-              <h2 className="text-4xl font-black mb-6">
-                Deep Dive: Tech Stack
-              </h2>
-              <ul className="space-y-4 max-h-[400px] overflow-y-auto pr-4 no-scrollbar">
-                {SKILLS.map((skill, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm"
-                  >
-                    <skill.Icon className="text-4xl text-blue-500" />
-                    <div>
-                      <strong className="block text-xl text-slate-800 dark:text-slate-100">
-                        {skill.name}
-                      </strong>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        ),
-      },
+    const closeSidebar = () => {
+      setExpandedProject(null);
+      setActiveModal(null);
     };
 
-    const data = modalData[activeModal];
-    if (!data) return null;
+    let content = null;
+    let title = "Details";
+    let theme = "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800";
 
-    return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div
-          className="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm"
-          onClick={() => setActiveModal(null)}
-        ></div>
-        <div
-          className={`relative w-full max-w-2xl rounded-[2.5rem] p-10 shadow-3xl border overflow-hidden transition-all duration-300 ${data.theme}`}
-        >
-          <button
-            onClick={() => setActiveModal(null)}
-            className="absolute top-6 right-6 w-12 h-12 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20 text-current"
-          >
-            <FaTimes className="text-2xl" />
-          </button>
-          <div className="relative z-10 h-full w-full">{data.content}</div>
-        </div>
-      </div>
-    );
-  };
+    if (expandedProject !== null) {
+      const project = PROJECTS.find((p) => p.id === expandedProject);
+      if (!project) return null;
 
-  const renderSidebar = () => {
-    if (expandedProject === null) return null;
-    const project = PROJECTS.find((p) => p.id === expandedProject);
-    if (!project) return null;
+      const carouselIndex = carouselIndices[project.id] || 0;
+      title = "Project Details";
 
-    const carouselIndex = carouselIndices[project.id] || 0;
-
-    return (
-      <div
-        ref={sidebarRef}
-        tabIndex={-1}
-        className="fixed top-6 bottom-6 right-6 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] bg-white dark:bg-slate-900 shadow-2xl z-[70] flex flex-col animate-slide-in-right rounded-[2.5rem] border border-slate-200 dark:border-slate-800 outline-none overflow-hidden"
-      >
-        {/* Decorative Shapes */}
-        <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-100 dark:bg-blue-900/20 rounded-full z-0 pointer-events-none"></div>
-        <div className="absolute -left-10 bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800/50 rounded-full rotate-45 z-0 pointer-events-none"></div>
-
-        <div className="relative z-10 p-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
-          <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-            Project Details
-          </h3>
-          <button
-            onClick={() => setExpandedProject(null)}
-            className="w-12 h-12 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300 shadow-sm"
-          >
-            <FaTimes className="text-xl" />
-          </button>
-        </div>
-
+      content = (
         <div className="flex-1 overflow-y-auto no-scrollbar relative z-10">
           <div className="relative aspect-video w-full bg-slate-100 dark:bg-slate-950 overflow-hidden">
             <div
@@ -452,16 +319,151 @@ const App: FC = () => {
                     <FaRocket className="text-2xl" /> View Project
                   </a>
                 )}
-                <a
-                  href="#"
-                  className="w-20 h-20 bg-slate-900 dark:bg-slate-800 text-white rounded-[1.5rem] flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-700 transition-all hover:scale-[1.02] shadow-xl"
-                >
-                  <FaGithub className="text-4xl" />
-                </a>
+                {project.github ? (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-20 h-20 bg-slate-900 dark:bg-slate-800 text-white rounded-[1.5rem] flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-700 transition-all hover:scale-[1.02] shadow-xl"
+                  >
+                    <FaGithub className="text-4xl" />
+                  </a>
+                ) : (
+                  <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-[1.5rem] flex items-center justify-center cursor-not-allowed relative group/github">
+                    <FaGithub className="text-4xl opacity-50" />
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold py-2 px-4 rounded-xl opacity-0 group-hover/github:opacity-100 transition-all pointer-events-none shadow-xl border border-white/10 whitespace-nowrap">
+                      Private Repository
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-slate-900 dark:border-t-slate-700"></div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
+      );
+    } else if (activeModal !== null) {
+      const modalData: Record<string, any> = {
+        hero: {
+          title: "Hello World!",
+          theme: "bg-purple-100 dark:bg-purple-600 border-purple-200 dark:border-purple-500",
+          content: (
+            <div className="p-10 relative z-10">
+              <div className="text-6xl mb-6 inline-block animate-bounce">
+                👋
+              </div>
+              <h2 className="text-4xl font-black mb-4 text-purple-900 dark:text-white">Hello World!</h2>
+              <p className="text-purple-800 dark:text-white/90 text-lg mb-4">{BIO.philosophy}</p>
+              <p className="text-purple-800 dark:text-white/90 text-lg">
+                Use the grid behind this window to explore my stack, my current
+                location, and my selected projects.
+              </p>
+            </div>
+          ),
+        },
+        about: {
+          title: "About Me",
+          theme: "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          content: (
+            <div className="p-10 relative z-10">
+              <HiOutlineUserCircle className="text-6xl text-blue-500 mb-6" />
+              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white">About Me</h2>
+              {BIO.about.map((p, i) => (
+                <p
+                  key={i}
+                  className="text-slate-600 dark:text-slate-400 text-lg mb-4 leading-relaxed"
+                >
+                  {p}
+                </p>
+              ))}
+              <p className="text-slate-600 dark:text-slate-400 text-lg italic mt-6">
+                Approach: {BIO.approach}
+              </p>
+            </div>
+          ),
+        },
+        location: {
+          title: "Current Location",
+          theme: "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          content: (
+            <div className="p-10 relative z-10">
+              <div className="absolute -bottom-10 left-0 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-6 z-0 pointer-events-none"></div>
+              <FaMapMarkerAlt className="text-6xl text-green-500 mb-6 relative z-10" />
+              <h2 className="text-4xl font-black mb-4 text-slate-900 dark:text-white relative z-10">Current Location</h2>
+              <p className="text-slate-600 dark:text-slate-400 text-lg relative z-10">
+                Currently building from{" "}
+                <strong className="text-slate-900 dark:text-white">
+                  {BIO.location}
+                </strong>
+                .
+              </p>
+              <div className="mt-8 w-full h-48 bg-white dark:bg-slate-900 rounded-[2rem] flex items-center justify-center border-2 border-slate-100 dark:border-slate-800 shadow-sm relative z-10">
+                <span className="text-slate-500 dark:text-slate-400 font-bold flex flex-col items-center gap-2 text-center px-4">
+                  <HiOutlineGlobeAlt className="text-4xl mb-2" /> Remote Work Ready
+                </span>
+              </div>
+            </div>
+          ),
+        },
+        skills: {
+          title: "Tech Stack",
+          theme: "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          content: (
+            <div className="p-10 relative z-10">
+              <div className="absolute right-[-10%] bottom-[-20%] w-64 h-96 bg-slate-50 dark:bg-slate-800/50 rounded-full rotate-45 z-0 pointer-events-none"></div>
+              <HiOutlineLightningBolt className="text-6xl text-yellow-500 mb-6 relative z-10" />
+              <h2 className="text-4xl font-black mb-6 text-slate-900 dark:text-white relative z-10">
+                Deep Dive: Tech Stack
+              </h2>
+              <ul className="grid grid-cols-1 gap-4 relative z-10">
+                {SKILLS.map((skill, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:border-blue-500/30 transition-colors"
+                  >
+                    <skill.Icon className="text-4xl text-blue-500" />
+                    <strong className="text-xl text-slate-800 dark:text-slate-100">
+                      {skill.name}
+                    </strong>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ),
+        },
+      };
+
+      const data = modalData[activeModal];
+      if (data) {
+        title = data.title;
+        theme = data.theme;
+        content = (
+          <div className="flex-1 overflow-y-auto no-scrollbar relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-slate-100 dark:bg-slate-800/30 rounded-full blur-3xl z-0 pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
+            {data.content}
+          </div>
+        );
+      }
+    }
+
+    return (
+      <div
+        ref={sidebarRef}
+        tabIndex={-1}
+        className={`fixed top-6 bottom-6 right-6 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] shadow-2xl z-[70] flex flex-col animate-slide-in-right rounded-[2.5rem] border outline-none overflow-hidden transition-colors duration-300 ${theme}`}
+      >
+        <div className="relative z-10 p-8 flex justify-between items-center border-b border-black/5 dark:border-white/10 bg-white/10 dark:bg-black/10 backdrop-blur-md">
+          <h3 className="text-2xl font-black tracking-tight text-current">
+            {title}
+          </h3>
+          <button
+            onClick={closeSidebar}
+            className="w-12 h-12 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 rounded-full flex items-center justify-center transition-colors text-current shadow-sm"
+          >
+            <FaTimes className="text-xl" />
+          </button>
+        </div>
+        {content}
       </div>
     );
   };
@@ -472,7 +474,7 @@ const App: FC = () => {
       onClick={() => endOnboarding()}
     >
       <div
-        className={`flex-1 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) p-4 md:p-10 flex flex-col items-center ${expandedProject !== null ? "lg:mr-[624px] lg:translate-x-[-12px]" : ""}`}
+        className={`flex-1 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) p-4 md:p-10 flex flex-col items-center ${(expandedProject !== null || activeModal !== null) ? "lg:mr-[624px] lg:translate-x-[-12px]" : ""}`}
       >
         <button
           onClick={(e) => {
@@ -513,7 +515,7 @@ const App: FC = () => {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onClick={() => setActiveModal("hero")}
+              onClick={() => openInfoModal("hero")}
               className="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
             >
               <div className="w-24 h-24 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/80 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
@@ -533,7 +535,7 @@ const App: FC = () => {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onClick={() => setActiveModal("about")}
+              onClick={() => openInfoModal("about")}
               className="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
             >
               <div className="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 group-hover:rotate-[60deg] transition-transform duration-700 z-0 shadow-inner pointer-events-none"></div>
@@ -558,7 +560,7 @@ const App: FC = () => {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onClick={() => setActiveModal("location")}
+              onClick={() => openInfoModal("location")}
               className="navigable blur-target md:col-span-1 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
             >
               <div className="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0 pointer-events-none"></div>
@@ -598,7 +600,7 @@ const App: FC = () => {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onClick={() => setActiveModal("skills")}
+              onClick={() => openInfoModal("skills")}
               className="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
             >
               <div className="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0 pointer-events-none"></div>
@@ -714,7 +716,7 @@ const App: FC = () => {
                       <div className="media-container relative w-full h-full overflow-hidden">
                         <img
                           src={project.images[0]}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                           alt={project.title}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
@@ -738,7 +740,6 @@ const App: FC = () => {
         </div>
       </div>
       {renderSidebar()}
-      {renderModalContent()}
     </div>
   );
 };
