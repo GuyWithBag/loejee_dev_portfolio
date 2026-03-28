@@ -78,8 +78,8 @@
     }
 
     @keyframes slide-in-bottom {
-        from { transform: translate(-50%, 100%); opacity: 0; }
-        to { transform: translate(-50%, 0); opacity: 1; }
+        from { transform: translateY(100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
     .animate-slide-in-right {

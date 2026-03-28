@@ -127,6 +127,14 @@ const App: FC = () => {
     }
   }, [isOnboarding, currentIndex]);
 
+  // End onboarding on scroll (especially for mobile)
+  useEffect(() => {
+    if (!isOnboarding) return;
+    const handleScroll = () => endOnboarding();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isOnboarding, endOnboarding]);
+
   // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -557,15 +565,36 @@ const App: FC = () => {
   };
 
   const renderToast = () => {
-    if (!toast.visible) return null;
-    return (
-      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-8 py-4 rounded-3xl backdrop-blur-xl font-bold text-lg shadow-3xl border border-white/10 animate-slide-in-bottom">
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-          {toast.message}
+    if (toast.visible) {
+      return (
+        <div className="fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-6 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-3xl backdrop-blur-xl font-bold text-sm md:text-lg shadow-3xl border border-white/10 animate-slide-in-bottom w-[calc(100%-3rem)] md:w-auto text-center">
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse shrink-0" />
+            {toast.message}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    if (isOnboarding) {
+      return (
+        <div className="hidden md:flex fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-6 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-3xl backdrop-blur-xl font-bold text-sm md:text-lg shadow-3xl border border-white/10 animate-bounce items-center gap-3">
+          <div className="flex gap-1">
+            {["W", "A", "S", "D"].map((key) => (
+              <kbd
+                key={key}
+                className="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
+              >
+                {key}
+              </kbd>
+            ))}
+          </div>
+          <span>or Arrows to navigate. Enter to open.</span>
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -590,24 +619,8 @@ const App: FC = () => {
           )}
         </button>
 
-        {isOnboarding && (
-          <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 px-6 py-3 rounded-full backdrop-blur-md font-bold text-sm z-[60] flex items-center gap-3 animate-bounce shadow-2xl border border-white/10">
-            <div className="flex gap-1">
-              {["W", "A", "S", "D"].map((key) => (
-                <kbd
-                  key={key}
-                  className="px-2 py-1 bg-slate-800 dark:bg-slate-200 rounded text-xs"
-                >
-                  {key}
-                </kbd>
-              ))}
-            </div>
-            <span>or Arrows to navigate. Enter to open.</span>
-          </div>
-        )}
-
         <div
-          className="max-w-5xl w-full flex flex-col gap-6 mt-10 relative z-10"
+          className="max-w-5xl w-full flex flex-col gap-6 mt-24 md:mt-10 relative z-10"
           style={{
             transform: `translate(${mouseOffset.x}px, ${mouseOffset.y}px)`,
             transition: "transform 0.1s ease-out",
@@ -623,7 +636,7 @@ const App: FC = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               onClick={() => openInfoModal("hero")}
-              className="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
+              className="navigable blur-target row-span-2 md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
             >
               <a
                 href="/Loejee_Dulaugon_Resume.pdf"
@@ -646,7 +659,7 @@ const App: FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h1 className="text-4xl font-bold text-purple-900 dark:text-white z-10 leading-tight tracking-tight pointer-events-none">
+              <h1 className="text-3xl md:text-4xl font-bold text-purple-900 dark:text-white z-10 leading-tight tracking-tight pointer-events-none">
                 Hi, I'm {BIO.name.split(" ")[0]}. {BIO.role}
               </h1>
               <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-200 dark:bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl pointer-events-none"></div>
