@@ -175,18 +175,18 @@ const App: FC = () => {
     const modalData: Record<string, any> = {
       hero: {
         theme:
-          "bg-purple-500 dark:bg-purple-600 text-white border-purple-400 dark:border-purple-500",
+          "bg-purple-100 dark:bg-purple-600 text-purple-900 dark:text-white border-purple-200 dark:border-purple-500",
         content: (
           <>
-            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/20 rounded-full z-0"></div>
-            <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-400/50 rounded-full z-0"></div>
+            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-purple-200/50 dark:bg-white/20 rounded-full z-0"></div>
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-300/50 dark:bg-purple-400/50 rounded-full z-0"></div>
             <div className="relative z-10">
               <div className="text-6xl mb-6 inline-block animate-bounce">
                 👋
               </div>
               <h2 className="text-4xl font-black mb-4">Hello World!</h2>
-              <p className="text-white/90 text-lg mb-4">{BIO.philosophy}</p>
-              <p className="text-white/90 text-lg">
+              <p className="text-purple-800 dark:text-white/90 text-lg mb-4">{BIO.philosophy}</p>
+              <p className="text-purple-800 dark:text-white/90 text-lg">
                 Use the grid behind this window to explore my stack, my current
                 location, and my selected projects.
               </p>
@@ -310,21 +310,25 @@ const App: FC = () => {
       <div
         ref={sidebarRef}
         tabIndex={-1}
-        className="fixed top-6 bottom-6 right-6 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] bg-white dark:bg-slate-900 shadow-3xl z-[70] flex flex-col animate-slide-in-right rounded-[2.5rem] border-4 border-white dark:border-slate-800 outline-none overflow-hidden"
+        className="fixed top-6 bottom-6 right-6 w-[calc(100%-3rem)] md:w-[500px] lg:w-[600px] bg-white dark:bg-slate-900 shadow-2xl z-[70] flex flex-col animate-slide-in-right rounded-[2.5rem] border border-slate-200 dark:border-slate-800 outline-none overflow-hidden"
       >
-        <div className="p-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
+        {/* Decorative Shapes */}
+        <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-100 dark:bg-blue-900/20 rounded-full z-0 pointer-events-none"></div>
+        <div className="absolute -left-10 bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800/50 rounded-full rotate-45 z-0 pointer-events-none"></div>
+
+        <div className="relative z-10 p-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
           <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
             Project Details
           </h3>
           <button
             onClick={() => setExpandedProject(null)}
-            className="w-12 h-12 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300 shadow-inner"
+            className="w-12 h-12 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300 shadow-sm"
           >
             <FaTimes className="text-xl" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar">
+        <div className="flex-1 overflow-y-auto no-scrollbar relative z-10">
           <div className="relative aspect-video w-full bg-slate-100 dark:bg-slate-950 overflow-hidden">
             <div
               className="carousel-track w-full h-full flex transition-transform duration-500"
@@ -349,7 +353,7 @@ const App: FC = () => {
                     e.stopPropagation();
                     moveCarousel(project.id, -1, project.images.length);
                   }}
-                  className="pointer-events-auto w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-white flex items-center justify-center hover:scale-110 transition-all shadow-2xl border border-white/20"
+                  className="pointer-events-auto w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-white flex items-center justify-center hover:scale-110 transition-all shadow-lg border border-white/20"
                 >
                   <FaChevronLeft className="text-xl" />
                 </button>
@@ -358,7 +362,7 @@ const App: FC = () => {
                     e.stopPropagation();
                     moveCarousel(project.id, 1, project.images.length);
                   }}
-                  className="pointer-events-auto w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-white flex items-center justify-center hover:scale-110 transition-all shadow-2xl border border-white/20"
+                  className="pointer-events-auto w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-white flex items-center justify-center hover:scale-110 transition-all shadow-lg border border-white/20"
                 >
                   <FaChevronRight className="text-xl" />
                 </button>
@@ -366,45 +370,49 @@ const App: FC = () => {
             )}
           </div>
 
-          <div className="p-10">
-            <h2 className="text-4xl font-black mb-6 text-slate-900 dark:text-white leading-tight">
-              {project.title}
-            </h2>
+          <div className="p-10 relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-100 dark:bg-purple-900/10 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
-            <div className="flex flex-wrap gap-3 mb-10">
-              {project.skills.map((skill, i) => (
-                <span
-                  key={i}
-                  className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-bold border border-blue-200 dark:border-blue-800 flex items-center gap-2 shadow-sm"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
+            <div className="relative z-10">
+              <h2 className="text-4xl font-black mb-6 text-slate-900 dark:text-white leading-tight">
+                {project.title}
+              </h2>
 
-            <div className="prose dark:prose-invert max-w-none">
-              <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-lg mb-10">
-                {project.description}
-              </p>
-            </div>
+              <div className="flex flex-wrap gap-3 mb-10">
+                {project.skills.map((skill, i) => (
+                  <span
+                    key={i}
+                    className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-bold rounded-full text-sm border border-blue-200 dark:border-blue-800 flex items-center gap-2"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
 
-            <div className="flex gap-4 mt-auto">
-              {project.link && (
+              <div className="prose dark:prose-invert max-w-none">
+                <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-lg mb-10">
+                  {project.description}
+                </p>
+              </div>
+
+              <div className="flex gap-4 mt-auto">
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-[1.5rem] font-bold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 shadow-xl shadow-blue-500/25"
+                  >
+                    <FaRocket className="text-2xl" /> View Project
+                  </a>
+                )}
                 <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-[1.5rem] font-bold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 shadow-xl shadow-blue-500/25"
+                  href="#"
+                  className="w-20 h-20 bg-slate-900 dark:bg-slate-800 text-white rounded-[1.5rem] flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-700 transition-all hover:scale-[1.02] shadow-xl"
                 >
-                  <FaRocket className="text-2xl" /> View Project
+                  <FaGithub className="text-4xl" />
                 </a>
-              )}
-              <a
-                href="#"
-                className="w-20 h-20 bg-slate-900 dark:bg-slate-800 text-white rounded-[1.5rem] flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-700 transition-all hover:scale-[1.02] shadow-xl"
-              >
-                <FaGithub className="text-4xl" />
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -418,7 +426,7 @@ const App: FC = () => {
       onClick={() => endOnboarding()}
     >
       <div
-        className={`flex-1 transition-all duration-700 ease-in-out p-4 md:p-10 flex flex-col items-center ${expandedProject !== null ? "lg:mr-[580px] lg:translate-x-[-40px]" : ""}`}
+        className={`flex-1 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) p-4 md:p-10 flex flex-col items-center ${expandedProject !== null ? "lg:mr-[624px] lg:translate-x-[-12px]" : ""}`}
       >
         <button
           onClick={(e) => {
@@ -454,16 +462,16 @@ const App: FC = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               onClick={() => setActiveModal("hero")}
-              className="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-500 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-400 dark:border-purple-500"
+              className="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
             >
-              <div className="w-24 h-24 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/50 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
+              <div className="w-24 h-24 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/80 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
                 <img src={BIO.pfp} alt={BIO.name} className="w-full h-full object-cover" />
               </div>
-              <h1 className="text-4xl font-bold text-white z-10 leading-tight tracking-tight pointer-events-none">
+              <h1 className="text-4xl font-bold text-purple-900 dark:text-white z-10 leading-tight tracking-tight pointer-events-none">
                 Hi, I'm {BIO.name.split(" ")[0]}. {BIO.role}
               </h1>
-              <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl pointer-events-none"></div>
-              <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+              <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-200 dark:bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl pointer-events-none"></div>
+              <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-300/50 dark:bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
             </div>
 
             <div
@@ -524,9 +532,9 @@ const App: FC = () => {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="navigable blur-target md:col-span-1 bg-slate-900 dark:bg-slate-800 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-slate-700"
+              className="navigable blur-target md:col-span-1 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-slate-200 dark:border-slate-700"
             >
-              <div className="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0 pointer-events-none"></div>
+              <div className="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-slate-300/30 dark:border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0 pointer-events-none"></div>
               <FaGithub className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
               <span className="font-bold z-10 pointer-events-none">GitHub</span>
             </a>
@@ -550,7 +558,7 @@ const App: FC = () => {
                   {SKILLS.slice(0, 4).map((skill, i) => (
                     <span
                       key={i}
-                      className="px-4 py-2 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-200 dark:border-blue-800"
+                      className="px-4 py-2 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-100 dark:border-blue-800"
                     >
                       <skill.Icon className="text-lg" /> {skill.name}
                     </span>
@@ -569,9 +577,9 @@ const App: FC = () => {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="navigable blur-target md:col-span-1 bg-blue-600 dark:bg-blue-700 text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-transparent dark:border-blue-600"
+              className="navigable blur-target md:col-span-1 bg-blue-100 dark:bg-blue-700 text-blue-900 dark:text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-blue-200 dark:border-blue-600"
             >
-              <div className="absolute -left-6 -top-6 w-24 h-24 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+              <div className="absolute -left-6 -top-6 w-24 h-24 bg-blue-400/20 dark:bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
               <FaLinkedin className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
               <span className="font-bold z-10 pointer-events-none">LinkedIn</span>
             </a>
@@ -584,11 +592,11 @@ const App: FC = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               onClick={() => (window.location.href = `mailto:${CONTACT.email}`)}
-              className="navigable blur-target md:col-span-1 bg-yellow-400 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-300 dark:border-yellow-600"
+              className="navigable blur-target md:col-span-1 bg-yellow-100 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-200 dark:border-yellow-600"
             >
-              <div className="absolute right-0 bottom-0 w-16 h-16 bg-white/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg pointer-events-none"></div>
+              <div className="absolute right-0 bottom-0 w-16 h-16 bg-yellow-300/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg pointer-events-none"></div>
               <div className="z-10 relative flex flex-col items-center w-full pointer-events-none">
-                <h2 className="text-xl font-black text-slate-900 mb-3 tracking-tighter">
+                <h2 className="text-xl font-black text-yellow-900 dark:text-slate-900 mb-3 tracking-tighter">
                   {CONTACT.ctaTitle}
                 </h2>
                 <div className="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm shadow-xl flex items-center justify-center gap-2">
