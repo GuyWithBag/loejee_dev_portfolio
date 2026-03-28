@@ -748,7 +748,7 @@ const App: FC = () => {
                 <h2 className="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider flex items-center gap-2">
                   <HiOutlineLightningBolt /> Core Skills
                 </h2>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3 items-center">
                   {SKILLS.slice(0, 4).map((skill, i) => (
                     <span
                       key={i}
@@ -757,6 +757,11 @@ const App: FC = () => {
                       <skill.Icon className="text-lg" /> {skill.name}
                     </span>
                   ))}
+                  {SKILLS.length > 4 && (
+                    <span className="text-blue-500 text-xs font-bold group-hover:translate-x-1 transition-transform">
+                      +{SKILLS.length - 4} more -&gt;
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
