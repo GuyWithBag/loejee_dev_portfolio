@@ -94,7 +94,10 @@ const App: FC = () => {
       } else if (key === "s" || key === "arrowdown") {
         // Use step of 3 if in projects area (index >= 7)
         const step = currentIndex >= 7 ? 3 : 2;
-        newIndex = Math.min(currentIndex + step, navigablesRef.current.length - 1);
+        newIndex = Math.min(
+          currentIndex + step,
+          navigablesRef.current.length - 1,
+        );
       } else if (key === "w" || key === "arrowup") {
         // Use step of 3 if in projects area (index >= 7)
         const step = currentIndex >= 7 ? 3 : 2;
@@ -493,179 +496,191 @@ const App: FC = () => {
 
         {/* Projects Container */}
         <div
-          className="flex flex-col md:flex-row items-start justify-between gap-6 mt-6 blur-target pb-20 w-full"
+          className="flex flex-col md:flex-row items-start justify-between gap-6  blur-target pb-20 w-full"
           id="projects-container"
         >
           {[0, 1, 2].map((colIndex) => (
             <div key={colIndex} className="flex flex-col gap-6 flex-1 w-full">
-              {[...PROJECTS, "placeholder" as const].map((item, originalIndex) => {
-                if (originalIndex % 3 !== colIndex) return null;
+              {[...PROJECTS, "placeholder" as const].map(
+                (item, originalIndex) => {
+                  if (originalIndex % 3 !== colIndex) return null;
 
-                if (item === "placeholder") {
+                  if (item === "placeholder") {
+                    return (
+                      <div
+                        key="placeholder"
+                        className="navigable project-card w-full aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                        ref={(el) => {
+                          navigablesRef.current[7 + PROJECTS.length] = el;
+                        }}
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+                        <div className="z-10 relative flex flex-col items-center pointer-events-none">
+                          <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
+                            <FaMousePointer className="text-xl text-slate-500 dark:text-slate-400" />
+                          </div>
+                          <span className="font-bold tracking-wide">
+                            Add Project
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  const project = item;
+                  const isExpanded = expandedProject === project.id;
+                  const carouselIndex = carouselIndices[project.id] || 0;
+                  const navigableIndex = 7 + originalIndex;
+
                   return (
                     <div
-                      key="placeholder"
-                      className="navigable project-card w-full aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                      key={project.id}
+                      tabIndex={0}
                       ref={(el) => {
-                        navigablesRef.current[7 + PROJECTS.length] = el;
+                        navigablesRef.current[navigableIndex] = el;
                       }}
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
-                    >
-                      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
-                      <div className="z-10 relative flex flex-col items-center pointer-events-none">
-                        <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
-                          <FaMousePointer className="text-xl text-slate-500 dark:text-slate-400" />
-                        </div>
-                        <span className="font-bold tracking-wide">Add Project</span>
-                      </div>
-                    </div>
-                  );
-                }
-
-                const project = item;
-                const isExpanded = expandedProject === project.id;
-                const carouselIndex = carouselIndices[project.id] || 0;
-                const navigableIndex = 7 + originalIndex;
-
-                return (
-                  <div
-                    key={project.id}
-                    tabIndex={0}
-                    ref={(el) => {
-                      navigablesRef.current[navigableIndex] = el;
-                    }}
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => toggleProject(project.id)}
-                    className={`navigable project-card rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border border-slate-200 dark:border-slate-800 flex flex-col
+                      onClick={() => toggleProject(project.id)}
+                      className={`navigable project-card rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border border-slate-200 dark:border-slate-800 flex flex-col
                       ${isExpanded ? "project-expanded" : "w-full"}
                       ${project.aspectRatio === "16:9" ? "aspect-video" : project.aspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-square"}
                     `}
-                  >
-                    {/* Expanded Content */}
-                    <div
-                      className={`${isExpanded ? "flex" : "hidden"} w-full md:w-1/2 p-8 md:p-12 flex-col justify-between h-full bg-slate-900 dark:bg-slate-950 z-30 overflow-y-auto`}
                     >
-                      <div>
-                        <div className="flex justify-between items-start mb-6">
-                          <h3 className="text-4xl font-black tracking-tight text-white">
-                            {project.title}
-                          </h3>
+                      {/* Expanded Content */}
+                      <div
+                        className={`${isExpanded ? "flex" : "hidden"} w-full md:w-1/2 p-8 md:p-12 flex-col justify-between h-full bg-slate-900 dark:bg-slate-950 z-30 overflow-y-auto`}
+                      >
+                        <div>
+                          <div className="flex justify-between items-start mb-6">
+                            <h3 className="text-4xl font-black tracking-tight text-white">
+                              {project.title}
+                            </h3>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleProject(project.id);
+                              }}
+                              className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                            >
+                              <FaTimes className="text-xl" />
+                            </button>
+                          </div>
+                          <p className="text-slate-300 font-medium leading-relaxed text-lg mb-6">
+                            {project.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mb-8">
+                            {project.skills.map((skill, i) => (
+                              <span
+                                key={i}
+                                className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-bold border border-blue-500/30 flex items-center gap-1"
+                              >
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex gap-4">
+                          {project.link && (
+                            <a
+                              href={project.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 bg-white text-slate-900 py-3 rounded-full font-bold transition-transform hover:scale-105 flex items-center justify-center gap-2"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <FaRocket className="text-xl" /> Live App
+                            </a>
+                          )}
+                          <button className="w-12 h-12 bg-slate-800 text-white rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
+                            <FaGithub className="text-2xl" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Media Container */}
+                      <div className="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden pointer-events-none group-hover:pointer-events-auto">
+                        <div
+                          className={`absolute inset-0 bg-slate-900/50 z-10 default-overlay transition-opacity duration-300 pointer-events-none ${isExpanded ? "opacity-0" : ""}`}
+                        ></div>
+                        <div
+                          className="carousel-track w-full h-full flex transition-transform duration-500 pointer-events-none"
+                          style={{
+                            transform: `translateX(-${carouselIndex * 100}%)`,
+                          }}
+                        >
+                          {project.images.map((img, i) => (
+                            <img
+                              key={i}
+                              src={img}
+                              className="w-full h-full object-contain shrink-0"
+                              alt={`${project.title} UI ${i + 1}`}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Carousel Controls */}
+                        <div
+                          className={`${isExpanded ? "flex" : "hidden"} absolute inset-0 z-20 pointer-events-none p-4 justify-between items-center`}
+                        >
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              toggleProject(project.id);
+                              moveCarousel(
+                                project.id,
+                                -1,
+                                project.images.length,
+                              );
                             }}
-                            className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                            className="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
                           >
-                            <FaTimes className="text-xl" />
+                            <FaChevronLeft />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              moveCarousel(
+                                project.id,
+                                1,
+                                project.images.length,
+                              );
+                            }}
+                            className="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                          >
+                            <FaChevronRight />
                           </button>
                         </div>
-                        <p className="text-slate-300 font-medium leading-relaxed text-lg mb-6">
-                          {project.description}
-                        </p>
-                        <div className="flex flex-wrap gap-2 mb-8">
-                          {project.skills.map((skill, i) => (
-                            <span
-                              key={i}
-                              className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-bold border border-blue-500/30 flex items-center gap-1"
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex gap-4">
-                        {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 bg-white text-slate-900 py-3 rounded-full font-bold transition-transform hover:scale-105 flex items-center justify-center gap-2"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <FaRocket className="text-xl" /> Live App
-                          </a>
-                        )}
-                        <button className="w-12 h-12 bg-slate-800 text-white rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
-                          <FaGithub className="text-2xl" />
-                        </button>
-                      </div>
-                    </div>
 
-                    {/* Media Container */}
-                    <div className="media-container relative w-full h-full flex-1 min-h-[300px] overflow-hidden pointer-events-none group-hover:pointer-events-auto">
-                      <div
-                        className={`absolute inset-0 bg-slate-900/50 z-10 default-overlay transition-opacity duration-300 pointer-events-none ${isExpanded ? "opacity-0" : ""}`}
-                      ></div>
-                      <div
-                        className="carousel-track w-full h-full flex transition-transform duration-500 pointer-events-none"
-                        style={{
-                          transform: `translateX(-${carouselIndex * 100}%)`,
-                        }}
-                      >
-                        {project.images.map((img, i) => (
-                          <img
-                            key={i}
-                            src={img}
-                            className="w-full h-full object-cover shrink-0"
-                            alt={`${project.title} UI ${i + 1}`}
-                          />
-                        ))}
-                      </div>
-
-                      {/* Carousel Controls */}
-                      <div
-                        className={`${isExpanded ? "flex" : "hidden"} absolute inset-0 z-20 pointer-events-none p-4 justify-between items-center`}
-                      >
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            moveCarousel(project.id, -1, project.images.length);
-                          }}
-                          className="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
+                        {/* Default Content (Visible when collapsed) */}
+                        <div
+                          className={`${isExpanded ? "hidden" : "flex"} absolute inset-0 p-8 flex flex-col justify-between z-20 pointer-events-none`}
                         >
-                          <FaChevronLeft />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            moveCarousel(project.id, 1, project.images.length);
-                          }}
-                          className="pointer-events-auto w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-black/70 hover:scale-110 transition-all"
-                        >
-                          <FaChevronRight />
-                        </button>
-                      </div>
-
-                      {/* Default Content (Visible when collapsed) */}
-                      <div
-                        className={`${isExpanded ? "hidden" : "flex"} absolute inset-0 p-8 flex flex-col justify-between z-20 pointer-events-none`}
-                      >
-                        <div>
-                          <h3 className="text-3xl font-black mb-2 tracking-tighter shadow-sm">
-                            {project.title}
-                          </h3>
-                          <p className="text-slate-200 font-medium">
-                            Click to expand details.
-                          </p>
-                        </div>
-                        <div className="flex gap-2">
-                          {project.skills.slice(0, 2).map((skill, i) => (
-                            <span
-                              key={i}
-                              className="px-4 py-2 bg-white/20 rounded-full text-sm font-bold backdrop-blur-md border border-white/30"
-                            >
-                              {skill}
-                            </span>
-                          ))}
+                          <div>
+                            <h3 className="text-3xl font-black mb-2 tracking-tighter shadow-sm">
+                              {project.title}
+                            </h3>
+                            <p className="text-slate-200 font-medium">
+                              Click to expand details.
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            {project.skills.slice(0, 2).map((skill, i) => (
+                              <span
+                                key={i}
+                                className="px-4 py-2 bg-white/20 rounded-full text-sm font-bold backdrop-blur-md border border-white/30"
+                              >
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                },
+              )}
             </div>
           ))}
         </div>
