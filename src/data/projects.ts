@@ -15,7 +15,14 @@ export const PROJECTS: Project[] = [
     title: "ADTO Event Booking System",
     description:
       "A university-wide event booking management system for Ateneo de Davao University, featuring scalable state management and variant systems. Integrated with TanStack Query, Zustand, and CVA for complex workflows.",
-    skills: ["NextJS", "Radix UI", "TanStack Query", "Zustand", "CVA", "Supabase"],
+    skills: [
+      "NextJS",
+      "Radix UI",
+      "TanStack Query",
+      "Zustand",
+      "CVA",
+      "Supabase",
+    ],
     images: [
       "https://images.unsplash.com/photo-1505373633560-24831d407304?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1540575861501-7ad058211a37?auto=format&fit=crop&w=800&q=80",
@@ -34,7 +41,7 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80",
     ],
     category: "Professional Services",
-    aspectRatio: "1:1",
+    aspectRatio: "16:9",
   },
   {
     id: 3,
@@ -60,7 +67,7 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1541252260730-0412e3e2108e?auto=format&fit=crop&w=800&q=80",
     ],
     category: "Event Platform",
-    aspectRatio: "1:1",
+    aspectRatio: "16:9",
   },
   {
     id: 5,
@@ -78,12 +85,19 @@ export const PROJECTS: Project[] = [
     title: "SAMAHAN Communications",
     description:
       "A dedicated newsfeed platform for student government announcements, built with a focus on load performance, CVA variant management, and modular architecture.",
-    skills: ["NextJS", "Tailwind CSS", "Radix UI", "CVA", "Storybook", "Supabase"],
+    skills: [
+      "NextJS",
+      "Tailwind CSS",
+      "Radix UI",
+      "CVA",
+      "Storybook",
+      "Supabase",
+    ],
     images: [
       "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80",
     ],
     category: "News Platform",
-    aspectRatio: "9:16",
+    aspectRatio: "16:9",
   },
   {
     id: 7,
@@ -95,7 +109,7 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
     ],
     category: "Client Project",
-    aspectRatio: "9:16",
+    aspectRatio: "16:9",
   },
   {
     id: 8,
@@ -114,7 +128,7 @@ export const PROJECTS: Project[] = [
     ],
     link: "https://play.google.com/store/apps/details?id=org.MacchiMatchaProductions.ChainReactionAtomRevampedSupreme",
     category: "Game Dev",
-    aspectRatio: "1:1",
+    aspectRatio: "9:16",
   },
   {
     id: 9,
@@ -138,7 +152,7 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
     ],
     category: "Business Site",
-    aspectRatio: "1:1",
+    aspectRatio: "16:9",
   },
   {
     id: 11,
@@ -198,20 +212,5 @@ export const PROJECTS: Project[] = [
     ],
     category: "Media App",
     aspectRatio: "9:16",
-  },
-  {
-    id: 15,
-    title: "Legacy Dev Portfolio",
-    description:
-      "A previous iteration of my development portfolio, showcasing early work and professional connections with a focus on content clarity and layout.",
-    skills: ["React", "CSS Grid", "Portfolio Design"],
-    images: [
-      "/images/portfolio-images/portfolio-website/title-card.png",
-      "/images/portfolio-images/portfolio-website/portfolio-content.png",
-      "/images/portfolio-images/portfolio-website/about.png",
-      "/images/portfolio-images/portfolio-website/connections.png",
-    ],
-    category: "Web Development",
-    aspectRatio: "16:9",
   },
 ];
