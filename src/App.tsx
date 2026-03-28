@@ -12,6 +12,7 @@ import {
   FaSun,
   FaMoon,
   FaMousePointer,
+  FaDownload,
 } from "react-icons/fa";
 import {
   HiOutlineUserCircle,
@@ -610,6 +611,20 @@ const App: FC = () => {
               onClick={() => openInfoModal("hero")}
               className="navigable blur-target md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
             >
+              <a
+                href="/Loejee_Dulaugon_Resume.pdf"
+                download
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showToast("Resume download started!");
+                }}
+                className="absolute top-8 right-8 w-14 h-14 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-purple-900 dark:text-white flex items-center justify-center hover:scale-110 transition-all shadow-lg border border-white/20 z-20 group/download"
+              >
+                <FaDownload className="text-xl group-hover/download:animate-bounce" />
+                <div className="absolute -bottom-10 right-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-1 px-3 rounded-full opacity-0 group-hover/download:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl border border-white/10 uppercase tracking-widest">
+                  Download CV
+                </div>
+              </a>
               <div className="w-24 h-24 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/80 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
                 <img
                   src={BIO.pfp}
