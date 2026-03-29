@@ -350,12 +350,19 @@ const App: FC = () => {
           <div className="p-10 relative">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-100 dark:bg-purple-900/10 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
-            <div className="relative z-10">
-              <h2 className="text-4xl font-black mb-6 text-slate-900 dark:text-white leading-tight">
-                {project.title}
-              </h2>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <h2 className="text-4xl font-black text-slate-900 dark:text-white leading-tight">
+                    {project.title}
+                  </h2>
+                  {project.inDevelopment && (
+                    <span className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 font-bold rounded-full text-xs border border-yellow-200 dark:border-yellow-800 animate-pulse">
+                      In Development
+                    </span>
+                  )}
+                </div>
 
-              <div className="flex flex-wrap gap-3 mb-10">
+                <div className="flex flex-wrap gap-3 mb-10">
                 {project.skills.map((skill, i) => (
                   <span
                     key={i}
@@ -943,6 +950,13 @@ const App: FC = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
                             <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 pointer-events-none">
+                              {project.inDevelopment && (
+                                <div className="absolute top-6 right-6">
+                                  <span className="px-3 py-1 bg-yellow-400 text-yellow-900 font-black rounded-full text-[10px] uppercase tracking-wider shadow-xl animate-pulse">
+                                    In Dev
+                                  </span>
+                                </div>
+                              )}
                               <h3 className="text-2xl font-black mb-2 tracking-tighter">
                                 {project.title}
                               </h3>

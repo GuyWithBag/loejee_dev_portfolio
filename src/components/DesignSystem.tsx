@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { FaDownload, FaSun, FaEnvelope, FaGithub, FaLinkedin, FaMoon, FaRocket, FaChevronRight, FaChevronLeft } from "react-icons/fa";
-import { HiOutlineUserCircle, HiOutlineLightningBolt, HiOutlineGlobeAlt, HiOutlineColorSwatch } from "react-icons/hi";
+import { FaDownload, FaSun, FaGithub, FaRocket, FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { HiOutlineLightningBolt, HiOutlineGlobeAlt } from "react-icons/hi";
 
 interface DesignSystemProps {
   onClose: () => void;

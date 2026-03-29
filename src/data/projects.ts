@@ -8,6 +8,7 @@ export interface Project {
   github?: string;
   category?: string;
   aspectRatio?: "16:9" | "9:16" | "1:1";
+  inDevelopment?: boolean;
 }
 
 export const PROJECTS: Project[] = [
@@ -28,6 +29,7 @@ export const PROJECTS: Project[] = [
     category: "Enterprise Web",
     aspectRatio: "16:9",
     github: "https://github.com/SAMAHAN-Systems-Development/adto-admin",
+    inDevelopment: true,
   },
   {
     id: 2,
@@ -200,5 +202,19 @@ export const PROJECTS: Project[] = [
     category: "Media App",
     aspectRatio: "9:16",
     github: "https://github.com/GuyWithBag/my_music_player",
+  },
+  {
+    id: 15,
+    title: "Flow App",
+    description:
+      "A comfy, minimalist Pomodoro app designed for deep focus and relaxation. Features a clean aesthetic and intuitive controls, currently being prepared for its initial release on the Google Play Store.",
+    skills: ["Mobile Development", "UI/UX", "Productivity", "Animation"],
+    images: [
+      "/images/portfolio-images/flow_app/flow_focus.jpg",
+      "/images/portfolio-images/flow_app/flow_break.jpg",
+    ],
+    category: "Mobile Productivity",
+    aspectRatio: "9:16",
+    inDevelopment: true,
   },
 ];
