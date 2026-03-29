@@ -15,7 +15,7 @@ import {
   SiSupabase,
   SiNestjs,
 } from "react-icons/si";
-import pfp from "../assets/me.png";
+import pfp from "../assets/me.webp";
 
 export const BIO = {
   name: "Loejee Miguel L. Dulaugon",
@@ -39,6 +39,11 @@ export const BIO = {
   ],
   approach:
     "Iterative growth, clean architecture, and empathy for the user. I believe in software that solves real problems.",
+  languages: [
+    "I can speak English! (B2)",
+    "日本語が話せます！ (N4)",
+    "我会说中文！ (HSK1)",
+  ],
 };
 
 export const SKILLS = [
