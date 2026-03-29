@@ -18,12 +18,15 @@ import {
   HiOutlineUserCircle,
   HiOutlineLightningBolt,
   HiOutlineGlobeAlt,
+  HiOutlineColorSwatch,
 } from "react-icons/hi";
 import { BIO, SKILLS, SOCIALS, CONTACT } from "./data/content";
 import { PROJECTS } from "./data/projects";
+import DesignSystem from "./components/DesignSystem";
 
 const App: FC = () => {
   const [isDark, setIsDark] = useState(true);
+  const [showDesignSystem, setShowDesignSystem] = useState(false);
   const [isOnboarding, setIsOnboarding] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeItem, setActiveItem] = useState<string | number | null>(null);
@@ -46,6 +49,20 @@ const App: FC = () => {
     message: "",
     visible: false,
   });
+  const [languageIndex, setLanguageIndex] = useState(0);
+  const [isHoveringHero, setIsHoveringHero] = useState(false);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    if (isHoveringHero && BIO.languages) {
+      interval = setInterval(() => {
+        setLanguageIndex((prev) => (prev + 1) % BIO.languages!.length);
+      }, 2000);
+    } else {
+      setLanguageIndex(0);
+    }
+    return () => clearInterval(interval);
+  }, [isHoveringHero]);
 
   const showToast = (message: string) => {
     setToast({ message, visible: true });
@@ -605,306 +622,351 @@ const App: FC = () => {
       <div
         className={`flex-1 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) p-4 md:p-10 flex flex-col items-center ${activeItem !== null ? "md:mr-[500px] lg:mr-[600px]" : ""}`} /* major divs gap */
       >
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsDark(!isDark);
-          }}
-          className="fixed top-6 left-6 w-12 h-12 flex items-center justify-center bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-full transition-all duration-300 hover:scale-110 hover:rotate-12 shadow-2xl z-[60]"
-        >
-          {isDark ? (
-            <FaSun className="text-xl" />
-          ) : (
-            <FaMoon className="text-xl" />
-          )}
-        </button>
-
-        <div
-          className="max-w-5xl w-full flex flex-col gap-6 mt-24 md:mt-10 relative z-10"
-          style={{
-            transform: `translate(${mouseOffset.x}px, ${mouseOffset.y}px)`,
-            transition: "transform 0.1s ease-out",
-          }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[180px] w-full">
-            <div
-              id="hero-card"
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[0] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => openInfoModal("hero")}
-              className="navigable blur-target row-span-2 md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
-            >
-              <a
-                href="/Loejee_Dulaugon_Resume.pdf"
-                download
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showToast("Resume download started!");
-                }}
-                className="absolute top-8 right-8 w-14 h-14 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-purple-900 dark:text-white flex items-center justify-center hover:scale-110 transition-all shadow-lg border border-white/20 z-20 group/download"
-              >
-                <FaDownload className="text-xl group-hover/download:animate-bounce" />
-                <div className="absolute -bottom-10 right-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-1 px-3 rounded-full opacity-0 group-hover/download:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl border border-white/10 uppercase tracking-widest">
-                  Download CV
-                </div>
-              </a>
-              <div className="w-24 h-24 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/80 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
-                <img
-                  src={BIO.pfp}
-                  alt={BIO.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-purple-900 dark:text-white z-10 leading-tight tracking-tight pointer-events-none">
-                Hi, I'm {BIO.name.split(" ")[0]}. {BIO.role}
-              </h1>
-              <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-200 dark:bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl pointer-events-none"></div>
-              <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-300/50 dark:bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
-            </div>
-
-            <div
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[1] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => openInfoModal("about")}
-              className="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
-            >
-              <div className="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 group-hover:rotate-[60deg] transition-transform duration-700 z-0 shadow-inner pointer-events-none"></div>
-              <div className="z-10 relative pointer-events-none">
-                <div className="flex items-center gap-2 mb-2">
-                  <HiOutlineUserCircle className="text-2xl text-slate-400" />
-                  <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
-                    About Me
-                  </h2>
-                </div>
-                <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm line-clamp-2">
-                  {BIO.about[0]}
-                </p>
-                <span className="text-purple-500 text-xs font-bold mt-2 inline-block group-hover:translate-x-1 transition-transform">
-                  Click to read more -&gt;
-                </span>
-              </div>
-            </div>
-
-            <div
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[2] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => openInfoModal("location")}
-              className="navigable blur-target md:col-span-1 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
-            >
-              <div className="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0 pointer-events-none"></div>
-              <div className="relative flex h-6 w-6 mb-3 z-10 pointer-events-none">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-6 w-6 bg-green-500 border-2 border-white dark:border-slate-900"></span>
-              </div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 z-10 pointer-events-none">
-                Building from
-              </p>
-              <p className="font-semibold text-slate-800 dark:text-slate-200 z-10 pointer-events-none">
-                {BIO.location}
-              </p>
-            </div>
-
-            <a
-              href={SOCIALS.find((s) => s.id === "github")?.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[3] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="navigable blur-target md:col-span-1 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-slate-200 dark:border-slate-700"
-            >
-              <div className="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-slate-300/30 dark:border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0 pointer-events-none"></div>
-              <FaGithub className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
-              <span className="font-bold z-10 pointer-events-none">GitHub</span>
-            </a>
-
-            <div
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[4] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => openInfoModal("skills")}
-              className="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
-            >
-              <div className="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0 pointer-events-none"></div>
-              <div className="z-10 relative pointer-events-none">
-                <h2 className="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <HiOutlineLightningBolt /> Core Skills
-                </h2>
-                <div className="flex flex-wrap gap-3 items-center">
-                  {SKILLS.slice(0, 4).map((skill, i) => (
-                    <span
-                      key={i}
-                      className="px-4 py-2 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-100 dark:border-blue-800"
-                    >
-                      <skill.Icon className="text-lg" /> {skill.name}
-                    </span>
-                  ))}
-                  {SKILLS.length > 4 && (
-                    <span className="text-blue-500 text-xs font-bold group-hover:translate-x-1 transition-transform">
-                      +{SKILLS.length - 4} more -&gt;
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <a
-              href={SOCIALS.find((s) => s.id === "linkedin")?.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[5] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="navigable blur-target md:col-span-1 bg-blue-100 dark:bg-blue-700 text-blue-900 dark:text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-blue-200 dark:border-blue-600"
-            >
-              <div className="absolute -left-6 -top-6 w-24 h-24 bg-blue-400/20 dark:bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
-              <FaLinkedin className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
-              <span className="font-bold z-10 pointer-events-none">
-                LinkedIn
-              </span>
-            </a>
-
-            <button
-              tabIndex={0}
-              ref={(el) => {
-                navigablesRef.current[6] = el;
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => (window.location.href = `mailto:${CONTACT.email}`)}
-              className="navigable blur-target md:col-span-1 bg-yellow-100 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-200 dark:border-yellow-600"
-            >
-              <div className="absolute right-0 bottom-0 w-16 h-16 bg-yellow-300/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg pointer-events-none"></div>
-              <div className="z-10 relative flex flex-col items-center w-full pointer-events-none">
-                <h2 className="text-xl font-black text-yellow-900 dark:text-slate-900 mb-1 tracking-tighter">
-                  {CONTACT.ctaTitle}
-                </h2>
-                <p className="text-xs font-bold text-yellow-800 dark:text-slate-800 mb-3 opacity-70">
-                  {CONTACT.email}
-                </p>
-                <div className="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm shadow-xl flex items-center justify-center gap-2 group-hover:bg-slate-800 transition-colors">
-                  <FaEnvelope /> {CONTACT.ctaButton}
-                </div>
-              </div>
-            </button>
-          </div>
-
-          <div
-            className="flex flex-col md:flex-row items-start justify-between gap-6 blur-target pb-20 w-full"
-            id="projects-container"
+        <div className="fixed top-6 left-6 flex gap-3 z-[60]">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsDark(!isDark);
+            }}
+            className="w-12 h-12 flex items-center justify-center bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-full transition-all duration-300 hover:scale-110 hover:rotate-12 shadow-2xl"
           >
-            {[0, 1, 2].map((colIndex) => (
-              <div key={colIndex} className="flex flex-col gap-6 flex-1 w-full">
-                {[...PROJECTS, "placeholder" as const].map(
-                  (item, originalIndex) => {
-                    if (originalIndex % 3 !== colIndex) return null;
+            {isDark ? (
+              <FaSun className="text-xl" />
+            ) : (
+              <FaMoon className="text-xl" />
+            )}
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDesignSystem(!showDesignSystem);
+            }}
+            className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110 shadow-4xl ${showDesignSystem ? "bg-purple-600 text-white border-2 border-purple-700" : "dark:bg-slate-900 dark:text-white bg-white text-slate-900 border-2 border-slate-700 dark:border-slate-600"}`}
+          >
+            <HiOutlineColorSwatch className="text-2xl" />
+          </button>
+        </div>
 
-                    if (item === "placeholder") {
+        {showDesignSystem ? (
+          <DesignSystem onClose={() => setShowDesignSystem(false)} />
+        ) : (
+          <div
+            className="max-w-5xl w-full flex flex-col gap-6 mt-24 md:mt-10 relative z-10"
+            style={{
+              transform: `translate(${mouseOffset.x}px, ${mouseOffset.y}px)`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[180px] w-full">
+              <div
+                id="hero-card"
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[0] = el;
+                }}
+                onMouseMove={(e) => {
+                  handleMouseMove(e);
+                  setIsHoveringHero(true);
+                }}
+                onMouseLeave={(e) => {
+                  handleMouseLeave(e);
+                  setIsHoveringHero(false);
+                }}
+                onClick={() => openInfoModal("hero")}
+                className="navigable blur-target row-span-2 md:col-span-2 md:row-span-2 bg-purple-100 dark:bg-purple-600 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-end relative overflow-hidden group cursor-pointer border border-purple-200 dark:border-purple-500"
+              >
+                <a
+                  href="/Loejee_Dulaugon_Resume.pdf"
+                  download
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    showToast("Resume download started!");
+                  }}
+                  className="absolute top-8 right-8 w-14 h-14 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-full text-purple-900 dark:text-white flex items-center justify-center hover:scale-110 transition-all shadow-lg border border-white/20 z-20 group/download"
+                >
+                  <FaDownload className="text-xl group-hover/download:animate-bounce" />
+                  <div className="absolute -bottom-10 right-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-1 px-3 rounded-full opacity-0 group-hover/download:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl border border-white/10 uppercase tracking-widest">
+                    Download CV
+                  </div>
+                </a>
+                <div className="w-24 h-24 bg-white/50 dark:bg-black/20 backdrop-blur-md rounded-full mb-4 border-4 border-white/80 dark:border-white/20 shadow-inner z-10 pointer-events-none flex items-center justify-center overflow-hidden">
+                  <img
+                    src={BIO.pfp}
+                    alt={BIO.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="z-10 pointer-events-none relative h-32 md:h-40 flex flex-col justify-end">
+                  <div className="relative w-full">
+                    <h1
+                      className={`text-3xl md:text-4xl font-bold text-purple-900 dark:text-white leading-tight tracking-tight transition-all duration-500
+                    ${isHoveringHero ? "opacity-0 -translate-y-4 pointer-events-none" : "opacity-100 translate-y-0"}
+                  `}
+                    >
+                      Hi, I'm {BIO.name.split(" ")[0]}. {BIO.role}
+                    </h1>
+                    <div
+                      className={`absolute top-0 left-0 w-full transition-all duration-500
+                    ${isHoveringHero ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
+                  `}
+                    >
+                      <p className="text-3xl md:text-4xl font-bold text-purple-900 dark:text-white leading-tight tracking-tight flex items-center gap-4">
+                        {BIO.languages?.[languageIndex]}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-200 dark:bg-white/20 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0 shadow-xl pointer-events-none"></div>
+                <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-300/50 dark:bg-purple-400/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+              </div>
+
+              <div
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[1] = el;
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openInfoModal("about")}
+                className="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+              >
+                <div className="absolute -right-8 -top-8 w-40 h-40 bg-slate-100 dark:bg-slate-800 rounded-3xl rotate-12 group-hover:rotate-[60deg] transition-transform duration-700 z-0 shadow-inner pointer-events-none"></div>
+                <div className="z-10 relative pointer-events-none">
+                  <div className="flex items-center gap-2 mb-2">
+                    <HiOutlineUserCircle className="text-2xl text-slate-400" />
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+                      About Me
+                    </h2>
+                  </div>
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm line-clamp-2">
+                    {BIO.about[0]}
+                  </p>
+                  <span className="text-purple-500 text-xs font-bold mt-2 inline-block group-hover:translate-x-1 transition-transform">
+                    Click to read more -&gt;
+                  </span>
+                </div>
+              </div>
+
+              <div
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[2] = el;
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openInfoModal("location")}
+                className="navigable blur-target md:col-span-1 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+              >
+                <div className="absolute -bottom-4 w-full h-1/2 bg-green-50 dark:bg-green-900/20 skew-y-12 group-hover:-skew-y-6 transition-transform duration-500 z-0 pointer-events-none"></div>
+                <div className="relative flex h-6 w-6 mb-3 z-10 pointer-events-none">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-6 w-6 bg-green-500 border-2 border-white dark:border-slate-900"></span>
+                </div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 z-10 pointer-events-none">
+                  Building from
+                </p>
+                <p className="font-semibold text-slate-800 dark:text-slate-200 z-10 pointer-events-none">
+                  {BIO.location}
+                </p>
+              </div>
+
+              <a
+                href={SOCIALS.find((s) => s.id === "github")?.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[3] = el;
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className="navigable blur-target md:col-span-1 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-slate-200 dark:border-slate-700"
+              >
+                <div className="absolute -right-4 -bottom-4 w-20 h-20 border-4 border-slate-300/30 dark:border-white/10 rounded-full group-hover:scale-150 transition-transform duration-500 z-0 pointer-events-none"></div>
+                <FaGithub className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
+                <span className="font-bold z-10 pointer-events-none">
+                  GitHub
+                </span>
+              </a>
+
+              <div
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[4] = el;
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openInfoModal("skills")}
+                className="navigable blur-target md:col-span-2 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col justify-center relative overflow-hidden border border-slate-200 dark:border-slate-800 group cursor-pointer"
+              >
+                <div className="absolute right-10 -bottom-10 w-32 h-64 bg-slate-50 dark:bg-slate-800 rounded-full rotate-45 group-hover:rotate-[60deg] transition-transform duration-700 z-0 pointer-events-none"></div>
+                <div className="z-10 relative pointer-events-none">
+                  <h2 className="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                    <HiOutlineLightningBolt /> Core Skills
+                  </h2>
+                  <div className="flex flex-wrap gap-3 items-center">
+                    {SKILLS.slice(0, 4).map((skill, i) => (
+                      <span
+                        key={i}
+                        className="px-4 py-2 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold rounded-full text-sm flex items-center gap-2 shadow-sm border border-blue-100 dark:border-blue-800"
+                      >
+                        <skill.Icon className="text-lg" /> {skill.name}
+                      </span>
+                    ))}
+                    {SKILLS.length > 4 && (
+                      <span className="text-blue-500 text-xs font-bold group-hover:translate-x-1 transition-transform">
+                        +{SKILLS.length - 4} more -&gt;
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <a
+                href={SOCIALS.find((s) => s.id === "linkedin")?.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[5] = el;
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className="navigable blur-target md:col-span-1 bg-blue-100 dark:bg-blue-700 text-blue-900 dark:text-white rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl cursor-pointer flex flex-col items-center justify-center relative overflow-hidden group border border-blue-200 dark:border-blue-600"
+              >
+                <div className="absolute -left-6 -top-6 w-24 h-24 bg-blue-400/20 dark:bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+                <FaLinkedin className="text-5xl mb-2 z-10 group-hover:scale-110 transition-transform pointer-events-none" />
+                <span className="font-bold z-10 pointer-events-none">
+                  LinkedIn
+                </span>
+              </a>
+
+              <button
+                tabIndex={0}
+                ref={(el) => {
+                  navigablesRef.current[6] = el;
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={() =>
+                  (window.location.href = `mailto:${CONTACT.email}`)
+                }
+                className="navigable blur-target md:col-span-1 bg-yellow-100 dark:bg-yellow-500 rounded-[2.5rem] p-6 shadow-2xl transition-all duration-300 ease-bouncy hover:shadow-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group outline-none border border-yellow-200 dark:border-yellow-600 hover:cursor-pointer"
+              >
+                <div className="absolute right-0 bottom-0 w-16 h-16 bg-yellow-300/30 dark:bg-white/10 rounded-tl-[2rem] group-hover:scale-150 transition-transform duration-500 z-0 shadow-lg pointer-events-none"></div>
+                <div className="z-10 relative flex flex-col items-center w-full pointer-events-none">
+                  <h2 className="text-xl font-black text-yellow-900 dark:text-slate-900 mb-1 tracking-tighter">
+                    {CONTACT.ctaTitle}
+                  </h2>
+                  <p className="text-xs font-bold text-yellow-800 dark:text-slate-800 mb-3 opacity-70">
+                    {CONTACT.email}
+                  </p>
+                  <div className="bg-slate-900 text-white w-full py-2 rounded-full font-bold text-sm shadow-xl flex items-center justify-center gap-2 group-hover:bg-slate-800 transition-colors">
+                    <FaEnvelope /> {CONTACT.ctaButton}
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            <div
+              className="flex flex-col md:flex-row items-start justify-between gap-6 blur-target pb-20 w-full"
+              id="projects-container"
+            >
+              {[0, 1, 2].map((colIndex) => (
+                <div
+                  key={colIndex}
+                  className="flex flex-col gap-6 flex-1 w-full"
+                >
+                  {[...PROJECTS, "placeholder" as const].map(
+                    (item, originalIndex) => {
+                      if (originalIndex % 3 !== colIndex) return null;
+
+                      if (item === "placeholder") {
+                        return (
+                          <div
+                            key="placeholder"
+                            className="navigable project-card w-full aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                            ref={(el) => {
+                              navigablesRef.current[7 + PROJECTS.length] = el;
+                            }}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                            onClick={() => {
+                              setCurrentIndex(6);
+                              navigablesRef.current[6]?.focus();
+                              navigablesRef.current[6]?.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center",
+                              });
+                              showToast(
+                                "Contact me so we can add a project together!",
+                              );
+                            }}
+                          >
+                            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
+                            <div className="z-10 relative flex flex-col items-center pointer-events-none">
+                              <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
+                                <FaMousePointer className="text-xl text-slate-500 dark:text-slate-400" />
+                              </div>
+                              <span className="font-bold tracking-wide">
+                                Add Project
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      const project = item;
+                      const isSelected = activeItem === project.id;
+                      const navigableIndex = 7 + originalIndex;
+
                       return (
                         <div
-                          key="placeholder"
-                          className="navigable project-card w-full aspect-square bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] p-8 text-slate-400 dark:text-slate-500 flex flex-col items-center justify-center shadow-inner transition-all duration-300 hover:shadow-3xl cursor-pointer group relative overflow-hidden"
+                          key={project.id}
+                          tabIndex={0}
                           ref={(el) => {
-                            navigablesRef.current[7 + PROJECTS.length] = el;
+                            navigablesRef.current[navigableIndex] = el;
                           }}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
-                          onClick={() => {
-                            setCurrentIndex(6);
-                            navigablesRef.current[6]?.focus();
-                            navigablesRef.current[6]?.scrollIntoView({
-                              behavior: "smooth",
-                              block: "center",
-                            });
-                            showToast(
-                              "Contact me so we can add a project together!",
-                            );
-                          }}
-                        >
-                          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-slate-200/50 dark:bg-slate-800/50 rounded-full group-hover:scale-125 transition-transform duration-500 z-0 pointer-events-none"></div>
-                          <div className="z-10 relative flex flex-col items-center pointer-events-none">
-                            <div className="w-14 h-14 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-colors shadow-xl">
-                              <FaMousePointer className="text-xl text-slate-500 dark:text-slate-400" />
-                            </div>
-                            <span className="font-bold tracking-wide">
-                              Add Project
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    const project = item;
-                    const isSelected = activeItem === project.id;
-                    const navigableIndex = 7 + originalIndex;
-
-                    return (
-                      <div
-                        key={project.id}
-                        tabIndex={0}
-                        ref={(el) => {
-                          navigablesRef.current[navigableIndex] = el;
-                        }}
-                        onMouseMove={handleMouseMove}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => toggleProject(project.id)}
-                        className={`navigable project-card rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border transition-all duration-500
+                          onClick={() => toggleProject(project.id)}
+                          className={`navigable project-card rounded-[2.5rem] text-white shadow-2xl cursor-pointer relative overflow-hidden group border transition-all duration-500
                         ${isSelected ? "border-blue-500 ring-4 ring-blue-500/20" : "border-slate-200 dark:border-slate-800"}
                         ${project.aspectRatio === "16:9" ? "aspect-video" : project.aspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-square"}
                       `}
-                      >
-                        <div className="media-container relative w-full h-full overflow-hidden">
-                          <img
-                            src={project.images[0]}
-                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
-                            alt={project.title}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                          <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 pointer-events-none">
-                            <h3 className="text-2xl font-black mb-2 tracking-tighter">
-                              {project.title}
-                            </h3>
-                            <div className="flex flex-wrap gap-2">
-                              {project.skills.slice(0, 2).map((skill, i) => (
-                                <span
-                                  key={i}
-                                  className="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30"
-                                >
-                                  {skill}
-                                </span>
-                              ))}
+                        >
+                          <div className="media-container relative w-full h-full overflow-hidden">
+                            <img
+                              src={project.images[0]}
+                              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                              alt={project.title}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 pointer-events-none">
+                              <h3 className="text-2xl font-black mb-2 tracking-tighter">
+                                {project.title}
+                              </h3>
+                              <div className="flex flex-wrap gap-2">
+                                {project.skills.slice(0, 2).map((skill, i) => (
+                                  <span
+                                    key={i}
+                                    className="px-3 py-1 bg-white/20 rounded-full text-xs font-bold backdrop-blur-md border border-white/30"
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  },
-                )}
-              </div>
-            ))}
+                      );
+                    },
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {renderZoomPreview()}
       {renderSidebar()}

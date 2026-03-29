@@ -39,11 +39,7 @@ export const BIO = {
   ],
   approach:
     "Iterative growth, clean architecture, and empathy for the user. I believe in software that solves real problems.",
-  languages: [
-    "I can speak English! (B2)",
-    "日本語が話せます！ (N4)",
-    "我会说中文！ (HSK1)",
-  ],
+  languages: ["日本語も話せます！", "我会说中文!"],
 };
 
 export const SKILLS = [
